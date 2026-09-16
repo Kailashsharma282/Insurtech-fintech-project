@@ -28,13 +28,13 @@ export const FloatingGuidanceBar: React.FC<{ onOpenLanguageModal?: () => void }>
               </span>
             </div>
             <div className="text-[11px] text-slate-300 flex items-center gap-1 font-semibold truncate">
-              <span>🟢 স্বাস্থ্য</span>
+              <span>🟢 {t('guide.step_health', 'Plant Health')}</span>
               <span>➡️</span>
-              <span>💧 জলরস</span>
+              <span>💧 {t('guide.step_moisture', 'Moisture')}</span>
               <span>➡️</span>
-              <span>⚡ পাম্প</span>
+              <span>⚡ {t('guide.step_pump', 'Pump')}</span>
               <span>➡️</span>
-              <span>🛡️ বীমা</span>
+              <span>🛡️ {t('guide.step_insurance', 'Insurance')}</span>
             </div>
           </div>
         </div>
@@ -52,15 +52,15 @@ export const FloatingGuidanceBar: React.FC<{ onOpenLanguageModal?: () => void }>
             }`}
           >
             <Volume2 className={`w-3.5 h-3.5 ${isSpeaking ? 'animate-spin' : ''}`} />
-            <span>{isSpeaking ? 'শুনছেন...' : '🔊 শুনুন'}</span>
+            <span>{isSpeaking ? t('guide.listening', 'Speaking...') : t('guide.listen', '🔊 Listen')}</span>
           </button>
 
           {/* Direct Link to Insurance */}
           <Link
             href="/farmer/insurance/apply"
-            className="px-3 py-1.5 rounded-xl bg-teal-600 hover:bg-teal-500 text-white font-bold text-xs flex items-center space-x-1"
+            className="px-3 py-1.5 rounded-xl bg-teal-600 hover:bg-teal-500 text-white font-bold text-xs flex items-center space-x-1 shrink-0"
           >
-            <span>🛡️ বীমা আবেদন</span>
+            <span>{t('guide.apply_btn', '🛡️ Apply Insurance')}</span>
             <span>➡️</span>
           </Link>
 

@@ -20,12 +20,13 @@ import {
   Zap,
   Globe,
   Compass,
-  ArrowRight
+  ArrowRight,
+  Volume2
 } from 'lucide-react';
 
 export const Navbar: React.FC = () => {
   const { role, setRole, user, isAuthenticated, logout, isSimulating, setIsSimulating } = useRole();
-  const { language, setLanguage, t, showVisualGuide, setShowVisualGuide, playVoiceAdvisory } = useLanguage();
+  const { language, setLanguage, t, showVisualGuide, setShowVisualGuide, playVoiceAdvisory, isSpeaking } = useLanguage();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [userDropdownOpen, setUserDropdownOpen] = useState(false);
   const [languageModalOpen, setLanguageModalOpen] = useState(false);
@@ -95,59 +96,84 @@ export const Navbar: React.FC = () => {
             </div>
 
             {/* 2. Center: Primary Navigation Links (Clean & Non-wrapping) */}
-            <nav className="hidden lg:flex items-center space-x-1 text-xs font-semibold">
-              {role === 'FARMER' && (
+            <nav className="hidden lg:flex items-center space-x-1 text-xs font-semibold overflow-x-hidden">
+              {pathname === '/' ? (
                 <>
                   <Link 
-                    href="/farmer/dashboard" 
-                    className={`px-2.5 py-1.5 rounded-lg transition-all ${pathname === '/farmer/dashboard' ? 'bg-emerald-500/20 text-[#34D399] border border-emerald-500/40' : 'text-slate-300 hover:text-white hover:bg-white/5'}`}
+                    href="/" 
+                    className="px-2.5 py-1.5 rounded-lg transition-all bg-emerald-500/20 text-[#34D399] border border-emerald-500/40 whitespace-nowrap shrink-0"
                   >
-                    {t('nav.dashboard')}
+                    {t('nav.overview')}
+                  </Link>
+                  <Link 
+                    href="/how-it-works" 
+                    className="px-2.5 py-1.5 rounded-lg transition-all text-slate-300 hover:text-white hover:bg-white/5 whitespace-nowrap shrink-0"
+                  >
+                    {t('nav.workflow')}
                   </Link>
                   <Link 
                     href="/farmer/farms" 
-                    className={`px-2.5 py-1.5 rounded-lg transition-all ${pathname.startsWith('/farmer/farms') ? 'bg-emerald-500/20 text-[#34D399] border border-emerald-500/40' : 'text-slate-300 hover:text-white hover:bg-white/5'}`}
+                    className="px-2.5 py-1.5 rounded-lg transition-all text-slate-300 hover:text-white hover:bg-white/5 whitespace-nowrap shrink-0"
                   >
                     {t('nav.farms')}
                   </Link>
                   <Link 
                     href="/farmer/insurance" 
-                    className={`px-2.5 py-1.5 rounded-lg transition-all ${pathname === '/farmer/insurance' ? 'bg-emerald-500/20 text-[#34D399] border border-emerald-500/40' : 'text-slate-300 hover:text-white hover:bg-white/5'}`}
+                    className="px-2.5 py-1.5 rounded-lg transition-all text-slate-300 hover:text-white hover:bg-white/5 whitespace-nowrap shrink-0"
+                  >
+                    {t('nav.insurance')}
+                  </Link>
+                </>
+              ) : role === 'FARMER' ? (
+                <>
+                  <Link 
+                    href="/farmer/dashboard" 
+                    className={`px-2.5 py-1.5 rounded-lg transition-all whitespace-nowrap shrink-0 ${pathname === '/farmer/dashboard' ? 'bg-emerald-500/20 text-[#34D399] border border-emerald-500/40' : 'text-slate-300 hover:text-white hover:bg-white/5'}`}
+                  >
+                    {t('nav.dashboard')}
+                  </Link>
+                  <Link 
+                    href="/farmer/farms" 
+                    className={`px-2.5 py-1.5 rounded-lg transition-all whitespace-nowrap shrink-0 ${pathname.startsWith('/farmer/farms') ? 'bg-emerald-500/20 text-[#34D399] border border-emerald-500/40' : 'text-slate-300 hover:text-white hover:bg-white/5'}`}
+                  >
+                    {t('nav.farms')}
+                  </Link>
+                  <Link 
+                    href="/farmer/insurance" 
+                    className={`px-2.5 py-1.5 rounded-lg transition-all whitespace-nowrap shrink-0 ${pathname === '/farmer/insurance' ? 'bg-emerald-500/20 text-[#34D399] border border-emerald-500/40' : 'text-slate-300 hover:text-white hover:bg-white/5'}`}
                   >
                     {t('nav.insurance')}
                   </Link>
                   <Link 
                     href="/farmer/disease" 
-                    className={`px-2.5 py-1.5 rounded-lg transition-all ${pathname === '/farmer/disease' ? 'bg-emerald-500/20 text-[#34D399] border border-emerald-500/40' : 'text-slate-300 hover:text-white hover:bg-white/5'}`}
+                    className={`px-2.5 py-1.5 rounded-lg transition-all whitespace-nowrap shrink-0 ${pathname === '/farmer/disease' ? 'bg-emerald-500/20 text-[#34D399] border border-emerald-500/40' : 'text-slate-300 hover:text-white hover:bg-white/5'}`}
                   >
                     {t('nav.disease')}
                   </Link>
                   <Link 
                     href="/farmer/optimization" 
-                    className={`px-2.5 py-1.5 rounded-lg transition-all ${pathname === '/farmer/optimization' ? 'bg-emerald-500/20 text-[#34D399] border border-emerald-500/40' : 'text-slate-300 hover:text-white hover:bg-white/5'}`}
+                    className={`px-2.5 py-1.5 rounded-lg transition-all whitespace-nowrap shrink-0 ${pathname === '/farmer/optimization' ? 'bg-emerald-500/20 text-[#34D399] border border-emerald-500/40' : 'text-slate-300 hover:text-white hover:bg-white/5'}`}
                   >
                     {t('nav.optimization')}
                   </Link>
                   <Link 
                     href="/operations/iot" 
-                    className={`px-2.5 py-1.5 rounded-lg transition-all ${pathname === '/operations/iot' ? 'bg-emerald-500/20 text-[#34D399] border border-emerald-500/40' : 'text-slate-300 hover:text-white hover:bg-white/5'}`}
+                    className={`px-2.5 py-1.5 rounded-lg transition-all whitespace-nowrap shrink-0 ${pathname === '/operations/iot' ? 'bg-emerald-500/20 text-[#34D399] border border-emerald-500/40' : 'text-slate-300 hover:text-white hover:bg-white/5'}`}
                   >
                     {t('nav.iot')}
                   </Link>
                 </>
-              )}
-
-              {role === 'INSURER' && (
+              ) : role === 'INSURER' ? (
                 <>
                   <Link 
                     href="/insurer/dashboard" 
-                    className={`px-2.5 py-1.5 rounded-lg transition-all ${pathname === '/insurer/dashboard' ? 'bg-emerald-500/20 text-[#34D399] border border-emerald-500/40' : 'text-slate-300 hover:text-white hover:bg-white/5'}`}
+                    className={`px-2.5 py-1.5 rounded-lg transition-all whitespace-nowrap shrink-0 ${pathname === '/insurer/dashboard' ? 'bg-emerald-500/20 text-[#34D399] border border-emerald-500/40' : 'text-slate-300 hover:text-white hover:bg-white/5'}`}
                   >
                     {t('nav.underwriting')}
                   </Link>
                   <Link 
                     href="/insurer/policies" 
-                    className={`px-2.5 py-1.5 rounded-lg transition-all ${pathname === '/insurer/policies' ? 'bg-emerald-500/20 text-[#34D399] border border-emerald-500/40' : 'text-amber-300 hover:text-amber-200 hover:bg-white/5'}`}
+                    className={`px-2.5 py-1.5 rounded-lg transition-all whitespace-nowrap shrink-0 ${pathname === '/insurer/policies' ? 'bg-emerald-500/20 text-[#34D399] border border-emerald-500/40' : 'text-amber-300 hover:text-amber-200 hover:bg-white/5'}`}
                   >
                     <span className="flex items-center gap-1 font-bold">
                       <span>{t('nav.policy_review')}</span>
@@ -156,42 +182,40 @@ export const Navbar: React.FC = () => {
                   </Link>
                   <Link 
                     href="/insurer/risk-map" 
-                    className={`px-2.5 py-1.5 rounded-lg transition-all ${pathname === '/insurer/risk-map' ? 'bg-emerald-500/20 text-[#34D399] border border-emerald-500/40' : 'text-slate-300 hover:text-white hover:bg-white/5'}`}
+                    className={`px-2.5 py-1.5 rounded-lg transition-all whitespace-nowrap shrink-0 ${pathname === '/insurer/risk-map' ? 'bg-emerald-500/20 text-[#34D399] border border-emerald-500/40' : 'text-slate-300 hover:text-white hover:bg-white/5'}`}
                   >
                     {t('nav.risk_map')}
                   </Link>
                   <Link 
                     href="/insurer/claims" 
-                    className={`px-2.5 py-1.5 rounded-lg transition-all ${pathname.startsWith('/insurer/claims') ? 'bg-emerald-500/20 text-[#34D399] border border-emerald-500/40' : 'text-slate-300 hover:text-white hover:bg-white/5'}`}
+                    className={`px-2.5 py-1.5 rounded-lg transition-all whitespace-nowrap shrink-0 ${pathname.startsWith('/insurer/claims') ? 'bg-emerald-500/20 text-[#34D399] border border-emerald-500/40' : 'text-slate-300 hover:text-white hover:bg-white/5'}`}
                   >
                     {t('nav.claims')}
                   </Link>
                   <Link 
                     href="/insurer/payouts" 
-                    className={`px-2.5 py-1.5 rounded-lg transition-all ${pathname === '/insurer/payouts' ? 'bg-emerald-500/20 text-[#34D399] border border-emerald-500/40' : 'text-slate-300 hover:text-white hover:bg-white/5'}`}
+                    className={`px-2.5 py-1.5 rounded-lg transition-all whitespace-nowrap shrink-0 ${pathname === '/insurer/payouts' ? 'bg-emerald-500/20 text-[#34D399] border border-emerald-500/40' : 'text-slate-300 hover:text-white hover:bg-white/5'}`}
                   >
                     {t('nav.payments')}
                   </Link>
                 </>
-              )}
-
-              {(role === 'ADMIN' || role === 'FIELD_AGENT') && (
+              ) : (
                 <>
                   <Link 
                     href="/intelligence/map" 
-                    className={`px-2.5 py-1.5 rounded-lg transition-all ${pathname === '/intelligence/map' ? 'bg-emerald-500/20 text-[#34D399] border border-emerald-500/40' : 'text-slate-300 hover:text-white hover:bg-white/5'}`}
+                    className={`px-2.5 py-1.5 rounded-lg transition-all whitespace-nowrap shrink-0 ${pathname === '/intelligence/map' ? 'bg-emerald-500/20 text-[#34D399] border border-emerald-500/40' : 'text-slate-300 hover:text-white hover:bg-white/5'}`}
                   >
                     Satellite GIS Map
                   </Link>
                   <Link 
                     href="/intelligence/weather" 
-                    className={`px-2.5 py-1.5 rounded-lg transition-all ${pathname === '/intelligence/weather' ? 'bg-emerald-500/20 text-[#34D399] border border-emerald-500/40' : 'text-slate-300 hover:text-white hover:bg-white/5'}`}
+                    className={`px-2.5 py-1.5 rounded-lg transition-all whitespace-nowrap shrink-0 ${pathname === '/intelligence/weather' ? 'bg-emerald-500/20 text-[#34D399] border border-emerald-500/40' : 'text-slate-300 hover:text-white hover:bg-white/5'}`}
                   >
                     Weather & Risk
                   </Link>
                   <Link 
                     href="/technology/chf" 
-                    className={`px-2.5 py-1.5 rounded-lg transition-all ${pathname === '/technology/chf' ? 'bg-emerald-500/20 text-[#34D399] border border-emerald-500/40' : 'text-slate-300 hover:text-white hover:bg-white/5'}`}
+                    className={`px-2.5 py-1.5 rounded-lg transition-all whitespace-nowrap shrink-0 ${pathname === '/technology/chf' ? 'bg-emerald-500/20 text-[#34D399] border border-emerald-500/40' : 'text-slate-300 hover:text-white hover:bg-white/5'}`}
                   >
                     CHF Engine
                   </Link>
@@ -199,9 +223,9 @@ export const Navbar: React.FC = () => {
               )}
 
               {/* Public Tech Dropdown */}
-              <div className="relative group">
-                <button className="flex items-center space-x-1 px-2.5 py-1.5 rounded-lg text-slate-300 hover:text-white hover:bg-white/5">
-                  <span>Architecture</span>
+              <div className="relative group shrink-0">
+                <button className="flex items-center space-x-1 px-2.5 py-1.5 rounded-lg text-slate-300 hover:text-white hover:bg-white/5 whitespace-nowrap">
+                  <span>{t('nav.architecture')}</span>
                   <ChevronDown className="w-3.5 h-3.5" />
                 </button>
                 <div className="absolute left-0 mt-1 w-52 bg-[#0B2119] border border-emerald-500/30 rounded-2xl shadow-2xl py-2 hidden group-hover:block z-50 animate-in fade-in slide-in-from-top-1">
@@ -226,30 +250,34 @@ export const Navbar: React.FC = () => {
             </nav>
 
             {/* 3. Right Toolbar: Uniform 36px Height, Pristine Spacing */}
-            <div className="flex items-center space-x-2 shrink-0">
+            <div className="flex items-center space-x-2 shrink-0 flex-nowrap">
               
               {/* Language Selector Button */}
               <button
                 type="button"
                 onClick={() => setLanguageModalOpen(true)}
-                className="h-9 px-2.5 rounded-xl bg-[#0B2119] hover:bg-[#102820] border border-emerald-500/40 text-emerald-300 text-xs font-bold transition-all flex items-center space-x-1.5 shadow-sm shrink-0"
+                className="h-9 px-2.5 rounded-xl bg-[#0B2119] hover:bg-[#102820] border border-emerald-500/40 text-emerald-300 text-xs font-bold transition-all flex items-center space-x-1.5 shadow-sm shrink-0 whitespace-nowrap"
                 title="Select Regional Language"
               >
                 <span className="text-base">{currentLangObj.flag}</span>
-                <span className="max-w-[70px] sm:max-w-[90px] truncate">{currentLangObj.native}</span>
+                <span className="max-w-[70px] sm:max-w-[85px] truncate">{currentLangObj.native}</span>
                 <ChevronDown className="w-3 h-3 text-emerald-400 shrink-0" />
               </button>
 
-              {/* Guidance Active Pill */}
+              {/* Audio Voice Guide Button */}
               {language !== 'en' && (
                 <button
                   type="button"
                   onClick={playVoiceAdvisory}
-                  className="hidden xl:flex h-9 px-2.5 rounded-xl bg-amber-500/20 hover:bg-amber-500/30 border border-amber-500/40 text-amber-300 text-xs font-bold items-center space-x-1 animate-pulse"
-                  title="Play regional voice guide"
+                  className={`h-9 px-2.5 rounded-xl border text-xs font-bold transition-all flex items-center space-x-1.5 shrink-0 whitespace-nowrap ${
+                    isSpeaking
+                      ? 'bg-amber-500/30 border-amber-500 text-amber-300 animate-pulse'
+                      : 'bg-amber-500/10 hover:bg-amber-500/20 border-amber-500/30 text-amber-300'
+                  }`}
+                  title={t('guide.audio_prompt')}
                 >
-                  <span>🧭</span>
-                  <span>{t('nav.visual_guide_active')}</span>
+                  <Volume2 className={`w-3.5 h-3.5 ${isSpeaking ? 'animate-bounce text-amber-300' : 'text-amber-400'}`} />
+                  <span className="hidden xl:inline text-[11px]">{t('guide.listen_short')}</span>
                 </button>
               )}
 
@@ -257,7 +285,7 @@ export const Navbar: React.FC = () => {
               <button
                 type="button"
                 onClick={() => setSimulationModalOpen(true)}
-                className="h-9 px-2.5 rounded-xl bg-emerald-900/40 hover:bg-emerald-800/50 border border-emerald-500/30 text-emerald-300 text-xs font-bold transition-all flex items-center space-x-1.5 shrink-0"
+                className="h-9 px-2.5 rounded-xl bg-emerald-900/40 hover:bg-emerald-800/50 border border-emerald-500/30 text-emerald-300 text-xs font-bold transition-all flex items-center space-x-1.5 shrink-0 whitespace-nowrap"
                 title="Inject Satellite / Weather Event Simulation"
               >
                 <Zap className="w-3.5 h-3.5 text-[#34D399]" />
@@ -265,11 +293,11 @@ export const Navbar: React.FC = () => {
               </button>
 
               {/* Role Switcher Pill */}
-              <div className="relative hidden md:block">
+              <div className="relative hidden md:block shrink-0">
                 <select
                   value={role}
                   onChange={(e) => handleRoleChange(e.target.value as Role)}
-                  className="h-9 appearance-none bg-[#0B2119] hover:bg-[#102820] border border-emerald-500/40 text-[#34D399] text-xs font-bold pl-2.5 pr-7 rounded-xl focus:outline-none focus:ring-1 focus:ring-emerald-500 cursor-pointer transition-colors"
+                  className="h-9 appearance-none bg-[#0B2119] hover:bg-[#102820] border border-emerald-500/40 text-[#34D399] text-xs font-bold pl-2.5 pr-7 rounded-xl focus:outline-none focus:ring-1 focus:ring-emerald-500 cursor-pointer transition-colors shrink-0"
                 >
                   <option value="FARMER">🧑‍🌾 Farmer</option>
                   <option value="INSURER">🏛️ Insurer</option>

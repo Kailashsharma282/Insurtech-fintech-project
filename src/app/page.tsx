@@ -24,8 +24,10 @@ import {
 } from 'lucide-react';
 import { Card3D } from '@/components/ui/Card3D';
 import { CyberBackground } from '@/components/ui/CyberBackground';
+import { useLanguage } from '@/context/LanguageContext';
 
 export default function HomePage() {
+  const { t } = useLanguage();
   const [activeTab, setActiveTab] = useState<'pipeline' | 'radar'>('pipeline');
 
   const kpiCards = [
@@ -60,20 +62,19 @@ export default function HomePage() {
             {/* Holographic Pill Badge with 3D Float */}
             <div className="inline-flex items-center space-x-2 px-4 py-2 rounded-full bg-[#10B981]/15 border border-[#10B981]/40 text-emerald-300 text-xs font-semibold tracking-wide backdrop-blur-md animate-float-slow shadow-lg shadow-emerald-950/50">
               <span className="w-2 h-2 rounded-full bg-[#10B981] pulse-indicator"></span>
-              <span className="font-mono uppercase tracking-wider text-[11px]">Sentinel-2 MSI × IoT Telemetry × Parametric FinTech</span>
+              <span className="font-mono uppercase tracking-wider text-[11px]">{t('hero.badge')}</span>
             </div>
 
             {/* Main Headline with High-Impact Gradient */}
             <h1 className="text-3xl sm:text-5xl md:text-6xl lg:text-7xl font-black tracking-tight text-white leading-[1.1]">
-              Turn Crop Risk Into Action <br className="hidden sm:inline" />
+              {t('hero.title_start')} <br className="hidden sm:inline" />
               <span className="bg-gradient-to-r from-[#34D399] via-[#10B981] to-teal-300 bg-clip-text text-transparent drop-shadow-[0_10px_20px_rgba(16,185,129,0.3)]">
-                Before It Becomes Crop Loss.
+                {t('hero.title_gradient')}
               </span>
             </h1>
 
             <p className="text-base sm:text-lg md:text-xl text-slate-300 max-w-2xl mx-auto font-normal leading-relaxed px-2">
-              Autonomous agricultural resilience combining satellite multispectral passes, real-time in-situ IoT telemetry, 
-              entropy-weighted crop health estimation, and cryptographic parametric underwriting.
+              {t('hero.description')}
             </p>
 
             {/* Call to Action Buttons */}
@@ -82,7 +83,7 @@ export default function HomePage() {
                 href="/farmer/dashboard"
                 className="w-full sm:w-auto inline-flex items-center justify-center px-8 py-3.5 rounded-2xl bg-gradient-to-r from-[#10B981] via-[#059669] to-emerald-600 hover:from-[#34D399] hover:to-[#10B981] text-white font-bold text-sm shadow-xl shadow-[#10B981]/30 hover:shadow-[#10B981]/50 transition-all duration-300 transform hover:-translate-y-1 active:translate-y-0"
               >
-                <span>Launch Farmer Hub</span>
+                <span>{t('hero.cta_farmer')}</span>
                 <ArrowRight className="w-4 h-4 ml-2.5" />
               </Link>
               
@@ -90,7 +91,7 @@ export default function HomePage() {
                 href="/how-it-works"
                 className="w-full sm:w-auto inline-flex items-center justify-center px-8 py-3.5 rounded-2xl bg-white/10 hover:bg-white/15 border border-white/20 text-white font-semibold text-sm backdrop-blur-md transition-all duration-300 transform hover:-translate-y-1"
               >
-                <span>6-Stage Workflow</span>
+                <span>{t('hero.cta_workflow')}</span>
                 <Play className="w-3.5 h-3.5 ml-2.5 fill-white text-white" />
               </Link>
 
@@ -99,14 +100,14 @@ export default function HomePage() {
                 className="w-full sm:w-auto inline-flex items-center justify-center px-8 py-3.5 rounded-2xl bg-slate-900/80 hover:bg-slate-800 border border-emerald-500/30 text-emerald-300 font-semibold text-sm backdrop-blur-md transition-all duration-300 transform hover:-translate-y-1"
               >
                 <ShieldCheck className="w-4 h-4 mr-2 text-emerald-400" />
-                <span>Underwriting Desk</span>
+                <span>{t('hero.cta_insurer')}</span>
               </Link>
             </div>
 
             {/* Philosophy Axiom Callout */}
             <div className="pt-4">
               <p className="text-xs text-slate-400 italic max-w-xl mx-auto border-t border-emerald-900/60 pt-4 px-4">
-                &ldquo;Insurance backs up the yield-preservation system when unavoidable natural shocks exceed mitigation capability. It is the safety net, not the first line of defense.&rdquo;
+                {t('hero.philosophy')}
               </p>
             </div>
           </div>
@@ -124,10 +125,10 @@ export default function HomePage() {
                     </div>
                     <div>
                       <span className="text-xs font-mono text-[#34D399] uppercase tracking-widest block font-bold">
-                        CLOSED-LOOP SYSTEM RUNTIME
+                        {t('hero.runtime_title')}
                       </span>
                       <span className="text-[11px] text-slate-400">
-                        Primary Pilot: Plot #204 (Rajesh Mondal, Nadia District) • Kharif Season
+                        {t('hero.runtime_pilot')}
                       </span>
                     </div>
                   </div>
@@ -147,40 +148,40 @@ export default function HomePage() {
                     <div className="w-11 h-11 mx-auto rounded-xl bg-blue-500/20 border border-blue-500/40 flex items-center justify-center text-blue-400 group-hover:scale-110 transition-transform">
                       <Satellite className="w-5 h-5" />
                     </div>
-                    <div className="font-bold text-sm text-white">1. Satellite</div>
-                    <p className="text-[11px] text-slate-300 leading-snug">Sentinel-2 MSI (10m) & Sentinel-1 SAR dual-pol passes</p>
+                    <div className="font-bold text-sm text-white">{t('hero.card1_title')}</div>
+                    <p className="text-[11px] text-slate-300 leading-snug">{t('hero.card1_desc')}</p>
                   </div>
 
                   <div className="p-4 rounded-2xl bg-[#102820]/90 border border-emerald-500/20 text-center space-y-2.5 hover:border-emerald-400/60 transition-colors group">
                     <div className="w-11 h-11 mx-auto rounded-xl bg-emerald-500/20 border border-emerald-500/40 flex items-center justify-center text-[#34D399] group-hover:scale-110 transition-transform">
                       <Radio className="w-5 h-5" />
                     </div>
-                    <div className="font-bold text-sm text-white">2. Field IoT</div>
-                    <p className="text-[11px] text-slate-300 leading-snug">ESP32 3s root moisture, ambient DHT22 & NPK probes</p>
+                    <div className="font-bold text-sm text-white">{t('hero.card2_title')}</div>
+                    <p className="text-[11px] text-slate-300 leading-snug">{t('hero.card2_desc')}</p>
                   </div>
 
                   <div className="p-4 rounded-2xl bg-[#102820]/90 border border-emerald-500/20 text-center space-y-2.5 hover:border-emerald-400/60 transition-colors group">
                     <div className="w-11 h-11 mx-auto rounded-xl bg-purple-500/20 border border-purple-500/40 flex items-center justify-center text-purple-400 group-hover:scale-110 transition-transform">
                       <Cpu className="w-5 h-5" />
                     </div>
-                    <div className="font-bold text-sm text-white">3. Agronomic AI</div>
-                    <p className="text-[11px] text-slate-300 leading-snug">GA-PSO nutrient balance & 38-class leaf computer vision</p>
+                    <div className="font-bold text-sm text-white">{t('hero.card3_title')}</div>
+                    <p className="text-[11px] text-slate-300 leading-snug">{t('hero.card3_desc')}</p>
                   </div>
 
                   <div className="p-4 rounded-2xl bg-[#102820]/90 border border-emerald-500/20 text-center space-y-2.5 hover:border-emerald-400/60 transition-colors group">
                     <div className="w-11 h-11 mx-auto rounded-xl bg-amber-500/20 border border-amber-500/40 flex items-center justify-center text-amber-400 group-hover:scale-110 transition-transform">
                       <Droplets className="w-5 h-5" />
                     </div>
-                    <div className="font-bold text-sm text-white">4. Intervention</div>
-                    <p className="text-[11px] text-slate-300 leading-snug">Autonomous pump relays & targeted organic fertigation</p>
+                    <div className="font-bold text-sm text-white">{t('hero.card4_title')}</div>
+                    <p className="text-[11px] text-slate-300 leading-snug">{t('hero.card4_desc')}</p>
                   </div>
 
                   <div className="p-4 rounded-2xl bg-[#102820]/90 border border-emerald-500/20 text-center space-y-2.5 hover:border-emerald-400/60 transition-colors group sm:col-span-2 md:col-span-1">
                     <div className="w-11 h-11 mx-auto rounded-xl bg-rose-500/20 border border-rose-500/40 flex items-center justify-center text-rose-400 group-hover:scale-110 transition-transform">
                       <ShieldCheck className="w-5 h-5" />
                     </div>
-                    <div className="font-bold text-sm text-white">5. Insurance</div>
-                    <p className="text-[11px] text-slate-300 leading-snug">Parametric CHF trigger & automated direct NEFT settlement</p>
+                    <div className="font-bold text-sm text-white">{t('hero.card5_title')}</div>
+                    <p className="text-[11px] text-slate-300 leading-snug">{t('hero.card5_desc')}</p>
                   </div>
 
                 </div>
