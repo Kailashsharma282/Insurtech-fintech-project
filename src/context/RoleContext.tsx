@@ -127,6 +127,7 @@ export const RoleProvider: React.FC<{ children: React.ReactNode }> = ({ children
     if (typeof window !== 'undefined') {
       localStorage.setItem('agrisure_user_role', newRole);
       localStorage.setItem('agrisure_auth_user', JSON.stringify(newProfile));
+      document.cookie = `agrisure_user_role=${newRole}; path=/; max-age=31536000; SameSite=Lax`;
     }
   };
 
@@ -148,6 +149,7 @@ export const RoleProvider: React.FC<{ children: React.ReactNode }> = ({ children
     if (typeof window !== 'undefined') {
       localStorage.setItem('agrisure_user_role', credentials.role);
       localStorage.setItem('agrisure_auth_user', JSON.stringify(loggedInUser));
+      document.cookie = `agrisure_user_role=${credentials.role}; path=/; max-age=31536000; SameSite=Lax`;
     }
 
     return { success: true, message: 'Login successful' };

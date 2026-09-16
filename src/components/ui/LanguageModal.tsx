@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect } from 'react';
 import { useLanguage, SUPPORTED_LANGUAGES, LanguageCode } from '@/context/LanguageContext';
+import { useRole } from '@/context/RoleContext';
 import { Volume2, CheckCircle2, Sparkles, X, Globe, ArrowRight } from 'lucide-react';
 
 interface LanguageModalProps {
@@ -11,18 +12,25 @@ interface LanguageModalProps {
 }
 
 export const LanguageModal: React.FC<LanguageModalProps> = ({ isOpen: controlledIsOpen, onClose, forceOpen = false }) => {
+  const { role } = useRole();
   const { language, setLanguage, playVoiceAdvisory, setShowVisualGuide } = useLanguage();
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const [selectedCode, setSelectedCode] = useState<LanguageCode>(language);
 
   useEffect(() => {
+    // Language modal is specifically targeted for Farmers
+    if (role !== 'FARMER' && !forceOpen) {
+      setIsOpen(false);
+      return;
+    }
+
     if (typeof window !== 'undefined') {
       const hasChosen = localStorage.getItem('agrisure_language_selected');
       if (!hasChosen || forceOpen) {
         setIsOpen(true);
       }
     }
-  }, [forceOpen]);
+  }, [forceOpen, role]);
 
   useEffect(() => {
     if (controlledIsOpen !== undefined) {

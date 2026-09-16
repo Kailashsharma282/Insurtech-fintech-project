@@ -25,26 +25,28 @@ import {
 import { Card3D } from '@/components/ui/Card3D';
 import { CyberBackground } from '@/components/ui/CyberBackground';
 import { useLanguage } from '@/context/LanguageContext';
+import { useRole } from '@/context/RoleContext';
 
 export default function HomePage() {
   const { t } = useLanguage();
+  const { role } = useRole();
   const [activeTab, setActiveTab] = useState<'pipeline' | 'radar'>('pipeline');
 
   const kpiCards = [
-    { value: '38', unit: 'classes', label: 'Disease Taxonomy', desc: 'PlantVillage calibrated computer vision backbone' },
-    { value: '92.9%', unit: 'accuracy', label: 'Model Precision', desc: 'Benchmarked across foliar blight, brown spot & wilts' },
-    { value: '0.85', unit: 'r-score', label: 'CHF / Yield Correlation', desc: 'Entropy-weighted radar & optical vegetation correlation' },
-    { value: '30–45', unit: 'days target', label: 'Claim Resolution Benchmark', desc: 'Target turnaround vs 6-9 months traditional loss survey' },
-    { value: '3s', unit: 'interval', label: 'IoT Telemetry Stream', desc: 'Real-time ESP32 soil probe & weather station polling' },
+    { value: '38', unit: t('kpi.unit_classes'), label: t('kpi.dis_taxonomy'), desc: t('kpi.dis_desc') },
+    { value: '92.9%', unit: t('kpi.unit_accuracy'), label: t('kpi.precision'), desc: t('kpi.precision_desc') },
+    { value: '0.85', unit: t('kpi.unit_score'), label: t('kpi.chf_yield'), desc: t('kpi.chf_desc') },
+    { value: '30–45', unit: t('kpi.unit_days'), label: t('kpi.claims_speed'), desc: t('kpi.claims_desc') },
+    { value: '3s', unit: t('kpi.unit_interval'), label: t('kpi.iot_stream'), desc: t('kpi.iot_desc') },
   ];
 
   const workflowSteps = [
-    { step: '01', title: 'OBSERVE', desc: 'Sentinel-2 MSI (10m) + Sentinel-1 SAR radar cross-polarization + field IoT probes', icon: Satellite, color: 'from-blue-500/20 to-cyan-500/20', border: 'border-blue-500/30' },
-    { step: '02', title: 'DIAGNOSE', desc: 'Early physiological crop stress, root moisture deficit & 38-class leaf disease detection', icon: Activity, color: 'from-amber-500/20 to-yellow-500/20', border: 'border-amber-500/30' },
-    { step: '03', title: 'PRESCRIBE', desc: 'GA-PSO bio-inspired algorithm generates calibrated N-P-K & irrigation requirements', icon: Cpu, color: 'from-emerald-500/20 to-teal-500/20', border: 'border-emerald-500/30' },
-    { step: '04', title: 'ACTUATE', desc: 'Automated solar pump relays, micro-irrigation pulses, and localized SMS/app advisories', icon: Droplets, color: 'from-purple-500/20 to-indigo-500/20', border: 'border-purple-500/30' },
-    { step: '05', title: 'VERIFY', desc: 'Post-intervention bi-weekly satellite passes monitor vegetation recovery curve', icon: CheckCircle2, color: 'from-teal-500/20 to-emerald-500/20', border: 'border-teal-500/30' },
-    { step: '06', title: 'INSURE', desc: 'Parametric CHF threshold breach trigger settles payouts without paperwork friction', icon: ShieldCheck, color: 'from-rose-500/20 to-red-500/20', border: 'border-rose-500/30' },
+    { step: '01', title: t('cycle.s1_title'), desc: t('cycle.s1_desc'), icon: Satellite, color: 'from-blue-500/20 to-cyan-500/20', border: 'border-blue-500/30' },
+    { step: '02', title: t('cycle.s2_title'), desc: t('cycle.s2_desc'), icon: Activity, color: 'from-amber-500/20 to-yellow-500/20', border: 'border-amber-500/30' },
+    { step: '03', title: t('cycle.s3_title'), desc: t('cycle.s3_desc'), icon: Cpu, color: 'from-emerald-500/20 to-teal-500/20', border: 'border-emerald-500/30' },
+    { step: '04', title: t('cycle.s4_title'), desc: t('cycle.s4_desc'), icon: Droplets, color: 'from-purple-500/20 to-indigo-500/20', border: 'border-purple-500/30' },
+    { step: '05', title: t('cycle.s5_title'), desc: t('cycle.s5_desc'), icon: CheckCircle2, color: 'from-teal-500/20 to-emerald-500/20', border: 'border-teal-500/30' },
+    { step: '06', title: t('cycle.s6_title'), desc: t('cycle.s6_desc'), icon: ShieldCheck, color: 'from-rose-500/20 to-red-500/20', border: 'border-rose-500/30' },
   ];
 
   return (
@@ -77,31 +79,43 @@ export default function HomePage() {
               {t('hero.description')}
             </p>
 
-            {/* Call to Action Buttons */}
+            {/* Call to Action Buttons - Role Restrictive */}
             <div className="flex flex-col sm:flex-row items-center justify-center gap-3 sm:gap-4 pt-4 px-4">
-              <Link
-                href="/farmer/dashboard"
-                className="w-full sm:w-auto inline-flex items-center justify-center px-8 py-3.5 rounded-2xl bg-gradient-to-r from-[#10B981] via-[#059669] to-emerald-600 hover:from-[#34D399] hover:to-[#10B981] text-white font-bold text-sm shadow-xl shadow-[#10B981]/30 hover:shadow-[#10B981]/50 transition-all duration-300 transform hover:-translate-y-1 active:translate-y-0"
-              >
-                <span>{t('hero.cta_farmer')}</span>
-                <ArrowRight className="w-4 h-4 ml-2.5" />
-              </Link>
-              
-              <Link
-                href="/how-it-works"
-                className="w-full sm:w-auto inline-flex items-center justify-center px-8 py-3.5 rounded-2xl bg-white/10 hover:bg-white/15 border border-white/20 text-white font-semibold text-sm backdrop-blur-md transition-all duration-300 transform hover:-translate-y-1"
-              >
-                <span>{t('hero.cta_workflow')}</span>
-                <Play className="w-3.5 h-3.5 ml-2.5 fill-white text-white" />
-              </Link>
-
-              <Link
-                href="/insurer/dashboard"
-                className="w-full sm:w-auto inline-flex items-center justify-center px-8 py-3.5 rounded-2xl bg-slate-900/80 hover:bg-slate-800 border border-emerald-500/30 text-emerald-300 font-semibold text-sm backdrop-blur-md transition-all duration-300 transform hover:-translate-y-1"
-              >
-                <ShieldCheck className="w-4 h-4 mr-2 text-emerald-400" />
-                <span>{t('hero.cta_insurer')}</span>
-              </Link>
+              {role === 'FARMER' ? (
+                <>
+                  <Link
+                    href="/farmer/dashboard"
+                    className="w-full sm:w-auto inline-flex items-center justify-center px-8 py-3.5 rounded-2xl bg-gradient-to-r from-[#10B981] via-[#059669] to-emerald-600 hover:from-[#34D399] hover:to-[#10B981] text-white font-bold text-sm shadow-xl shadow-[#10B981]/30 hover:shadow-[#10B981]/50 transition-all duration-300 transform hover:-translate-y-1 active:translate-y-0"
+                  >
+                    <span>{t('hero.cta_farmer')}</span>
+                    <ArrowRight className="w-4 h-4 ml-2.5" />
+                  </Link>
+                  <Link
+                    href="/farmer/insurance/apply"
+                    className="w-full sm:w-auto inline-flex items-center justify-center px-8 py-3.5 rounded-2xl bg-emerald-950/80 hover:bg-emerald-900 border border-emerald-500/40 text-emerald-300 font-semibold text-sm backdrop-blur-md transition-all duration-300 transform hover:-translate-y-1"
+                  >
+                    <ShieldCheck className="w-4 h-4 mr-2 text-emerald-400" />
+                    <span>{t('ins.apply_title')}</span>
+                  </Link>
+                </>
+              ) : (
+                <>
+                  <Link
+                    href="/insurer/dashboard"
+                    className="w-full sm:w-auto inline-flex items-center justify-center px-8 py-3.5 rounded-2xl bg-gradient-to-r from-[#10B981] via-[#059669] to-emerald-600 hover:from-[#34D399] hover:to-[#10B981] text-white font-bold text-sm shadow-xl shadow-[#10B981]/30 hover:shadow-[#10B981]/50 transition-all duration-300 transform hover:-translate-y-1 active:translate-y-0"
+                  >
+                    <ShieldCheck className="w-4 h-4 mr-2 text-white" />
+                    <span>Launch Underwriter Desk</span>
+                  </Link>
+                  <Link
+                    href="/how-it-works"
+                    className="w-full sm:w-auto inline-flex items-center justify-center px-8 py-3.5 rounded-2xl bg-white/10 hover:bg-white/15 border border-white/20 text-white font-semibold text-sm backdrop-blur-md transition-all duration-300 transform hover:-translate-y-1"
+                  >
+                    <span>{t('hero.cta_workflow')}</span>
+                    <Play className="w-3.5 h-3.5 ml-2.5 fill-white text-white" />
+                  </Link>
+                </>
+              )}
             </div>
 
             {/* Philosophy Axiom Callout */}
@@ -228,7 +242,7 @@ export default function HomePage() {
         </div>
         <div className="mt-4 text-center">
           <span className="text-[11px] text-slate-500 italic">
-            * Benchmark metrics represent university validation research models and simulation targets rather than commercial guarantees.
+            {t('kpi.footnote')}
           </span>
         </div>
       </section>
@@ -238,14 +252,13 @@ export default function HomePage() {
         <div className="text-center max-w-3xl mx-auto mb-14 space-y-3">
           <div className="inline-flex items-center space-x-1.5 px-3 py-1 rounded-full bg-emerald-50 border border-emerald-200 text-[#059669] text-xs font-bold uppercase tracking-widest">
             <Sparkles className="w-3.5 h-3.5" />
-            <span>Closed-Loop Protocol</span>
+            <span>{t('cycle.badge')}</span>
           </div>
           <h2 className="text-3xl sm:text-4xl md:text-5xl font-black text-[#0F172A] tracking-tight">
-            The 6-Stage Resilience Cycle
+            {t('cycle.title')}
           </h2>
           <p className="text-slate-600 text-sm sm:text-base leading-relaxed max-w-2xl mx-auto">
-            An end-to-end operational framework that detects physiological anomalies days before visual wilting, 
-            preserves farmer yield first, and settles residual losses automatically.
+            {t('cycle.subtitle')}
           </p>
         </div>
 
@@ -263,7 +276,7 @@ export default function HomePage() {
                   <div className="space-y-3">
                     <div className="flex items-center justify-between">
                       <span className="text-xs font-mono font-extrabold text-[#059669] px-3 py-1 rounded-xl bg-emerald-50 border border-emerald-200">
-                        STAGE {s.step}
+                        {s.title.split('.')[0] || `0${idx + 1}`}
                       </span>
                       <div className="w-10 h-10 rounded-xl bg-slate-100 flex items-center justify-center text-slate-700">
                         <Icon className="w-5 h-5" />
@@ -274,8 +287,8 @@ export default function HomePage() {
                   </div>
                   
                   <div className="pt-2 border-t border-slate-100">
-                    <Link href="/how-it-works" className="inline-flex items-center text-xs font-bold text-[#059669] hover:text-emerald-700 transition-colors">
-                      <span>Inspect technical protocol</span>
+                    <Link href={role === 'FARMER' ? '/farmer/dashboard' : '/how-it-works'} className="inline-flex items-center text-xs font-bold text-[#059669] hover:text-emerald-700 transition-colors">
+                      <span>{t('cycle.inspect')}</span>
                       <ChevronRight className="w-3.5 h-3.5 ml-1" />
                     </Link>
                   </div>
@@ -295,36 +308,47 @@ export default function HomePage() {
             
             <div className="space-y-5">
               <span className="text-xs font-mono uppercase tracking-widest text-[#34D399] font-bold">
-                ROLE-AWARE OPERATIONAL ARCHITECTURE
+                {t('arch.badge')}
               </span>
               <h2 className="text-3xl sm:text-4xl md:text-5xl font-black tracking-tight leading-tight">
-                Built for Both the Field & the Underwriting Desk
+                {t('arch.title')}
               </h2>
               <p className="text-slate-300 text-sm sm:text-base leading-relaxed">
-                Farmers see plain-language advisories (&ldquo;Crop Health: 71%&rdquo;, &ldquo;Moisture: Normal&rdquo;, &ldquo;Start Pump&rdquo;) 
-                while Actuaries & Insurers examine full multi-spectral radar curves, Shannon entropy weight matrices, 
-                and immutable cryptographic audit evidence packages.
+                {t('arch.desc')}
               </p>
 
               <div className="flex flex-wrap gap-3 pt-2">
-                <Link
-                  href="/farmer/dashboard"
-                  className="px-6 py-3 rounded-xl bg-[#10B981] hover:bg-emerald-600 text-white text-xs font-bold shadow-lg shadow-emerald-900/50 transition-all transform hover:-translate-y-0.5"
-                >
-                  Farmer Portal (Plot #204)
-                </Link>
-                <Link
-                  href="/insurer/dashboard"
-                  className="px-6 py-3 rounded-xl bg-slate-900 hover:bg-slate-800 border border-emerald-500/40 text-emerald-300 text-xs font-bold transition-all transform hover:-translate-y-0.5"
-                >
-                  Insurer Underwriting Desk
-                </Link>
-                <Link
-                  href="/intelligence/map"
-                  className="px-6 py-3 rounded-xl bg-slate-900 hover:bg-slate-800 border border-slate-700 text-slate-300 text-xs font-bold transition-all transform hover:-translate-y-0.5"
-                >
-                  Satellite GIS Map
-                </Link>
+                {role === 'FARMER' ? (
+                  <>
+                    <Link
+                      href="/farmer/dashboard"
+                      className="px-6 py-3 rounded-xl bg-[#10B981] hover:bg-emerald-600 text-white text-xs font-bold shadow-lg shadow-emerald-900/50 transition-all transform hover:-translate-y-0.5"
+                    >
+                      {t('arch.btn_farmer')}
+                    </Link>
+                    <Link
+                      href="/farmer/insurance/apply"
+                      className="px-6 py-3 rounded-xl bg-slate-900 hover:bg-slate-800 border border-emerald-500/40 text-emerald-300 text-xs font-bold transition-all transform hover:-translate-y-0.5"
+                    >
+                      {t('ins.apply_title')}
+                    </Link>
+                  </>
+                ) : (
+                  <>
+                    <Link
+                      href="/insurer/dashboard"
+                      className="px-6 py-3 rounded-xl bg-[#10B981] hover:bg-emerald-600 text-white text-xs font-bold shadow-lg shadow-emerald-900/50 transition-all transform hover:-translate-y-0.5"
+                    >
+                      Insurer Underwriting Desk
+                    </Link>
+                    <Link
+                      href="/how-it-works"
+                      className="px-6 py-3 rounded-xl bg-slate-900 hover:bg-slate-800 border border-emerald-500/40 text-emerald-300 text-xs font-bold transition-all transform hover:-translate-y-0.5"
+                    >
+                      Technical Architecture
+                    </Link>
+                  </>
+                )}
               </div>
             </div>
 
@@ -337,37 +361,37 @@ export default function HomePage() {
                       <div className="w-8 h-8 rounded-lg bg-emerald-500/20 border border-emerald-500/30 flex items-center justify-center text-[#34D399]">
                         <Activity className="w-4 h-4" />
                       </div>
-                      <span className="font-bold text-sm text-white">Live Field Sensor Unit</span>
+                      <span className="font-bold text-sm text-white">{t('arch.live_unit')}</span>
                     </div>
                     <span className="text-xs font-mono px-2.5 py-1 rounded-full bg-emerald-500/20 text-[#34D399] border border-emerald-500/30 font-bold">
-                      Nadia / Aman Paddy
+                      {role === 'FARMER' ? t('farmer.plot_name') : 'Nadia / Aman Paddy'}
                     </span>
                   </div>
 
                   <div className="grid grid-cols-2 gap-4 text-xs">
                     <div className="p-3 rounded-xl bg-[#102820]/80 border border-emerald-900/50">
-                      <div className="text-slate-400 text-[11px]">Plot Identifier</div>
-                      <div className="font-bold text-white text-sm mt-0.5">Plot #204 (Baganchra)</div>
+                      <div className="text-slate-400 text-[11px]">{t('arch.plot_id')}</div>
+                      <div className="font-bold text-white text-sm mt-0.5">{t('farmer.plot_name')}</div>
                     </div>
                     <div className="p-3 rounded-xl bg-[#102820]/80 border border-emerald-900/50">
-                      <div className="text-slate-400 text-[11px]">Composite Health (CHF)</div>
-                      <div className="font-bold text-[#34D399] text-sm mt-0.5">0.71 (Optimal)</div>
+                      <div className="text-slate-400 text-[11px]">{t('arch.comp_health')}</div>
+                      <div className="font-bold text-[#34D399] text-sm mt-0.5">0.71 ({t('farmer.crop_health_status')})</div>
                     </div>
                     <div className="p-3 rounded-xl bg-[#102820]/80 border border-emerald-900/50">
-                      <div className="text-slate-400 text-[11px]">Soil Moisture (ESP32)</div>
+                      <div className="text-slate-400 text-[11px]">{t('arch.soil_moist')}</div>
                       <div className="font-bold text-blue-400 text-sm mt-0.5">58.0% VWC</div>
                     </div>
                     <div className="p-3 rounded-xl bg-[#102820]/80 border border-emerald-900/50">
-                      <div className="text-slate-400 text-[11px]">Weather Risk State</div>
-                      <div className="font-bold text-emerald-400 text-sm mt-0.5">Low (Monsoon Inflow)</div>
+                      <div className="text-slate-400 text-[11px]">{t('arch.weather_state')}</div>
+                      <div className="font-bold text-emerald-400 text-sm mt-0.5">{t('farmer.weather_risk_desc')}</div>
                     </div>
                   </div>
 
                   <Link
-                    href="/farmer/farms/farm-plot-204"
+                    href={role === 'FARMER' ? '/farmer/farms' : '/intelligence/map'}
                     className="w-full flex items-center justify-center py-3 rounded-xl bg-gradient-to-r from-emerald-600/40 to-teal-600/40 hover:from-emerald-600/60 hover:to-teal-600/60 border border-emerald-500/50 text-emerald-200 text-xs font-bold transition-all shadow-md"
                   >
-                    <span>Inspect Complete Plot #204 Telemetry</span>
+                    <span>{t('arch.inspect_plot')}</span>
                     <ArrowRight className="w-4 h-4 ml-2" />
                   </Link>
                 </div>

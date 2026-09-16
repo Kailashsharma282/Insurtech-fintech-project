@@ -2,13 +2,16 @@
 
 import React from 'react';
 import { useLanguage } from '@/context/LanguageContext';
+import { useRole } from '@/context/RoleContext';
 import { Volume2, ArrowRight, CheckCircle2, Globe, Compass, X } from 'lucide-react';
 import Link from 'next/link';
 
 export const FloatingGuidanceBar: React.FC<{ onOpenLanguageModal?: () => void }> = ({ onOpenLanguageModal }) => {
+  const { role } = useRole();
   const { language, t, showVisualGuide, setShowVisualGuide, playVoiceAdvisory, isSpeaking } = useLanguage();
 
-  if (language === 'en' || !showVisualGuide) {
+  // Regional Visual Guidance is strictly for Farmers
+  if (role !== 'FARMER' || language === 'en' || !showVisualGuide) {
     return null;
   }
 

@@ -40,9 +40,12 @@ export const Navbar: React.FC = () => {
 
   const handleRoleChange = (newRole: Role) => {
     setRole(newRole);
+    if (newRole !== 'FARMER') {
+      setLanguage('en');
+    }
     if (newRole === 'FARMER') router.push('/farmer/dashboard');
     else if (newRole === 'INSURER') router.push('/insurer/dashboard');
-    else if (newRole === 'ADMIN') router.push('/operations/iot');
+    else if (newRole === 'ADMIN') router.push('/admin/overview');
     else if (newRole === 'FIELD_AGENT') router.push('/intelligence/map');
   };
 
@@ -75,7 +78,7 @@ export const Navbar: React.FC = () => {
             
             {/* 1. Left: Brand Logo */}
             <div className="flex items-center shrink-0">
-              <Link href="/" className="flex items-center space-x-2.5 group">
+              <Link href={role === 'FARMER' ? '/farmer/dashboard' : (role === 'INSURER' ? '/insurer/dashboard' : '/')} className="flex items-center space-x-2.5 group">
                 <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-[#10B981] to-[#059669] flex items-center justify-center shadow-md shadow-[#10B981]/25 group-hover:scale-105 transition-transform shrink-0">
                   <Satellite className="w-4.5 h-4.5 text-white" />
                 </div>
@@ -85,46 +88,19 @@ export const Navbar: React.FC = () => {
                       AgriSure
                     </span>
                     <span className="text-[9px] uppercase font-mono font-bold px-1 py-0.5 rounded bg-emerald-500/20 text-[#34D399] border border-emerald-500/30">
-                      INTELLIGENCE
+                      {role}
                     </span>
                   </div>
                   <span className="text-[9px] text-slate-400 font-medium tracking-wide hidden sm:block mt-0.5">
-                    Satellite × AI × Parametric Underwriting
+                    {role === 'FARMER' ? (language !== 'en' ? t('nav.insurance') : 'Parametric Farm Protection') : 'Satellite × AI × Parametric Underwriting'}
                   </span>
                 </div>
               </Link>
             </div>
 
-            {/* 2. Center: Primary Navigation Links (Clean & Non-wrapping) */}
+            {/* 2. Center: Strict Role-Based Navigation Links */}
             <nav className="hidden lg:flex items-center space-x-1 text-xs font-semibold overflow-x-hidden">
-              {pathname === '/' ? (
-                <>
-                  <Link 
-                    href="/" 
-                    className="px-2.5 py-1.5 rounded-lg transition-all bg-emerald-500/20 text-[#34D399] border border-emerald-500/40 whitespace-nowrap shrink-0"
-                  >
-                    {t('nav.overview')}
-                  </Link>
-                  <Link 
-                    href="/how-it-works" 
-                    className="px-2.5 py-1.5 rounded-lg transition-all text-slate-300 hover:text-white hover:bg-white/5 whitespace-nowrap shrink-0"
-                  >
-                    {t('nav.workflow')}
-                  </Link>
-                  <Link 
-                    href="/farmer/farms" 
-                    className="px-2.5 py-1.5 rounded-lg transition-all text-slate-300 hover:text-white hover:bg-white/5 whitespace-nowrap shrink-0"
-                  >
-                    {t('nav.farms')}
-                  </Link>
-                  <Link 
-                    href="/farmer/insurance" 
-                    className="px-2.5 py-1.5 rounded-lg transition-all text-slate-300 hover:text-white hover:bg-white/5 whitespace-nowrap shrink-0"
-                  >
-                    {t('nav.insurance')}
-                  </Link>
-                </>
-              ) : role === 'FARMER' ? (
+              {role === 'FARMER' ? (
                 <>
                   <Link 
                     href="/farmer/dashboard" 
@@ -157,8 +133,8 @@ export const Navbar: React.FC = () => {
                     {t('nav.optimization')}
                   </Link>
                   <Link 
-                    href="/operations/iot" 
-                    className={`px-2.5 py-1.5 rounded-lg transition-all whitespace-nowrap shrink-0 ${pathname === '/operations/iot' ? 'bg-emerald-500/20 text-[#34D399] border border-emerald-500/40' : 'text-slate-300 hover:text-white hover:bg-white/5'}`}
+                    href="/farmer/alerts" 
+                    className={`px-2.5 py-1.5 rounded-lg transition-all whitespace-nowrap shrink-0 ${pathname === '/farmer/alerts' ? 'bg-emerald-500/20 text-[#34D399] border border-emerald-500/40' : 'text-slate-300 hover:text-white hover:bg-white/5'}`}
                   >
                     {t('nav.iot')}
                   </Link>
@@ -169,14 +145,14 @@ export const Navbar: React.FC = () => {
                     href="/insurer/dashboard" 
                     className={`px-2.5 py-1.5 rounded-lg transition-all whitespace-nowrap shrink-0 ${pathname === '/insurer/dashboard' ? 'bg-emerald-500/20 text-[#34D399] border border-emerald-500/40' : 'text-slate-300 hover:text-white hover:bg-white/5'}`}
                   >
-                    {t('nav.underwriting')}
+                    Underwriting Desk
                   </Link>
                   <Link 
                     href="/insurer/policies" 
                     className={`px-2.5 py-1.5 rounded-lg transition-all whitespace-nowrap shrink-0 ${pathname === '/insurer/policies' ? 'bg-emerald-500/20 text-[#34D399] border border-emerald-500/40' : 'text-amber-300 hover:text-amber-200 hover:bg-white/5'}`}
                   >
                     <span className="flex items-center gap-1 font-bold">
-                      <span>{t('nav.policy_review')}</span>
+                      <span>Policies Review</span>
                       <span className="w-1.5 h-1.5 rounded-full bg-amber-400 animate-ping"></span>
                     </span>
                   </Link>
@@ -184,88 +160,97 @@ export const Navbar: React.FC = () => {
                     href="/insurer/risk-map" 
                     className={`px-2.5 py-1.5 rounded-lg transition-all whitespace-nowrap shrink-0 ${pathname === '/insurer/risk-map' ? 'bg-emerald-500/20 text-[#34D399] border border-emerald-500/40' : 'text-slate-300 hover:text-white hover:bg-white/5'}`}
                   >
-                    {t('nav.risk_map')}
+                    IU Risk Map
                   </Link>
                   <Link 
                     href="/insurer/claims" 
                     className={`px-2.5 py-1.5 rounded-lg transition-all whitespace-nowrap shrink-0 ${pathname.startsWith('/insurer/claims') ? 'bg-emerald-500/20 text-[#34D399] border border-emerald-500/40' : 'text-slate-300 hover:text-white hover:bg-white/5'}`}
                   >
-                    {t('nav.claims')}
+                    Claims Desk
                   </Link>
                   <Link 
                     href="/insurer/payouts" 
                     className={`px-2.5 py-1.5 rounded-lg transition-all whitespace-nowrap shrink-0 ${pathname === '/insurer/payouts' ? 'bg-emerald-500/20 text-[#34D399] border border-emerald-500/40' : 'text-slate-300 hover:text-white hover:bg-white/5'}`}
                   >
-                    {t('nav.payments')}
+                    Bank Payouts
                   </Link>
+                  <Link 
+                    href="/insurer/audit" 
+                    className={`px-2.5 py-1.5 rounded-lg transition-all whitespace-nowrap shrink-0 ${pathname === '/insurer/audit' ? 'bg-emerald-500/20 text-[#34D399] border border-emerald-500/40' : 'text-slate-300 hover:text-white hover:bg-white/5'}`}
+                  >
+                    Audit Ledger
+                  </Link>
+                  {/* Tech Dropdown for Insurers */}
+                  <div className="relative group shrink-0">
+                    <button className="flex items-center space-x-1 px-2.5 py-1.5 rounded-lg text-slate-300 hover:text-white hover:bg-white/5 whitespace-nowrap">
+                      <span>Architecture</span>
+                      <ChevronDown className="w-3.5 h-3.5" />
+                    </button>
+                    <div className="absolute left-0 mt-1 w-52 bg-[#0B2119] border border-emerald-500/30 rounded-2xl shadow-2xl py-2 hidden group-hover:block z-50 animate-in fade-in slide-in-from-top-1">
+                      <Link href="/how-it-works" className="block px-4 py-2 text-xs text-slate-200 hover:bg-emerald-900/40 hover:text-[#34D399]">
+                        01-06 Closed Loop Architecture
+                      </Link>
+                      <Link href="/technology/chf" className="block px-4 py-2 text-xs text-slate-200 hover:bg-emerald-900/40 hover:text-[#34D399]">
+                        Shannon Entropy Engine
+                      </Link>
+                      <Link href="/technology/baseline" className="block px-4 py-2 text-xs text-slate-200 hover:bg-emerald-900/40 hover:text-[#34D399]">
+                        4-Year Localized Baseline
+                      </Link>
+                      <Link href="/research" className="block px-4 py-2 text-xs text-slate-200 hover:bg-emerald-900/40 hover:text-[#34D399]">
+                        Agronomic Research Papers
+                      </Link>
+                    </div>
+                  </div>
                 </>
               ) : (
                 <>
                   <Link 
+                    href="/admin/overview" 
+                    className={`px-2.5 py-1.5 rounded-lg transition-all whitespace-nowrap shrink-0 ${pathname === '/admin/overview' ? 'bg-emerald-500/20 text-[#34D399] border border-emerald-500/40' : 'text-slate-300 hover:text-white hover:bg-white/5'}`}
+                  >
+                    Admin Overview
+                  </Link>
+                  <Link 
+                    href="/admin/ai-models" 
+                    className={`px-2.5 py-1.5 rounded-lg transition-all whitespace-nowrap shrink-0 ${pathname === '/admin/ai-models' ? 'bg-emerald-500/20 text-[#34D399] border border-emerald-500/40' : 'text-slate-300 hover:text-white hover:bg-white/5'}`}
+                  >
+                    Model Governance
+                  </Link>
+                  <Link 
+                    href="/operations/iot" 
+                    className={`px-2.5 py-1.5 rounded-lg transition-all whitespace-nowrap shrink-0 ${pathname === '/operations/iot' ? 'bg-emerald-500/20 text-[#34D399] border border-emerald-500/40' : 'text-slate-300 hover:text-white hover:bg-white/5'}`}
+                  >
+                    IoT Operations
+                  </Link>
+                  <Link 
                     href="/intelligence/map" 
                     className={`px-2.5 py-1.5 rounded-lg transition-all whitespace-nowrap shrink-0 ${pathname === '/intelligence/map' ? 'bg-emerald-500/20 text-[#34D399] border border-emerald-500/40' : 'text-slate-300 hover:text-white hover:bg-white/5'}`}
                   >
-                    Satellite GIS Map
-                  </Link>
-                  <Link 
-                    href="/intelligence/weather" 
-                    className={`px-2.5 py-1.5 rounded-lg transition-all whitespace-nowrap shrink-0 ${pathname === '/intelligence/weather' ? 'bg-emerald-500/20 text-[#34D399] border border-emerald-500/40' : 'text-slate-300 hover:text-white hover:bg-white/5'}`}
-                  >
-                    Weather & Risk
-                  </Link>
-                  <Link 
-                    href="/technology/chf" 
-                    className={`px-2.5 py-1.5 rounded-lg transition-all whitespace-nowrap shrink-0 ${pathname === '/technology/chf' ? 'bg-emerald-500/20 text-[#34D399] border border-emerald-500/40' : 'text-slate-300 hover:text-white hover:bg-white/5'}`}
-                  >
-                    CHF Engine
+                    GIS Risk Map
                   </Link>
                 </>
               )}
-
-              {/* Public Tech Dropdown */}
-              <div className="relative group shrink-0">
-                <button className="flex items-center space-x-1 px-2.5 py-1.5 rounded-lg text-slate-300 hover:text-white hover:bg-white/5 whitespace-nowrap">
-                  <span>{t('nav.architecture')}</span>
-                  <ChevronDown className="w-3.5 h-3.5" />
-                </button>
-                <div className="absolute left-0 mt-1 w-52 bg-[#0B2119] border border-emerald-500/30 rounded-2xl shadow-2xl py-2 hidden group-hover:block z-50 animate-in fade-in slide-in-from-top-1">
-                  <Link href="/how-it-works" className="block px-4 py-2 text-xs text-slate-200 hover:bg-emerald-900/40 hover:text-[#34D399]">
-                    01-06 Closed Loop Architecture
-                  </Link>
-                  <Link href="/technology/stress" className="block px-4 py-2 text-xs text-slate-200 hover:bg-emerald-900/40 hover:text-[#34D399]">
-                    Early Stress Detection (UV-NDVI)
-                  </Link>
-                  <Link href="/technology/chf" className="block px-4 py-2 text-xs text-slate-200 hover:bg-emerald-900/40 hover:text-[#34D399]">
-                    Shannon Entropy Engine
-                  </Link>
-                  <Link href="/technology/baseline" className="block px-4 py-2 text-xs text-slate-200 hover:bg-emerald-900/40 hover:text-[#34D399]">
-                    4-Year Localized Baseline
-                  </Link>
-                  <div className="border-t border-emerald-900/50 my-1"></div>
-                  <Link href="/research" className="block px-4 py-2 text-xs text-slate-200 hover:bg-emerald-900/40 hover:text-[#34D399]">
-                    Agronomic Research Papers
-                  </Link>
-                </div>
-              </div>
             </nav>
 
-            {/* 3. Right Toolbar: Uniform 36px Height, Pristine Spacing */}
+            {/* 3. Right Toolbar: Language & Audio ONLY FOR FARMERS */}
             <div className="flex items-center space-x-2 shrink-0 flex-nowrap">
               
-              {/* Language Selector Button */}
-              <button
-                type="button"
-                onClick={() => setLanguageModalOpen(true)}
-                className="h-9 px-2.5 rounded-xl bg-[#0B2119] hover:bg-[#102820] border border-emerald-500/40 text-emerald-300 text-xs font-bold transition-all flex items-center space-x-1.5 shadow-sm shrink-0 whitespace-nowrap"
-                title="Select Regional Language"
-              >
-                <span className="text-base">{currentLangObj.flag}</span>
-                <span className="max-w-[70px] sm:max-w-[85px] truncate">{currentLangObj.native}</span>
-                <ChevronDown className="w-3 h-3 text-emerald-400 shrink-0" />
-              </button>
+              {/* Regional Language Selector - STRICTLY FOR FARMERS */}
+              {role === 'FARMER' && (
+                <button
+                  type="button"
+                  onClick={() => setLanguageModalOpen(true)}
+                  className="h-9 px-2.5 rounded-xl bg-[#0B2119] hover:bg-[#102820] border border-emerald-500/40 text-emerald-300 text-xs font-bold transition-all flex items-center space-x-1.5 shadow-sm shrink-0 whitespace-nowrap"
+                  title="Select Regional Language"
+                >
+                  <span className="text-base">{currentLangObj.flag}</span>
+                  <span className="max-w-[70px] sm:max-w-[85px] truncate">{currentLangObj.native}</span>
+                  <ChevronDown className="w-3 h-3 text-emerald-400 shrink-0" />
+                </button>
+              )}
 
-              {/* Audio Voice Guide Button */}
-              {language !== 'en' && (
+              {/* Audio Voice Guide Button - STRICTLY FOR FARMERS */}
+              {role === 'FARMER' && language !== 'en' && (
                 <button
                   type="button"
                   onClick={playVoiceAdvisory}

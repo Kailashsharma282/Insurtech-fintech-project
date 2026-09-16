@@ -3,23 +3,17 @@
 import React from 'react';
 import { 
   Volume2, 
-  VolumeX, 
   ArrowRight, 
-  ArrowDown, 
-  Sprout, 
-  Droplets, 
-  Zap, 
-  ShieldCheck, 
-  Eye, 
   CheckCircle2,
-  Sparkles
 } from 'lucide-react';
 import { useLanguage } from '@/context/LanguageContext';
+import { useRole } from '@/context/RoleContext';
 
 export const FarmerVisualGuide: React.FC = () => {
+  const { role } = useRole();
   const { language, t, showVisualGuide, setShowVisualGuide, playVoiceAdvisory, isSpeaking } = useLanguage();
 
-  if (!showVisualGuide && language === 'en') {
+  if (role !== 'FARMER' || (!showVisualGuide && language === 'en')) {
     return null;
   }
 
@@ -40,11 +34,11 @@ export const FarmerVisualGuide: React.FC = () => {
                 <span>সহজ নির্দেশিকা • ಚಿತ್ರ ಮಾರ್ಗದರ್ಶಿ • దృశ్య మార్గదర్శి • எளிய வழிகாட்டி</span>
               </span>
               <span className="text-[10px] font-mono uppercase px-2 py-0.5 rounded-full bg-emerald-500/20 text-[#34D399] border border-[#10B981]/40 font-bold">
-                VISUAL CUES ACTIVE
+                {t('nav.visual_guide_active')}
               </span>
             </div>
             <p className="text-xs text-emerald-200 mt-0.5">
-              Follow the arrows step-by-step &bull; Tap speaker to listen in your regional language
+              {t('guide.subtitle')}
             </p>
           </div>
         </div>
@@ -100,7 +94,7 @@ export const FarmerVisualGuide: React.FC = () => {
             </span>
             <div>
               <div className="font-bold text-xs text-blue-300">💧 {t('farmer.soil_moisture')}</div>
-              <div className="text-[11px] text-slate-300 font-semibold">58% Adequate Water</div>
+              <div className="text-[11px] text-slate-300 font-semibold">{t('farmer.soil_moisture_desc')}</div>
             </div>
           </div>
           <ArrowRight className="w-5 h-5 text-blue-400 animate-pulse shrink-0 hidden sm:block" />
@@ -114,7 +108,7 @@ export const FarmerVisualGuide: React.FC = () => {
             </span>
             <div>
               <div className="font-bold text-xs text-amber-300">⚡ {t('farmer.next_action')}</div>
-              <div className="text-[11px] text-slate-300 font-semibold">Tap Green Pump Button</div>
+              <div className="text-[11px] text-slate-300 font-semibold">{t('farmer.actuate_pump')}</div>
             </div>
           </div>
           <ArrowRight className="w-5 h-5 text-amber-400 animate-pulse shrink-0 hidden sm:block" />
@@ -128,7 +122,7 @@ export const FarmerVisualGuide: React.FC = () => {
             </span>
             <div>
               <div className="font-bold text-xs text-teal-300">🛡️ {t('ins.active_policy')}</div>
-              <div className="text-[11px] text-slate-300 font-semibold">Automatic Bank Payout</div>
+              <div className="text-[11px] text-slate-300 font-semibold">{t('ins.apply_subtitle')}</div>
             </div>
           </div>
           <CheckCircle2 className="w-5 h-5 text-teal-400 shrink-0" />
