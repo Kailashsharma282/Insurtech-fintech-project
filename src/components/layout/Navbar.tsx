@@ -4,6 +4,7 @@ import React, { useState } from 'react';
 import Link from 'next/link';
 import { usePathname, useRouter } from 'next/navigation';
 import { useRole } from '@/context/RoleContext';
+import { useLanguage, SUPPORTED_LANGUAGES, LanguageCode } from '@/context/LanguageContext';
 import { Role } from '@/lib/types';
 import { 
   Satellite, 
@@ -18,11 +19,13 @@ import {
   Sparkles,
   ChevronDown,
   UserCheck,
-  Zap
+  Zap,
+  Globe
 } from 'lucide-react';
 
 export const Navbar: React.FC = () => {
   const { role, setRole, user, isAuthenticated, logout, isSimulating, setIsSimulating, unreadAlertsCount } = useRole();
+  const { language, setLanguage, t } = useLanguage();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [userDropdownOpen, setUserDropdownOpen] = useState(false);
   const [simulationModalOpen, setSimulationModalOpen] = useState(false);
@@ -96,31 +99,37 @@ export const Navbar: React.FC = () => {
                     href="/farmer/dashboard" 
                     className={`px-3 py-1.5 rounded-lg transition-colors ${pathname === '/farmer/dashboard' ? 'bg-[#10B981]/20 text-[#34D399] border border-[#10B981]/30' : 'text-slate-300 hover:text-white hover:bg-white/5'}`}
                   >
-                    Dashboard
+                    {t('nav.dashboard')}
                   </Link>
                   <Link 
                     href="/farmer/farms" 
                     className={`px-3 py-1.5 rounded-lg transition-colors ${pathname.startsWith('/farmer/farms') ? 'bg-[#10B981]/20 text-[#34D399] border border-[#10B981]/30' : 'text-slate-300 hover:text-white hover:bg-white/5'}`}
                   >
-                    My Farms
+                    {t('nav.farms')}
+                  </Link>
+                  <Link 
+                    href="/farmer/insurance" 
+                    className={`px-3 py-1.5 rounded-lg transition-colors ${pathname === '/farmer/insurance' ? 'bg-[#10B981]/20 text-[#34D399] border border-[#10B981]/30' : 'text-slate-300 hover:text-white hover:bg-white/5'}`}
+                  >
+                    {t('nav.insurance')}
                   </Link>
                   <Link 
                     href="/farmer/disease" 
                     className={`px-3 py-1.5 rounded-lg transition-colors ${pathname === '/farmer/disease' ? 'bg-[#10B981]/20 text-[#34D399] border border-[#10B981]/30' : 'text-slate-300 hover:text-white hover:bg-white/5'}`}
                   >
-                    Disease AI
+                    {t('nav.disease')}
                   </Link>
                   <Link 
                     href="/farmer/optimization" 
                     className={`px-3 py-1.5 rounded-lg transition-colors ${pathname === '/farmer/optimization' ? 'bg-[#10B981]/20 text-[#34D399] border border-[#10B981]/30' : 'text-slate-300 hover:text-white hover:bg-white/5'}`}
                   >
-                    GA-PSO Optimizer
+                    {t('nav.optimization')}
                   </Link>
                   <Link 
                     href="/operations/iot" 
                     className={`px-3 py-1.5 rounded-lg transition-colors ${pathname === '/operations/iot' ? 'bg-[#10B981]/20 text-[#34D399] border border-[#10B981]/30' : 'text-slate-300 hover:text-white hover:bg-white/5'}`}
                   >
-                    IoT Telemetry
+                    {t('nav.iot')}
                   </Link>
                 </>
               )}
@@ -131,25 +140,31 @@ export const Navbar: React.FC = () => {
                     href="/insurer/dashboard" 
                     className={`px-3 py-1.5 rounded-lg transition-colors ${pathname === '/insurer/dashboard' ? 'bg-[#10B981]/20 text-[#34D399] border border-[#10B981]/30' : 'text-slate-300 hover:text-white hover:bg-white/5'}`}
                   >
-                    Underwriting Desk
+                    {t('nav.underwriting')}
+                  </Link>
+                  <Link 
+                    href="/insurer/policies" 
+                    className={`px-3 py-1.5 rounded-lg transition-colors ${pathname === '/insurer/policies' ? 'bg-[#10B981]/20 text-[#34D399] border border-[#10B981]/30' : 'text-slate-300 hover:text-white hover:bg-white/5'}`}
+                  >
+                    {t('nav.policy_review')}
                   </Link>
                   <Link 
                     href="/insurer/risk-map" 
                     className={`px-3 py-1.5 rounded-lg transition-colors ${pathname === '/insurer/risk-map' ? 'bg-[#10B981]/20 text-[#34D399] border border-[#10B981]/30' : 'text-slate-300 hover:text-white hover:bg-white/5'}`}
                   >
-                    IU Risk Map
+                    {t('nav.risk_map')}
                   </Link>
                   <Link 
                     href="/insurer/claims" 
                     className={`px-3 py-1.5 rounded-lg transition-colors ${pathname.startsWith('/insurer/claims') ? 'bg-[#10B981]/20 text-[#34D399] border border-[#10B981]/30' : 'text-slate-300 hover:text-white hover:bg-white/5'}`}
                   >
-                    Claims Desk
+                    {t('nav.claims')}
                   </Link>
                   <Link 
                     href="/insurer/payouts" 
                     className={`px-3 py-1.5 rounded-lg transition-colors ${pathname === '/insurer/payouts' ? 'bg-[#10B981]/20 text-[#34D399] border border-[#10B981]/30' : 'text-slate-300 hover:text-white hover:bg-white/5'}`}
                   >
-                    Payout Engine
+                    {t('nav.payments')}
                   </Link>
                   <Link 
                     href="/insurer/audit" 
@@ -213,8 +228,34 @@ export const Navbar: React.FC = () => {
               </div>
             </nav>
 
-            {/* Role Switcher & Live Simulation Control */}
-            <div className="flex items-center space-x-3">
+            {/* Role Switcher, Language & Live Simulation Control */}
+            <div className="flex items-center space-x-2.5 sm:space-x-3">
+              {/* Language Selector Dropdown */}
+              <div className="relative flex items-center">
+                <select
+                  value={language}
+                  onChange={(e) => setLanguage(e.target.value as LanguageCode)}
+                  className="appearance-none bg-[#102820] border border-[#10B981]/50 text-emerald-200 text-xs font-bold py-1.5 pl-2.5 pr-7 rounded-lg focus:outline-none focus:ring-1 focus:ring-[#10B981] cursor-pointer hover:border-emerald-400 transition-colors"
+                  aria-label="Select Regional Language"
+                  title="Choose Language (Bengali, Telugu, Hindi, Malayalam, Kannada, Tamil, English)"
+                >
+                  {SUPPORTED_LANGUAGES.map((lang) => (
+                    <option key={lang.code} value={lang.code} className="bg-[#0B2119] text-white">
+                      {lang.flag} {lang.native}
+                    </option>
+                  ))}
+                </select>
+                <ChevronDown className="w-3.5 h-3.5 text-[#34D399] absolute right-2 top-1/2 -translate-y-1/2 pointer-events-none" />
+              </div>
+
+              {/* Illiterate/Low-literacy visual guide indicator */}
+              {language !== 'en' && (
+                <span className="hidden xl:inline-flex items-center space-x-1 px-2.5 py-1 rounded-full text-[10px] font-bold bg-amber-500/20 text-amber-300 border border-amber-500/40 animate-pulse">
+                  <span>➡️</span>
+                  <span>{t('nav.visual_guide_active')}</span>
+                </span>
+              )}
+
               {/* Live telemetry heartbeat indicator */}
               <div 
                 onClick={() => setIsSimulating(!isSimulating)} 
@@ -331,23 +372,48 @@ export const Navbar: React.FC = () => {
         {/* Mobile Navigation Drawer with Glassmorphism */}
         {mobileMenuOpen && (
           <div className="md:hidden bg-[#071511]/95 backdrop-blur-2xl border-b border-[#10B981]/30 px-4 pt-3 pb-6 space-y-3 animate-in fade-in slide-in-from-top-4 duration-200">
-            <div className="flex items-center justify-between pb-2 border-b border-emerald-900/50">
-              <div>
-                <span className="text-[11px] font-mono font-bold text-[#34D399] uppercase tracking-wider block">
-                  {user ? `${user.name} (${role})` : `ACTIVE ROLE: ${role}`}
-                </span>
-                <span className="text-[10px] text-slate-400">
-                  {user?.district || 'Nadia Sector Hub'}
-                </span>
+            <div className="flex flex-col gap-2.5 pb-3 border-b border-emerald-900/50">
+              <div className="flex items-center justify-between">
+                <div>
+                  <span className="text-[11px] font-mono font-bold text-[#34D399] uppercase tracking-wider block">
+                    {user ? `${user.name} (${role})` : `ACTIVE ROLE: ${role}`}
+                  </span>
+                  <span className="text-[10px] text-slate-400">
+                    {user?.district || 'Nadia Sector Hub'}
+                  </span>
+                </div>
+                <div className="flex items-center space-x-2">
+                  <Link
+                    href="/login"
+                    onClick={() => setMobileMenuOpen(false)}
+                    className="text-xs px-2.5 py-1 rounded bg-[#10B981]/20 border border-[#10B981]/40 text-[#34D399] font-bold"
+                  >
+                    Switch Login
+                  </Link>
+                </div>
               </div>
-              <div className="flex items-center space-x-2">
-                <Link
-                  href="/login"
-                  onClick={() => setMobileMenuOpen(false)}
-                  className="text-xs px-2.5 py-1 rounded bg-[#10B981]/20 border border-[#10B981]/40 text-[#34D399] font-bold"
-                >
-                  Switch Login
-                </Link>
+
+              {/* Mobile Language Selector & Directional Badge */}
+              <div className="flex items-center justify-between pt-1">
+                <div className="flex items-center space-x-2">
+                  <span className="text-xs text-slate-300 font-medium">🌐 Language:</span>
+                  <select
+                    value={language}
+                    onChange={(e) => setLanguage(e.target.value as LanguageCode)}
+                    className="bg-[#102820] border border-[#10B981]/50 text-emerald-300 text-xs font-bold py-1 px-2 rounded-lg"
+                  >
+                    {SUPPORTED_LANGUAGES.map((lang) => (
+                      <option key={lang.code} value={lang.code} className="bg-[#0B2119] text-white">
+                        {lang.flag} {lang.native} ({lang.label})
+                      </option>
+                    ))}
+                  </select>
+                </div>
+                {language !== 'en' && (
+                  <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-amber-500/20 text-amber-300 border border-amber-500/30">
+                    ➡️ {t('nav.visual_guide_active')}
+                  </span>
+                )}
               </div>
             </div>
             
@@ -356,27 +422,31 @@ export const Navbar: React.FC = () => {
                 <>
                   <Link href="/farmer/dashboard" onClick={() => setMobileMenuOpen(false)} className={`flex items-center space-x-2.5 px-3 py-2.5 rounded-xl text-sm font-semibold transition-colors ${pathname === '/farmer/dashboard' ? 'bg-[#10B981]/20 text-[#34D399] border border-[#10B981]/40' : 'text-slate-200 hover:bg-white/5'}`}>
                     <Activity className="w-4 h-4 text-[#10B981]" />
-                    <span>Farmer Dashboard (Plot #204)</span>
+                    <span>{t('nav.dashboard')}</span>
                   </Link>
                   <Link href="/farmer/farms" onClick={() => setMobileMenuOpen(false)} className={`flex items-center space-x-2.5 px-3 py-2.5 rounded-xl text-sm font-semibold transition-colors ${pathname.startsWith('/farmer/farms') ? 'bg-[#10B981]/20 text-[#34D399] border border-[#10B981]/40' : 'text-slate-200 hover:bg-white/5'}`}>
                     <Layers className="w-4 h-4 text-[#10B981]" />
-                    <span>My Farm Plots</span>
-                  </Link>
-                  <Link href="/farmer/disease" onClick={() => setMobileMenuOpen(false)} className={`flex items-center space-x-2.5 px-3 py-2.5 rounded-xl text-sm font-semibold transition-colors ${pathname === '/farmer/disease' ? 'bg-[#10B981]/20 text-[#34D399] border border-[#10B981]/40' : 'text-slate-200 hover:bg-white/5'}`}>
-                    <Sparkles className="w-4 h-4 text-[#10B981]" />
-                    <span>Disease AI Scanner</span>
-                  </Link>
-                  <Link href="/farmer/optimization" onClick={() => setMobileMenuOpen(false)} className={`flex items-center space-x-2.5 px-3 py-2.5 rounded-xl text-sm font-semibold transition-colors ${pathname === '/farmer/optimization' ? 'bg-[#10B981]/20 text-[#34D399] border border-[#10B981]/40' : 'text-slate-200 hover:bg-white/5'}`}>
-                    <Cpu className="w-4 h-4 text-[#10B981]" />
-                    <span>GA-PSO Nutrient Optimizer</span>
-                  </Link>
-                  <Link href="/operations/iot" onClick={() => setMobileMenuOpen(false)} className={`flex items-center space-x-2.5 px-3 py-2.5 rounded-xl text-sm font-semibold transition-colors ${pathname === '/operations/iot' ? 'bg-[#10B981]/20 text-[#34D399] border border-[#10B981]/40' : 'text-slate-200 hover:bg-white/5'}`}>
-                    <Activity className="w-4 h-4 text-[#10B981]" />
-                    <span>IoT Telemetry & Pump Relay</span>
+                    <span>{t('nav.farms')}</span>
                   </Link>
                   <Link href="/farmer/insurance" onClick={() => setMobileMenuOpen(false)} className={`flex items-center space-x-2.5 px-3 py-2.5 rounded-xl text-sm font-semibold transition-colors ${pathname === '/farmer/insurance' ? 'bg-[#10B981]/20 text-[#34D399] border border-[#10B981]/40' : 'text-slate-200 hover:bg-white/5'}`}>
                     <ShieldCheck className="w-4 h-4 text-[#10B981]" />
-                    <span>Parametric Insurance</span>
+                    <span>{t('nav.insurance')}</span>
+                  </Link>
+                  <Link href="/farmer/insurance/apply" onClick={() => setMobileMenuOpen(false)} className={`flex items-center space-x-2.5 px-3 py-2.5 rounded-xl text-sm font-semibold transition-colors ${pathname === '/farmer/insurance/apply' ? 'bg-[#10B981]/20 text-[#34D399] border border-[#10B981]/40' : 'text-emerald-400 hover:bg-white/5'}`}>
+                    <Sparkles className="w-4 h-4 text-[#10B981]" />
+                    <span>👉 {t('nav.apply_insurance')} ➡️</span>
+                  </Link>
+                  <Link href="/farmer/disease" onClick={() => setMobileMenuOpen(false)} className={`flex items-center space-x-2.5 px-3 py-2.5 rounded-xl text-sm font-semibold transition-colors ${pathname === '/farmer/disease' ? 'bg-[#10B981]/20 text-[#34D399] border border-[#10B981]/40' : 'text-slate-200 hover:bg-white/5'}`}>
+                    <Sparkles className="w-4 h-4 text-[#10B981]" />
+                    <span>{t('nav.disease')}</span>
+                  </Link>
+                  <Link href="/farmer/optimization" onClick={() => setMobileMenuOpen(false)} className={`flex items-center space-x-2.5 px-3 py-2.5 rounded-xl text-sm font-semibold transition-colors ${pathname === '/farmer/optimization' ? 'bg-[#10B981]/20 text-[#34D399] border border-[#10B981]/40' : 'text-slate-200 hover:bg-white/5'}`}>
+                    <Cpu className="w-4 h-4 text-[#10B981]" />
+                    <span>{t('nav.optimization')}</span>
+                  </Link>
+                  <Link href="/operations/iot" onClick={() => setMobileMenuOpen(false)} className={`flex items-center space-x-2.5 px-3 py-2.5 rounded-xl text-sm font-semibold transition-colors ${pathname === '/operations/iot' ? 'bg-[#10B981]/20 text-[#34D399] border border-[#10B981]/40' : 'text-slate-200 hover:bg-white/5'}`}>
+                    <Activity className="w-4 h-4 text-[#10B981]" />
+                    <span>{t('nav.iot')}</span>
                   </Link>
                 </>
               )}
@@ -385,23 +455,27 @@ export const Navbar: React.FC = () => {
                 <>
                   <Link href="/insurer/dashboard" onClick={() => setMobileMenuOpen(false)} className={`flex items-center space-x-2.5 px-3 py-2.5 rounded-xl text-sm font-semibold transition-colors ${pathname === '/insurer/dashboard' ? 'bg-[#10B981]/20 text-[#34D399] border border-[#10B981]/40' : 'text-slate-200 hover:bg-white/5'}`}>
                     <Activity className="w-4 h-4 text-[#10B981]" />
-                    <span>Underwriting Portfolio</span>
+                    <span>{t('nav.underwriting')}</span>
+                  </Link>
+                  <Link href="/insurer/policies" onClick={() => setMobileMenuOpen(false)} className={`flex items-center space-x-2.5 px-3 py-2.5 rounded-xl text-sm font-semibold transition-colors ${pathname === '/insurer/policies' ? 'bg-[#10B981]/20 text-[#34D399] border border-[#10B981]/40' : 'text-slate-200 hover:bg-white/5'}`}>
+                    <ShieldCheck className="w-4 h-4 text-[#10B981]" />
+                    <span>{t('nav.policy_review')}</span>
                   </Link>
                   <Link href="/insurer/risk-map" onClick={() => setMobileMenuOpen(false)} className={`flex items-center space-x-2.5 px-3 py-2.5 rounded-xl text-sm font-semibold transition-colors ${pathname === '/insurer/risk-map' ? 'bg-[#10B981]/20 text-[#34D399] border border-[#10B981]/40' : 'text-slate-200 hover:bg-white/5'}`}>
                     <Layers className="w-4 h-4 text-[#10B981]" />
-                    <span>IU Spatial Risk Map</span>
+                    <span>{t('nav.risk_map')}</span>
                   </Link>
                   <Link href="/insurer/claims" onClick={() => setMobileMenuOpen(false)} className={`flex items-center space-x-2.5 px-3 py-2.5 rounded-xl text-sm font-semibold transition-colors ${pathname.startsWith('/insurer/claims') ? 'bg-[#10B981]/20 text-[#34D399] border border-[#10B981]/40' : 'text-slate-200 hover:bg-white/5'}`}>
                     <ShieldCheck className="w-4 h-4 text-[#10B981]" />
-                    <span>Claims Desk & Evidence</span>
+                    <span>{t('nav.claims')}</span>
                   </Link>
                   <Link href="/insurer/payouts" onClick={() => setMobileMenuOpen(false)} className={`flex items-center space-x-2.5 px-3 py-2.5 rounded-xl text-sm font-semibold transition-colors ${pathname === '/insurer/payouts' ? 'bg-[#10B981]/20 text-[#34D399] border border-[#10B981]/40' : 'text-slate-200 hover:bg-white/5'}`}>
                     <Zap className="w-4 h-4 text-[#10B981]" />
-                    <span>Payout Engine & Banking</span>
+                    <span>{t('nav.payments')}</span>
                   </Link>
                   <Link href="/insurer/audit" onClick={() => setMobileMenuOpen(false)} className={`flex items-center space-x-2.5 px-3 py-2.5 rounded-xl text-sm font-semibold transition-colors ${pathname === '/insurer/audit' ? 'bg-[#10B981]/20 text-[#34D399] border border-[#10B981]/40' : 'text-slate-200 hover:bg-white/5'}`}>
                     <ShieldCheck className="w-4 h-4 text-[#10B981]" />
-                    <span>Cryptographic Audit Trail</span>
+                    <span>Audit Trail</span>
                   </Link>
                 </>
               )}

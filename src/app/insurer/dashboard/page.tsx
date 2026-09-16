@@ -100,6 +100,13 @@ export default function InsurerDashboardPage() {
 
             <div className="flex flex-wrap items-center gap-2.5">
               <Link
+                href="/insurer/policies"
+                className="px-4 py-2.5 rounded-2xl bg-amber-500 hover:bg-amber-400 text-slate-950 font-black text-xs transition-all shadow-sm flex items-center space-x-1.5 transform hover:-translate-y-0.5"
+              >
+                <span>Policy Applications</span>
+                <span className="px-1.5 py-0.5 rounded-full bg-slate-950 text-amber-300 text-[10px]">Review</span>
+              </Link>
+              <Link
                 href="/insurer/claims"
                 className="px-4 py-2.5 rounded-2xl bg-white hover:bg-slate-50 text-slate-700 border border-slate-300 font-bold text-xs transition-all shadow-sm transform hover:-translate-y-0.5"
               >

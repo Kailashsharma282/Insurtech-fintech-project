@@ -32,8 +32,11 @@ import {
   Tooltip 
 } from 'recharts';
 import { Card3D } from '@/components/ui/Card3D';
+import { useLanguage } from '@/context/LanguageContext';
+import { FarmerVisualGuide } from '@/components/ui/FarmerVisualGuide';
 
 export default function FarmerDashboard() {
+  const { language, t, showVisualGuide } = useLanguage();
   const [selectedPlot, setSelectedPlot] = useState<string>('Plot #204');
   const [pumpActive, setPumpActive] = useState<boolean>(false);
   const [pumpLoading, setPumpLoading] = useState<boolean>(false);
@@ -82,13 +85,16 @@ export default function FarmerDashboard() {
     <div className="min-h-screen bg-[#F8FAFC] py-6 sm:py-10 pb-28 md:pb-16">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-6 sm:space-y-8">
         
+        {/* Visual Pictorial Guide with Speech Audio (Specifically for Regional / Low-Literacy Farmers) */}
+        <FarmerVisualGuide />
+
         {/* Top Greeting & Selected Farm Context with 3D Depth */}
         <Card3D depth={4} glowOnHover={false} className="bg-white p-5 sm:p-7 rounded-3xl border border-[#E2E8F0] shadow-sm">
           <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-4">
             <div>
               <div className="flex items-center space-x-2.5">
                 <span className="text-xl sm:text-2xl md:text-3xl font-black text-[#0F172A] tracking-tight">
-                  Namaskar, Subhash Biswas
+                  {t('farmer.greeting')}
                 </span>
                 <span className="w-2.5 h-2.5 rounded-full bg-[#10B981] pulse-indicator" title="Connected to Nadia IoT gateway"></span>
               </div>
@@ -99,8 +105,8 @@ export default function FarmerDashboard() {
 
             <div className="flex flex-wrap items-center gap-2.5 text-xs">
               <div className="px-3.5 py-2 rounded-2xl bg-emerald-50 border border-emerald-200 text-emerald-800">
-                <span className="text-slate-500 block text-[10px] uppercase font-bold tracking-wider">Selected Farm</span>
-                <strong className="text-xs sm:text-sm font-black">Plot #204 (Baganchra)</strong>
+                <span className="text-slate-500 block text-[10px] uppercase font-bold tracking-wider">{t('farmer.selected_farm')}</span>
+                <strong className="text-xs sm:text-sm font-black">{t('farmer.plot_name')}</strong>
               </div>
 
               <div className="px-3.5 py-2 rounded-2xl bg-slate-50 border border-slate-200 text-slate-700">
@@ -123,14 +129,14 @@ export default function FarmerDashboard() {
           <Card3D depth={8} glowColor="rgba(16, 185, 129, 0.25)" className="bg-white border border-[#E2E8F0] shadow-sm">
             <div className="p-5 h-full flex flex-col justify-between space-y-2">
               <div className="flex items-center justify-between text-xs text-slate-500">
-                <span className="font-semibold">Crop Health</span>
+                <span className="font-bold flex items-center gap-1">🟢 {t('farmer.crop_health')}</span>
                 <span className="px-2 py-0.5 rounded-full bg-emerald-100 text-emerald-800 font-extrabold text-[10px] tracking-wider">
                   OPTIMAL
                 </span>
               </div>
               <div>
                 <div className="text-3xl sm:text-4xl font-black text-[#0F172A] tracking-tight">0.71</div>
-                <p className="text-xs text-slate-500 mt-1">Normal is 0.76 (93% of normal vigour)</p>
+                <p className="text-xs text-slate-500 mt-1">{t('farmer.crop_health_desc')}</p>
               </div>
             </div>
           </Card3D>
@@ -139,7 +145,7 @@ export default function FarmerDashboard() {
           <Card3D depth={8} glowColor="rgba(59, 130, 246, 0.25)" className="bg-white border border-[#E2E8F0] shadow-sm">
             <div className="p-5 h-full flex flex-col justify-between space-y-2">
               <div className="flex items-center justify-between text-xs text-slate-500">
-                <span className="font-semibold">Soil Moisture</span>
+                <span className="font-bold flex items-center gap-1">💧 {t('farmer.soil_moisture')}</span>
                 <span className="text-blue-600 font-bold text-[10px] flex items-center space-x-1 font-mono">
                   <span className="w-1.5 h-1.5 rounded-full bg-blue-500 animate-pulse"></span>
                   <span>LIVE IOT</span>
@@ -147,7 +153,7 @@ export default function FarmerDashboard() {
               </div>
               <div>
                 <div className="text-3xl sm:text-4xl font-black text-blue-600 tracking-tight">{soilMoisture.toFixed(0)}%</div>
-                <p className="text-xs text-slate-500 mt-1">Root zone volumetric content (Adequate)</p>
+                <p className="text-xs text-slate-500 mt-1">{t('farmer.soil_moisture_desc')}</p>
               </div>
             </div>
           </Card3D>
@@ -156,12 +162,12 @@ export default function FarmerDashboard() {
           <Card3D depth={8} glowColor="rgba(16, 185, 129, 0.25)" className="bg-white border border-[#E2E8F0] shadow-sm">
             <div className="p-5 h-full flex flex-col justify-between space-y-2">
               <div className="flex items-center justify-between text-xs text-slate-500">
-                <span className="font-semibold">Weather Risk</span>
+                <span className="font-bold flex items-center gap-1">🌤️ {t('farmer.weather_risk')}</span>
                 <span className="w-2.5 h-2.5 rounded-full bg-[#10B981]"></span>
               </div>
               <div>
                 <div className="text-2xl sm:text-3xl font-black text-emerald-600 tracking-tight">Low</div>
-                <p className="text-xs text-slate-500 mt-1">Steady monsoon; zero cyclonic depression</p>
+                <p className="text-xs text-slate-500 mt-1">{t('farmer.weather_risk_desc')}</p>
               </div>
             </div>
           </Card3D>
@@ -170,12 +176,12 @@ export default function FarmerDashboard() {
           <Card3D depth={8} glowColor="rgba(16, 185, 129, 0.25)" className="bg-white border border-[#E2E8F0] shadow-sm">
             <div className="p-5 h-full flex flex-col justify-between space-y-2">
               <div className="flex items-center justify-between text-xs text-slate-500">
-                <span className="font-semibold">Disease Risk</span>
+                <span className="font-bold flex items-center gap-1">🛡️ {t('farmer.disease_risk')}</span>
                 <span className="w-2.5 h-2.5 rounded-full bg-[#10B981]"></span>
               </div>
               <div>
                 <div className="text-2xl sm:text-3xl font-black text-emerald-600 tracking-tight">Low</div>
-                <p className="text-xs text-slate-500 mt-1">Canopy clear. Zero blight signatures</p>
+                <p className="text-xs text-slate-500 mt-1">{t('farmer.disease_risk_desc')}</p>
               </div>
             </div>
           </Card3D>
@@ -184,17 +190,17 @@ export default function FarmerDashboard() {
           <Card3D depth={8} glowColor="rgba(16, 185, 129, 0.4)" className="bg-gradient-to-br from-[#071511] via-[#0B2119] to-[#102820] text-white border border-[#10B981]/40 shadow-md">
             <div className="p-5 h-full flex flex-col justify-between space-y-2">
               <div className="text-[10px] font-mono text-[#34D399] uppercase tracking-wider font-bold">
-                Prescribed Action
+                ⚡ {t('farmer.next_action')}
               </div>
               <div>
                 <div className="text-xs sm:text-sm font-bold text-white leading-snug">
-                  Micro-drip pulse or foliar spray on Friday
+                  {t('farmer.next_action_desc')}
                 </div>
                 <Link 
                   href="/farmer/optimization" 
                   className="inline-flex items-center text-[11px] text-[#34D399] font-bold hover:underline pt-2"
                 >
-                  <span>View exact recipe</span>
+                  <span>View recipe ➡️</span>
                   <ArrowRight className="w-3.5 h-3.5 ml-1" />
                 </Link>
               </div>
@@ -261,6 +267,14 @@ export default function FarmerDashboard() {
           {/* Widget 2: Direct IoT Solenoid Pump Actuator & Insurance Status */}
           <div className="space-y-6">
             
+            {/* Visual Directional Indicator for Step 3 Pump (Low-Literacy Aid) */}
+            {language !== 'en' && (
+              <div className="p-3 rounded-2xl bg-amber-500/15 border-2 border-amber-500/50 text-amber-900 font-black text-xs flex items-center justify-between shadow-sm animate-pulse">
+                <span>👉 {t('guide.step3')}</span>
+                <span className="text-base">⬇️</span>
+              </div>
+            )}
+
             {/* 3D Pump Actuator Console */}
             <Card3D depth={10} glowColor={pumpActive ? 'rgba(239, 68, 68, 0.4)' : 'rgba(16, 185, 129, 0.4)'} className="bg-[#071511] p-6 rounded-3xl text-white border border-[#10B981]/40 shadow-xl">
               <div className="space-y-4">
@@ -274,7 +288,7 @@ export default function FarmerDashboard() {
                       ? 'bg-red-500 text-white animate-pulse shadow-lg shadow-red-500/50' 
                       : 'bg-slate-800 text-slate-300'
                   }`}>
-                    {pumpActive ? 'PUMP ACTIVE' : 'IDLE / STANDBY'}
+                    {pumpActive ? t('farmer.pump_running') : t('farmer.pump_idle')}
                   </span>
                 </div>
 
@@ -290,50 +304,66 @@ export default function FarmerDashboard() {
                 <button
                   onClick={handleTogglePump}
                   disabled={pumpLoading}
-                  className={`w-full py-3.5 rounded-2xl font-bold text-xs transition-all duration-300 flex items-center justify-center space-x-2 transform active:scale-95 shadow-lg ${
+                  className={`w-full py-4 rounded-2xl font-black text-xs sm:text-sm transition-all duration-300 flex items-center justify-center space-x-2 transform active:scale-95 shadow-xl ${
                     pumpActive 
                       ? 'bg-gradient-to-r from-red-600 to-rose-600 hover:from-red-500 hover:to-rose-500 text-white shadow-red-950/50' 
-                      : 'bg-gradient-to-r from-[#10B981] to-[#059669] hover:from-[#34D399] hover:to-[#10B981] text-white shadow-[#10B981]/30'
+                      : 'bg-gradient-to-r from-[#10B981] to-[#059669] hover:from-[#34D399] hover:to-[#10B981] text-white shadow-[#10B981]/40'
                   }`}
                 >
                   <Zap className="w-4 h-4" />
-                  <span>{pumpLoading ? 'Switching Relay...' : (pumpActive ? 'Halt Micro-Irrigation Pump' : 'Actuate 45-Min Drip Cycle')}</span>
+                  <span>{pumpLoading ? 'Switching Relay...' : (pumpActive ? t('farmer.halt_pump') : t('farmer.actuate_pump'))}</span>
                 </button>
               </div>
             </Card3D>
 
-            {/* Insurance Status Widget */}
+            {/* Insurance Status Widget with Step 4 Directional Guide & Apply Button */}
             <Card3D depth={6} glowColor="rgba(16, 185, 129, 0.2)" className="bg-white p-6 rounded-3xl border border-[#E2E8F0] shadow-sm">
               <div className="space-y-3">
+                {language !== 'en' && (
+                  <div className="p-2.5 rounded-xl bg-teal-50 border border-teal-200 text-teal-900 text-xs font-bold flex items-center gap-1.5">
+                    <span>🛡️</span>
+                    <span>{t('guide.step4')}</span>
+                  </div>
+                )}
+
                 <div className="flex items-center justify-between text-xs">
                   <div className="flex items-center space-x-1.5 text-slate-800 font-bold">
                     <ShieldCheck className="w-4 h-4 text-[#059669]" />
-                    <span>Parametric Policy Active</span>
+                    <span>{t('ins.active_policy')}</span>
                   </div>
                   <span className="font-mono text-slate-500 text-[11px]">POL-WB-2026-3000</span>
                 </div>
 
                 <div className="text-xs text-slate-600 space-y-1.5 pt-1">
                   <div className="flex justify-between">
-                    <span className="text-slate-500">Coverage Value:</span>
+                    <span className="text-slate-500">{t('ins.coverage_value')}:</span>
                     <strong className="text-slate-900 font-mono">₹1,45,000</strong>
                   </div>
                   <div className="flex justify-between">
-                    <span className="text-slate-500">Trigger Condition:</span>
+                    <span className="text-slate-500">{t('ins.trigger_condition')}:</span>
                     <strong className="text-slate-900 font-mono">CHF &le; 0.550</strong>
                   </div>
                   <div className="flex justify-between">
                     <span className="text-slate-500">Claim Status:</span>
-                    <span className="text-[#059669] font-bold">Zero Loss Breaches</span>
+                    <span className="text-[#059669] font-bold">{t('ins.zero_breaches')}</span>
                   </div>
                 </div>
 
-                <Link
-                  href="/farmer/insurance"
-                  className="block text-center py-2.5 rounded-xl bg-slate-50 hover:bg-slate-100 text-slate-700 text-xs font-bold border border-slate-200 transition-colors mt-2"
-                >
-                  Review Policy Terms & Coverage
-                </Link>
+                <div className="pt-2 space-y-2">
+                  <Link
+                    href="/farmer/insurance/apply"
+                    className="block text-center py-3 px-3 rounded-2xl bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-500 hover:to-teal-500 text-white text-xs font-black shadow-md shadow-emerald-950/20 transition-all transform hover:-translate-y-0.5"
+                  >
+                    👉 {t('ins.apply_new')}
+                  </Link>
+
+                  <Link
+                    href="/farmer/insurance"
+                    className="block text-center py-2.5 rounded-xl bg-slate-50 hover:bg-slate-100 text-slate-700 text-xs font-bold border border-slate-200 transition-colors"
+                  >
+                    {t('ins.view_policies')}
+                  </Link>
+                </div>
               </div>
             </Card3D>
 

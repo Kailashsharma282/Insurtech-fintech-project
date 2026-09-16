@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import "./globals.css";
 import { RoleProvider } from "@/context/RoleContext";
+import { LanguageProvider } from "@/context/LanguageContext";
 import { Navbar } from "@/components/layout/Navbar";
 import { FarmerBottomNav } from "@/components/layout/FarmerBottomNav";
 import { Footer } from "@/components/layout/Footer";
@@ -20,12 +21,14 @@ export default function RootLayout({
     <html lang="en" className="h-full">
       <body className="min-h-full flex flex-col bg-[#F8FAFC] text-[#0F172A] antialiased">
         <RoleProvider>
-          <Navbar />
-          <main className="flex-1 w-full">
-            {children}
-          </main>
-          <FarmerBottomNav />
-          <Footer />
+          <LanguageProvider>
+            <Navbar />
+            <main className="flex-1 w-full">
+              {children}
+            </main>
+            <FarmerBottomNav />
+            <Footer />
+          </LanguageProvider>
         </RoleProvider>
       </body>
     </html>

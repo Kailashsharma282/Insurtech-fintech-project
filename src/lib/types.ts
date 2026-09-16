@@ -95,7 +95,11 @@ export interface Policy {
   triggerChf: number; // e.g. 0.55
   startDate: string;
   endDate: string;
-  status: 'ACTIVE' | 'EXPIRED' | 'CLAIMED';
+  status: 'PENDING_APPROVAL' | 'ACTIVE' | 'REJECTED' | 'EXPIRED' | 'CLAIMED';
+  rejectionReason?: string;
+  submittedAt?: string;
+  reviewedAt?: string;
+  underwriterNotes?: string;
 }
 
 export interface SatelliteMetric {

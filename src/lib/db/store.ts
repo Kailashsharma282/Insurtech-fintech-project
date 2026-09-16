@@ -10,11 +10,12 @@ import {
   SEED_INTERVENTIONS, 
   SEED_AUDIT_LOGS 
 } from './seed-data';
-import { Farm, Claim, Payout, IoTDevice, Alert, Intervention, AuditLogItem, InsuranceUnit } from '../types';
+import { Farm, Claim, Payout, IoTDevice, Alert, Intervention, AuditLogItem, InsuranceUnit, Policy } from '../types';
 
 // In-Memory Global State for seamless local execution
 class AgriSureStore {
   private farms: Farm[] = [...SEED_FARMS];
+  private policies: Policy[] = [...SEED_POLICIES];
   private claims: Claim[] = [...SEED_CLAIMS];
   private payouts: Payout[] = [...SEED_PAYOUTS];
   private devices: IoTDevice[] = [...SEED_IOT_DEVICES];
@@ -267,6 +268,108 @@ class AgriSureStore {
     };
     this.auditLogs.unshift(log);
     return log;
+  }
+
+  // Policies Management (Farmer Applications & Insurer Underwriting)
+  getPolicies(filter?: { status?: string; farmerId?: string; crop?: string }): Policy[] {
+    let list = [...this.policies];
+    if (filter?.status && filter.status !== 'ALL') {
+      list = list.filter(p => p.status === filter.status);
+    }
+    if (filter?.farmerId) {
+      list = list.filter(p => p.farmerId === filter.farmerId);
+    }
+    if (filter?.crop && filter.crop !== 'ALL') {
+      list = list.filter(p => p.crop.toLowerCase().includes(filter.crop!.toLowerCase()));
+    }
+    return list;
+  }
+
+  getPolicyById(id: string): Policy | undefined {
+    return this.policies.find(p => p.id === id || p.policyNumber === id);
+  }
+
+  createPolicy(policyData: Partial<Policy>): Policy {
+    const newId = `pol-gen-${Date.now()}`;
+    const policyNum = policyData.policyNumber || `POL-WB-2026-${3500 + this.policies.length}`;
+    const newPolicy: Policy = {
+      id: newId,
+      policyNumber: policyNum,
+      farmerId: policyData.farmerId || 'farmer-1',
+      farmerName: policyData.farmerName || 'Subhash Biswas',
+      farmId: policyData.farmId || 'farm-plot-204',
+      farmPlot: policyData.farmPlot || 'Plot #204',
+      insuranceUnitCode: policyData.insuranceUnitCode || 'WB-NAD-001',
+      crop: policyData.crop || 'Aman Paddy',
+      sumInsured: policyData.sumInsured || 50000,
+      premiumAmount: policyData.premiumAmount || 2500,
+      subsidyAmount: policyData.subsidyAmount || 2000,
+      farmerShare: policyData.farmerShare || 500,
+      triggerChf: policyData.triggerChf || 0.55,
+      startDate: policyData.startDate || new Date().toISOString().split('T')[0],
+      endDate: policyData.endDate || '2026-11-30',
+      status: 'PENDING_APPROVAL',
+      submittedAt: new Date().toISOString(),
+      underwriterNotes: policyData.underwriterNotes || 'Direct digital submission from Farmer Web Portal'
+    };
+    this.policies.unshift(newPolicy);
+
+    this.addAuditLog({
+      entityType: 'POLICY',
+      entityId: newPolicy.policyNumber,
+      action: 'POLICY_APPLICATION_SUBMITTED',
+      actor: `Farmer:${newPolicy.farmerName}`,
+      decisionRule: 'Awaiting primary spatial satellite risk assessment',
+      hashSha256: `sha256:${Math.random().toString(36).substring(2, 15)}a93e`,
+      verificationStatus: 'VALID_CHAIN'
+    });
+
+    return newPolicy;
+  }
+
+  approvePolicy(id: string, underwriterNotes?: string): Policy | undefined {
+    const policy = this.getPolicyById(id);
+    if (!policy) return undefined;
+    policy.status = 'ACTIVE';
+    policy.reviewedAt = new Date().toISOString();
+    if (underwriterNotes) {
+      policy.underwriterNotes = underwriterNotes;
+    }
+
+    this.addAuditLog({
+      entityType: 'POLICY',
+      entityId: policy.policyNumber,
+      action: 'POLICY_APPROVED_AND_ISSUED',
+      actor: 'Underwriter:ParametricDesk',
+      decisionRule: 'Baseline NDVI ≥ 0.65, Spatial IU concentration within capacity limits',
+      hashSha256: `sha256:${Math.random().toString(36).substring(2, 15)}e28c`,
+      verificationStatus: 'VALID_CHAIN'
+    });
+
+    return policy;
+  }
+
+  rejectPolicy(id: string, rejectionReason: string, underwriterNotes?: string): Policy | undefined {
+    const policy = this.getPolicyById(id);
+    if (!policy) return undefined;
+    policy.status = 'REJECTED';
+    policy.rejectionReason = rejectionReason;
+    policy.reviewedAt = new Date().toISOString();
+    if (underwriterNotes) {
+      policy.underwriterNotes = underwriterNotes;
+    }
+
+    this.addAuditLog({
+      entityType: 'POLICY',
+      entityId: policy.policyNumber,
+      action: 'POLICY_APPLICATION_REJECTED',
+      actor: 'Underwriter:ParametricDesk',
+      decisionRule: `Rejection rule: ${rejectionReason}`,
+      hashSha256: `sha256:${Math.random().toString(36).substring(2, 15)}d77a`,
+      verificationStatus: 'VALID_CHAIN'
+    });
+
+    return policy;
   }
 }
 
