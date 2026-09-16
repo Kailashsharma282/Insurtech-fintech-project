@@ -1,26 +1,116 @@
 @import "tailwindcss";
+@import "leaflet/dist/leaflet.css";
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
+  --primary-dark-900: #071511;
+  --primary-dark-800: #0B2119;
+  --primary-dark-700: #102820;
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
+  --primary-green-500: #10B981;
+  --primary-green-600: #059669;
+  --primary-green-400: #34D399;
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+  --bg-light: #F8FAFC;
+  --bg-card: #FFFFFF;
+  --bg-border: #E2E8F0;
+
+  --text-dark: #0F172A;
+  --text-muted: #334155;
+  --text-subtle: #64748B;
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background-color: var(--bg-light);
+  color: var(--text-dark);
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  overflow-x: hidden;
+}
+
+/* Custom Scrollbars */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+::-webkit-scrollbar-track {
+  background: rgba(15, 23, 42, 0.05);
+}
+::-webkit-scrollbar-thumb {
+  background: rgba(16, 185, 129, 0.3);
+  border-radius: 9999px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(16, 185, 129, 0.6);
+}
+
+/* Glassmorphism & Card Utilities */
+.glass-panel-dark {
+  background: rgba(7, 21, 17, 0.92);
+  backdrop-filter: blur(12px);
+  border: 1px solid rgba(16, 185, 129, 0.18);
+}
+
+.glass-panel-light {
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(8px);
+  border: 1px solid #E2E8F0;
+  box-shadow: 0 4px 20px -2px rgba(15, 23, 42, 0.05);
+}
+
+.tech-grid-pattern {
+  background-size: 32px 32px;
+  background-image: 
+    linear-gradient(to right, rgba(16, 185, 129, 0.05) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(16, 185, 129, 0.05) 1px, transparent 1px);
+}
+
+.tech-grid-dark {
+  background-size: 24px 24px;
+  background-image: 
+    linear-gradient(to right, rgba(52, 211, 153, 0.07) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(52, 211, 153, 0.07) 1px, transparent 1px);
+}
+
+/* Pulse indicator animation */
+@keyframes pulse-ring {
+  0% {
+    transform: scale(0.95);
+    box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.7);
+  }
+  70% {
+    transform: scale(1);
+    box-shadow: 0 0 0 8px rgba(16, 185, 129, 0);
+  }
+  100% {
+    transform: scale(0.95);
+    box-shadow: 0 0 0 0 rgba(16, 185, 129, 0);
+  }
+}
+
+.pulse-indicator {
+  animation: pulse-ring 2s infinite cubic-bezier(0.4, 0, 0.6, 1);
+}
+
+/* Subtle data badge styles */
+.badge-chf-good {
+  background: #ECFDF5;
+  color: #065F46;
+  border: 1px solid #A7F3D0;
+}
+.badge-chf-warning {
+  background: #FFFBEB;
+  color: #92400E;
+  border: 1px solid #FDE68A;
+}
+.badge-chf-critical {
+  background: #FEF2F2;
+  color: #991B1B;
+  border: 1px solid #FECACA;
+}
+
+/* Fix leaflet map container styling */
+.leaflet-container {
+  width: 100%;
+  height: 100%;
+  border-radius: 0.75rem;
+  z-index: 10;
 }

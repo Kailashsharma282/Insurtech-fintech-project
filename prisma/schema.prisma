@@ -1,0 +1,436 @@
+datasource db {
+  provider   = "postgresql"
+  url        = env("DATABASE_URL")
+  extensions = [postgis]
+}
+
+generator client {
+  provider        = "prisma-client-js"
+  previewFeatures = ["postgresqlExtensions"]
+}
+
+enum Role {
+  FARMER
+  INSURER
+  ADMIN
+  FIELD_AGENT
+}
+
+enum RiskCategory {
+  NORMAL
+  LOW
+  MODERATE
+  HIGH
+  CLAIM_TRIGGERED
+}
+
+enum ClaimStatus {
+  PENDING
+  UNDER_REVIEW
+  VERIFIED
+  APPROVED
+  REJECTED
+  DISBURSED
+}
+
+enum PayoutStatus {
+  PENDING
+  PROCESSING
+  SUCCESSFUL
+  FAILED
+}
+
+enum DeviceType {
+  ESP32_MOISTURE_PROBE
+  DHT22_WEATHER
+  PUMP_RELAY
+  GSM_ALERT_GATEWAY
+}
+
+model User {
+  id        String   @id @default(uuid())
+  email     String   @unique
+  name      String
+  phone     String?
+  role      Role     @default(FARMER)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  farmer    Farmer?
+  auditLogs AuditLog[]
+}
+
+model Farmer {
+  id              String   @id @default(uuid())
+  userId          String   @unique
+  user            User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  aadhaarHash     String?
+  bankAccountMask String
+  ifscCode        String
+  district        String
+  gramPanchayat   String
+  farms           Farm[]
+  policies        Policy[]
+  claims          Claim[]
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+}
+
+model InsuranceUnit {
+  id              String       @id @default(uuid())
+  code            String       @unique
+  name            String
+  district        String
+  gramPanchayat   String
+  crop            String
+  totalAreaHa     Float
+  chfBaseline     Float        @default(0.75)
+  currentChf      Float        @default(0.70)
+  riskState       RiskCategory @default(NORMAL)
+  boundaryGeoJson Json
+  farms           Farm[]
+  policies        Policy[]
+  claims          Claim[]
+  createdAt       DateTime     @default(now())
+  updatedAt       DateTime     @updatedAt
+}
+
+model Farm {
+  id                String             @id @default(uuid())
+  farmerId          String
+  farmer            Farmer             @relation(fields: [farmerId], references: [id], onDelete: Cascade)
+  insuranceUnitId   String
+  insuranceUnit     InsuranceUnit      @relation(fields: [insuranceUnitId], references: [id])
+  plotNumber        String
+  name              String
+  district          String
+  village           String
+  acreage           Float
+  currentCrop       String
+  season            String
+  sowingDate        DateTime
+  expectedHarvest   DateTime
+  currentChf        Float              @default(0.72)
+  soilMoisturePct   Float              @default(55.0)
+  riskLevel         RiskCategory       @default(LOW)
+  boundaryGeoJson   Json
+  centroidLat       Float
+  centroidLng       Float
+  cropCycles        CropCycle[]
+  satelliteMetrics  SatelliteMetric[]
+  chfRecords        CHFRecord[]
+  weatherData       WeatherObservation[]
+  iotDevices        IoTDevice[]
+  interventions     Intervention[]
+  alerts            Alert[]
+  claims            Claim[]
+  createdAt         DateTime           @default(now())
+  updatedAt         DateTime           @updatedAt
+}
+
+model CropCycle {
+  id             String    @id @default(uuid())
+  farmId         String
+  farm           Farm      @relation(fields: [farmId], references: [id], onDelete: Cascade)
+  crop           String
+  variety        String
+  season         String
+  startDate      DateTime
+  harvestDate    DateTime?
+  expectedYieldKg Float
+  actualYieldKg  Float?
+  status         String    @default("ACTIVE")
+  createdAt      DateTime  @default(now())
+  updatedAt      DateTime  @updatedAt
+}
+
+model Policy {
+  id              String        @id @default(uuid())
+  policyNumber    String        @unique
+  farmerId        String
+  farmer          Farmer        @relation(fields: [farmerId], references: [id])
+  insuranceUnitId String
+  insuranceUnit   InsuranceUnit @relation(fields: [insuranceUnitId], references: [id])
+  sumInsured      Float
+  premiumAmount   Float
+  subsidyAmount   Float
+  farmerShare     Float
+  triggerChf      Float         @default(0.55)
+  startDate       DateTime
+  endDate         DateTime
+  status          String        @default("ACTIVE")
+  claims          Claim[]
+  createdAt       DateTime      @default(now())
+  updatedAt       DateTime      @updatedAt
+}
+
+model SatelliteScene {
+  id               String            @id @default(uuid())
+  sceneId          String            @unique
+  satellite        String
+  sensor           String
+  acquisitionTime  DateTime
+  cloudCoverPct    Float             @default(0.0)
+  coverageGeoJson  Json
+  metrics          SatelliteMetric[]
+  createdAt        DateTime          @default(now())
+  updatedAt        DateTime          @updatedAt
+}
+
+model SatelliteMetric {
+  id               BigInt          @id @default(autoincrement())
+  farmId           String
+  farm             Farm            @relation(fields: [farmId], references: [id], onDelete: Cascade)
+  sceneId          String?
+  scene            SatelliteScene? @relation(fields: [sceneId], references: [id])
+  date             DateTime
+  ndvi             Float
+  lswi             Float
+  vhBackscatterDb  Float
+  integratedVh     Float
+  fapar            Float
+  gdd              Float
+  cropVariability  Float
+  createdAt        DateTime        @default(now())
+  updatedAt        DateTime        @updatedAt
+
+  @@index([farmId, date])
+}
+
+model CHFRecord {
+  id               BigInt   @id @default(autoincrement())
+  farmId           String
+  farm             Farm     @relation(fields: [farmId], references: [id], onDelete: Cascade)
+  calculatedAt     DateTime
+  chfScore         Float
+  baselineScore    Float
+  deviation        Float
+  confidence       Float    @default(0.95)
+  shannonWeights   Json
+  normalizedInputs Json
+  engineVersion    String   @default("CHF-v2.4")
+  createdAt        DateTime @default(now())
+  updatedAt        DateTime @updatedAt
+
+  @@index([farmId, calculatedAt])
+}
+
+model CHFBaseline {
+  id            String   @id @default(uuid())
+  district      String
+  crop          String
+  season        String
+  year          Int
+  expectedNormal Float
+  stdDev        Float
+  sampleCount   Int
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  @@unique([district, crop, season, year])
+}
+
+model WeatherObservation {
+  id            BigInt   @id @default(autoincrement())
+  farmId        String
+  farm          Farm     @relation(fields: [farmId], references: [id], onDelete: Cascade)
+  timestamp     DateTime
+  temperatureC  Float
+  relativeHumidityPct Float
+  precipitationMm Float
+  windSpeedKmh  Float
+  heatStressIdx Float
+  droughtIdx    Float
+  locationGeoJson Json
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  @@index([farmId, timestamp])
+}
+
+model IoTDevice {
+  id            String          @id @default(uuid())
+  farmId        String
+  farm          Farm            @relation(fields: [farmId], references: [id], onDelete: Cascade)
+  deviceUid     String          @unique
+  deviceType    DeviceType
+  name          String
+  hardwareModel String          @default("ESP32-AGRI-V3")
+  firmwareVer   String          @default("v2.1.0")
+  batteryPct    Float           @default(94.0)
+  signalDbm     Int             @default(-68)
+  isActive      Boolean         @default(true)
+  lastHeartbeat DateTime        @default(now())
+  readings      SensorReading[]
+  createdAt     DateTime        @default(now())
+  updatedAt     DateTime        @updatedAt
+}
+
+model SensorReading {
+  id               BigInt    @id @default(autoincrement())
+  deviceId         String
+  device           IoTDevice @relation(fields: [deviceId], references: [id], onDelete: Cascade)
+  timestamp        DateTime  @default(now())
+  soilMoisturePct  Float
+  temperatureC     Float
+  humidityPct      Float
+  soilResistanceOhm Float
+  pumpActive       Boolean   @default(false)
+  createdAt        DateTime  @default(now())
+
+  @@index([deviceId, timestamp])
+}
+
+model DiseaseModel {
+  id             String              @id @default(uuid())
+  version        String              @unique
+  framework      String              @default("PyTorch-MobileNetV3")
+  accuracyPct    Float               @default(92.9)
+  numClasses     Int                 @default(38)
+  isActive       Boolean             @default(true)
+  predictions    DiseasePrediction[]
+  createdAt      DateTime            @default(now())
+  updatedAt      DateTime            @updatedAt
+}
+
+model DiseasePrediction {
+  id            String       @id @default(uuid())
+  modelId       String
+  model         DiseaseModel @relation(fields: [modelId], references: [id])
+  imageUrl      String
+  crop          String
+  detectedIssue String
+  confidence    Float
+  severityLevel String
+  affectedAreaPct Float
+  treatmentPlan Json
+  disclaimer    String
+  createdAt     DateTime     @default(now())
+  updatedAt     DateTime     @updatedAt
+}
+
+model OptimizationRun {
+  id              String   @id @default(uuid())
+  farmId          String
+  crop            String
+  cropAgeDays     Int
+  soilNitrogen    Float
+  soilPhosphorus  Float
+  soilPotassium   Float
+  soilPh          Float
+  recommendationN Float
+  recommendationP Float
+  recommendationK Float
+  waterLitersDay  Float
+  expectedYieldIncreasePct Float
+  estimatedCostInr Float
+  gaGenerations   Int      @default(150)
+  psoParticles    Int      @default(40)
+  convergenceData Json
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+}
+
+model Intervention {
+  id          String   @id @default(uuid())
+  farmId      String
+  farm        Farm     @relation(fields: [farmId], references: [id], onDelete: Cascade)
+  title       String
+  category    String
+  status      String
+  actuatedBy  String
+  notes       String?
+  timestamp   DateTime @default(now())
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+model Alert {
+  id          String   @id @default(uuid())
+  farmId      String
+  farm        Farm     @relation(fields: [farmId], references: [id], onDelete: Cascade)
+  severity    String
+  title       String
+  description String
+  source      String
+  isRead      Boolean  @default(false)
+  actionLink  String?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+model Claim {
+  id                 String         @id @default(uuid())
+  claimNumber        String         @unique
+  policyId           String
+  policy             Policy         @relation(fields: [policyId], references: [id])
+  farmerId           String
+  farmer             Farmer         @relation(fields: [farmerId], references: [id])
+  farmId             String
+  farm               Farm           @relation(fields: [farmId], references: [id])
+  insuranceUnitId    String
+  insuranceUnit      InsuranceUnit  @relation(fields: [insuranceUnitId], references: [id])
+  triggerType        String
+  triggerDate        DateTime
+  chfMeasured        Float
+  chfBaseline        Float
+  chfDeviation       Float
+  lossFraction       Float
+  claimAmount        Float
+  status             ClaimStatus    @default(PENDING)
+  evidencePackage    ClaimEvidence?
+  payouts            Payout[]
+  createdAt          DateTime       @default(now())
+  updatedAt          DateTime       @updatedAt
+}
+
+model ClaimEvidence {
+  id                 String   @id @default(uuid())
+  claimId            String   @unique
+  claim              Claim    @relation(fields: [claimId], references: [id], onDelete: Cascade)
+  satelliteEvidence  Json
+  weatherEvidence    Json
+  iotEvidence        Json
+  groundTruth        Json
+  chfCalculation     Json
+  baselineComparison Json
+  correctionFactor   Json
+  decisionRule       Json
+  auditTrailChain    Json
+  payoutInstruction  Json
+  createdAt          DateTime @default(now())
+  updatedAt          DateTime @updatedAt
+}
+
+model Payout {
+  id              String       @id @default(uuid())
+  payoutRef       String       @unique
+  claimId         String
+  claim           Claim        @relation(fields: [claimId], references: [id])
+  amount          Float
+  currency        String       @default("INR")
+  bankRefId       String
+  beneficiaryName String
+  bankAccountMask String
+  ifscCode        String
+  status          PayoutStatus @default(PROCESSING)
+  settlementDate  DateTime?
+  failureReason   String?
+  createdAt       DateTime     @default(now())
+  updatedAt       DateTime     @updatedAt
+}
+
+model AuditLog {
+  id            BigInt   @id @default(autoincrement())
+  entityType    String
+  entityId      String
+  action        String
+  userId        String?
+  user          User?    @relation(fields: [userId], references: [id])
+  previousState Json?
+  newState      Json?
+  hashSha256    String
+  metadata      Json
+  timestamp     DateTime @default(now())
+
+  @@index([entityType, entityId])
+}
