@@ -22,8 +22,9 @@ import {
 } from 'lucide-react';
 
 export const Navbar: React.FC = () => {
-  const { role, setRole, isSimulating, setIsSimulating, unreadAlertsCount } = useRole();
+  const { role, setRole, user, isAuthenticated, logout, isSimulating, setIsSimulating, unreadAlertsCount } = useRole();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [userDropdownOpen, setUserDropdownOpen] = useState(false);
   const [simulationModalOpen, setSimulationModalOpen] = useState(false);
   const [simLoading, setSimLoading] = useState(false);
   const [simMessage, setSimMessage] = useState<string | null>(null);
@@ -236,7 +237,7 @@ export const Navbar: React.FC = () => {
               </button>
 
               {/* Role Switcher */}
-              <div className="relative">
+              <div className="relative hidden sm:block">
                 <select
                   value={role}
                   onChange={(e) => handleRoleChange(e.target.value as Role)}
@@ -249,6 +250,71 @@ export const Navbar: React.FC = () => {
                 </select>
                 <ChevronDown className="w-3.5 h-3.5 text-[#34D399] absolute right-2.5 top-1/2 -translate-y-1/2 pointer-events-none" />
               </div>
+
+              {/* User Profile & Auth Controls */}
+              {isAuthenticated && user ? (
+                <div className="relative">
+                  <button
+                    onClick={() => setUserDropdownOpen(!userDropdownOpen)}
+                    className="flex items-center space-x-2 px-3 py-1.5 rounded-xl bg-emerald-950/80 hover:bg-emerald-900/60 border border-[#10B981]/40 text-emerald-200 text-xs font-bold transition-all"
+                  >
+                    <div className="w-5 h-5 rounded-full bg-emerald-500/30 flex items-center justify-center text-[10px]">
+                      {role === 'FARMER' ? '🧑‍🌾' : (role === 'INSURER' ? '🏛️' : (role === 'FIELD_AGENT' ? '🔍' : '⚙️'))}
+                    </div>
+                    <span className="hidden md:inline max-w-[120px] truncate">{user.name}</span>
+                    <ChevronDown className="w-3 h-3 text-emerald-400" />
+                  </button>
+
+                  {/* Dropdown Menu */}
+                  {userDropdownOpen && (
+                    <div className="absolute right-0 mt-2 w-64 rounded-2xl bg-[#0B2119] border border-[#10B981]/30 shadow-2xl p-3 text-white z-50 animate-in fade-in slide-in-from-top-2 duration-150">
+                      <div className="border-b border-emerald-900/60 pb-2 mb-2">
+                        <div className="font-bold text-sm text-white">{user.name}</div>
+                        <div className="text-[11px] text-emerald-400 font-mono">{user.role} &bull; {user.district || 'West Bengal'}</div>
+                        <div className="text-[10px] text-slate-400 truncate mt-0.5">{user.phone || user.email}</div>
+                      </div>
+
+                      <div className="space-y-1 text-xs">
+                        <Link
+                          href="/login"
+                          onClick={() => setUserDropdownOpen(false)}
+                          className="block px-3 py-2 rounded-lg hover:bg-emerald-900/40 text-slate-200 transition-colors"
+                        >
+                          Switch Account / Sign In
+                        </Link>
+                        <Link
+                          href="/register"
+                          onClick={() => setUserDropdownOpen(false)}
+                          className="block px-3 py-2 rounded-lg hover:bg-emerald-900/40 text-slate-200 transition-colors"
+                        >
+                          Register New Plot or Carrier
+                        </Link>
+                        <button
+                          onClick={() => { logout(); setUserDropdownOpen(false); router.push('/login'); }}
+                          className="w-full text-left px-3 py-2 rounded-lg hover:bg-red-950/50 text-red-300 transition-colors font-semibold"
+                        >
+                          Sign Out
+                        </button>
+                      </div>
+                    </div>
+                  )}
+                </div>
+              ) : (
+                <div className="flex items-center space-x-2">
+                  <Link
+                    href="/login"
+                    className="px-3 py-1.5 rounded-lg bg-emerald-900/40 hover:bg-emerald-800/50 border border-[#10B981]/40 text-emerald-300 text-xs font-bold transition-all"
+                  >
+                    Sign In
+                  </Link>
+                  <Link
+                    href="/register"
+                    className="hidden sm:inline-block px-3 py-1.5 rounded-lg bg-[#10B981] hover:bg-emerald-600 text-white text-xs font-bold shadow-md shadow-emerald-950/40 transition-all"
+                  >
+                    Register
+                  </Link>
+                </div>
+              )}
 
               {/* Mobile menu button */}
               <button
@@ -266,12 +332,23 @@ export const Navbar: React.FC = () => {
         {mobileMenuOpen && (
           <div className="md:hidden bg-[#071511]/95 backdrop-blur-2xl border-b border-[#10B981]/30 px-4 pt-3 pb-6 space-y-3 animate-in fade-in slide-in-from-top-4 duration-200">
             <div className="flex items-center justify-between pb-2 border-b border-emerald-900/50">
-              <span className="text-[11px] font-mono font-bold text-[#34D399] uppercase tracking-wider">
-                ACTIVE ROLE: {role}
-              </span>
-              <span className="text-[10px] text-slate-400">
-                Nadia Sector Hub
-              </span>
+              <div>
+                <span className="text-[11px] font-mono font-bold text-[#34D399] uppercase tracking-wider block">
+                  {user ? `${user.name} (${role})` : `ACTIVE ROLE: ${role}`}
+                </span>
+                <span className="text-[10px] text-slate-400">
+                  {user?.district || 'Nadia Sector Hub'}
+                </span>
+              </div>
+              <div className="flex items-center space-x-2">
+                <Link
+                  href="/login"
+                  onClick={() => setMobileMenuOpen(false)}
+                  className="text-xs px-2.5 py-1 rounded bg-[#10B981]/20 border border-[#10B981]/40 text-[#34D399] font-bold"
+                >
+                  Switch Login
+                </Link>
+              </div>
             </div>
             
             <div className="space-y-1">
