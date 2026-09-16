@@ -1,0 +1,33 @@
+version: '3.8'
+
+services:
+  db:
+    image: postgis/postgis:15-3.3-alpine
+    container_name: agrisure-postgis
+    environment:
+      POSTGRES_USER: agrisure_user
+      POSTGRES_PASSWORD: agrisure_secure_pass
+      POSTGRES_DB: agrisure_db
+    ports:
+      - "5432:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    restart: unless-stopped
+
+  web:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: agrisure-web
+    environment:
+      - DATABASE_URL=postgresql://agrisure_user:agrisure_secure_pass@db:5432/agrisure_db?schema=public
+      - NODE_ENV=production
+      - PORT=3000
+    ports:
+      - "3000:3000"
+    depends_on:
+      - db
+    restart: unless-stopped
+
+volumes:
+  pgdata:
