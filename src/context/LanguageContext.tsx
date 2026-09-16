@@ -23,6 +23,7 @@ export const SUPPORTED_LANGUAGES: LanguageOption[] = [
 
 const TRANSLATIONS: Record<LanguageCode, Record<string, string>> = {
   en: {
+    'guide.speech_text': 'Namaskar! Today\'s field update: Your crop health is in optimal vigour. Soil moisture is adequate in root zone. Recommended action: run a 45-minute micro-drip cycle on Friday. Your parametric crop insurance coverage is active.',
     // Nav
     'nav.dashboard': 'Dashboard',
     'nav.farms': 'My Farms',
@@ -142,6 +143,7 @@ const TRANSLATIONS: Record<LanguageCode, Record<string, string>> = {
   },
 
   bn: {
+    'guide.speech_text': 'নমস্কার! আজকের কৃষি পরামর্শ: আপনার ফসলের স্বাস্থ্য খুব ভালো অবস্থায় আছে। মাটিতে ৫৮ শতাংশ পর্যাপ্ত রস রয়েছে। আগামী শুক্রবার ৪৫ মিনিটের জন্য ড্রিপ সেচ চালু করুন। আপনার ফসল বীমা সুরক্ষা চালু আছে।',
     // Nav
     'nav.dashboard': 'ড্যাশবোর্ড',
     'nav.farms': 'আমার জমি',
@@ -261,6 +263,7 @@ const TRANSLATIONS: Record<LanguageCode, Record<string, string>> = {
   },
 
   hi: {
+    'guide.speech_text': 'नमस्ते! आज का कृषि सुझाव: आपकी फसल का स्वास्थ्य 93 प्रतिशत के साथ बहुत अच्छा है। मिट्टी में पर्याप्त नमी उपलब्ध है। शुक्रवार को 45 मिनट के लिए ड्रिप सिंचाई चलाएं। आपका फसल बीमा पूरी तरह सुरक्षित है।',
     // Nav
     'nav.dashboard': 'डैशबोर्ड',
     'nav.farms': 'मेरे खेत',
@@ -380,6 +383,7 @@ const TRANSLATIONS: Record<LanguageCode, Record<string, string>> = {
   },
 
   te: {
+    'guide.speech_text': 'నమస్కారం! నేటి పొలం సలహా: మీ పంట ఆరోగ్యం చాలా బాగుంది, 93 శాతం పచ్చదనంతో ఉంది. నేలలో తగినంత తేమ ఉంది. రాబోయే శుక్రవారం నాడు 45 నిమిషాల బిందు సేద్యం చేయండి. మీ పంట బీమా రక్షణ అమలులో ఉంది.',
     // Nav
     'nav.dashboard': 'డ్యాష్‌బోర్డ్',
     'nav.farms': 'నా పొలాలు',
@@ -499,6 +503,7 @@ const TRANSLATIONS: Record<LanguageCode, Record<string, string>> = {
   },
 
   ta: {
+    'guide.speech_text': 'வணக்கம்! இன்றைய விவசாய ஆலோசனை: உங்கள் பயிர் ஆரோக்கியம் 93 சதவீதம் சிறப்பாக உள்ளது. மண்ணில் போதுமான ஈரப்பதம் உள்ளது. வெள்ளிக்கிழமை 45 நிமிட பாசன பம்பை இயக்கவும். உங்கள் பயிர் காப்பீடு பாதுகாப்பாக உள்ளது.',
     // Nav
     'nav.dashboard': 'டாஷ்போர்டு',
     'nav.farms': 'எனது பண்ணைகள்',
@@ -618,6 +623,7 @@ const TRANSLATIONS: Record<LanguageCode, Record<string, string>> = {
   },
 
   kn: {
+    'guide.speech_text': 'ನಮಸ್ಕಾರ! ಇಂದಿನ ಕೃಷಿ ಸಲಹೆ: ನಿಮ್ಮ ಬೆಳೆ ಆರೋಗ್ಯವು 93 ಶೇಕಡಾ ಅತ್ಯುತ್ತಮವಾಗಿದೆ. ಮಣ್ಣಿನಲ್ಲಿ ಸಾಕಷ್ಟು ತೇವಾಂಶವಿದೆ. ಶುಕ್ರವಾರ 45 ನಿಮಿಷಗಳ ಹನಿ ನೀರಾವರಿ ಮಾಡಿ. ನಿಮ್ಮ ಬೆಳೆ ವಿಮೆ ರಕ್ಷಣೆ ಸಕ್ರಿಯವಾಗಿದೆ.',
     // Nav
     'nav.dashboard': 'ಡ್ಯಾಶ್‌ಬೋರ್ಡ್',
     'nav.farms': 'ನನ್ನ ಜಮೀನುಗಳು',
@@ -737,6 +743,7 @@ const TRANSLATIONS: Record<LanguageCode, Record<string, string>> = {
   },
 
   ml: {
+    'guide.speech_text': 'നമസ്കാരം! ഇന്നത്തെ കാർഷിക നിർദ്ദേശം: നിങ്ങളുടെ വിള ആരോഗ്യം 93 ശതമാനത്തോടെ മികച്ച നിലയിലാണ്. മണ്ണിൽ ആവശ്യത്തിന് ഈർപ്പമുണ്ട്. വെള്ളിയാഴ്ച 45 മിനിറ്റ് തുള്ളിനന നൽകുക. നിങ്ങളുടെ വിള ഇൻഷുറൻസ് സുരക്ഷിതമാണ്.',
     // Nav
     'nav.dashboard': 'ഡാഷ്‌ബോർഡ്',
     'nav.farms': 'എന്റെ കൃഷിയിടങ്ങൾ',
@@ -863,6 +870,7 @@ interface LanguageContextType {
   showVisualGuide: boolean;
   setShowVisualGuide: (show: boolean) => void;
   playVoiceAdvisory: () => void;
+  stopVoiceAdvisory: () => void;
   isSpeaking: boolean;
 }
 
@@ -873,6 +881,7 @@ const LanguageContext = createContext<LanguageContextType>({
   showVisualGuide: false,
   setShowVisualGuide: () => {},
   playVoiceAdvisory: () => {},
+  stopVoiceAdvisory: () => {},
   isSpeaking: false,
 });
 
@@ -887,6 +896,14 @@ export const LanguageProvider: React.FC<{ children: React.ReactNode }> = ({ chil
       if (savedLang && ['en', 'bn', 'hi', 'te', 'ta', 'kn', 'ml'].includes(savedLang)) {
         setLanguageState(savedLang);
         setShowVisualGuide(savedLang !== 'en');
+      }
+
+      // Pre-warm browser voices on user interaction/load
+      if ('speechSynthesis' in window) {
+        window.speechSynthesis.getVoices();
+        window.speechSynthesis.onvoiceschanged = () => {
+          window.speechSynthesis.getVoices();
+        };
       }
     }
   }, []);
@@ -913,24 +930,71 @@ export const LanguageProvider: React.FC<{ children: React.ReactNode }> = ({ chil
     return fallback || key;
   };
 
-  const playVoiceAdvisory = () => {
-    setIsSpeaking(true);
+  // High-fidelity melodic notification chime (C5 -> E5 harmonic)
+  const playChime = () => {
+    try {
+      if (typeof window === 'undefined') return;
+      const AudioCtx = window.AudioContext || (window as any).webkitAudioContext;
+      if (!AudioCtx) return;
+      const ctx = new AudioCtx();
+      if (ctx.state === 'suspended') {
+        ctx.resume();
+      }
+      const now = ctx.currentTime;
+      
+      // Tone 1: C5 (523.25 Hz)
+      const osc1 = ctx.createOscillator();
+      const gain1 = ctx.createGain();
+      osc1.type = 'sine';
+      osc1.frequency.setValueAtTime(523.25, now);
+      gain1.gain.setValueAtTime(0.08, now);
+      gain1.gain.exponentialRampToValueAtTime(0.001, now + 0.16);
+      osc1.connect(gain1);
+      gain1.connect(ctx.destination);
+      osc1.start(now);
+      osc1.stop(now + 0.16);
+
+      // Tone 2: E5 (659.25 Hz)
+      const osc2 = ctx.createOscillator();
+      const gain2 = ctx.createGain();
+      osc2.type = 'sine';
+      osc2.frequency.setValueAtTime(659.25, now + 0.08);
+      gain2.gain.setValueAtTime(0.09, now + 0.08);
+      gain2.gain.exponentialRampToValueAtTime(0.001, now + 0.32);
+      osc2.connect(gain2);
+      gain2.connect(ctx.destination);
+      osc2.start(now + 0.08);
+      osc2.stop(now + 0.32);
+    } catch {
+      // AudioContext muted/blocked by policy
+    }
+  };
+
+  const stopVoiceAdvisory = () => {
+    setIsSpeaking(false);
     if (typeof window !== 'undefined' && 'speechSynthesis' in window) {
       window.speechSynthesis.cancel();
-      const textToSpeak =
-        t('farmer.greeting') +
-        '. ' +
-        t('farmer.crop_health') +
-        ': ' +
-        t('farmer.crop_health_status') +
-        '. ' +
-        t('farmer.soil_moisture') +
-        ': ' +
-        t('farmer.soil_moisture_desc') +
-        '. ' +
-        t('farmer.next_action') +
-        ': ' +
-        t('farmer.next_action_desc');
+    }
+  };
+
+  const playVoiceAdvisory = () => {
+    if (typeof window === 'undefined') return;
+
+    // Toggle: if currently speaking, cancel and stop
+    if (isSpeaking) {
+      stopVoiceAdvisory();
+      return;
+    }
+
+    // 1. Play immediate audio alert chime
+    playChime();
+
+    // 2. Synthesize natural regional speech
+    if ('speechSynthesis' in window) {
+      window.speechSynthesis.cancel();
+      setIsSpeaking(true);
+
+      const textToSpeak = t('guide.speech_text');
       const utterance = new SpeechSynthesisUtterance(textToSpeak);
 
       const langMap: Record<LanguageCode, string> = {
@@ -942,13 +1006,37 @@ export const LanguageProvider: React.FC<{ children: React.ReactNode }> = ({ chil
         kn: 'kn-IN',
         ml: 'ml-IN',
       };
-      utterance.lang = langMap[language] || 'en-IN';
-      utterance.rate = 0.88;
+
+      const targetLang = langMap[language] || 'en-IN';
+      utterance.lang = targetLang;
+      utterance.rate = 0.88; // Comfortable natural cadence for regional languages
+      utterance.pitch = 1.0;
+      utterance.volume = 1.0;
+
+      // Select best matching regional voice if installed
+      const voices = window.speechSynthesis.getVoices();
+      if (voices && voices.length > 0) {
+        const langCode = targetLang.split('-')[0].toLowerCase();
+        const bestVoice = voices.find(v => 
+          v.lang.toLowerCase().replace('_', '-').startsWith(targetLang.toLowerCase()) ||
+          v.lang.toLowerCase().startsWith(langCode) ||
+          v.name.toLowerCase().includes(langCode)
+        );
+        if (bestVoice) {
+          utterance.voice = bestVoice;
+        }
+      }
+
       utterance.onend = () => setIsSpeaking(false);
       utterance.onerror = () => setIsSpeaking(false);
+
+      // Prevent Chromium GC bug mid-speech
+      (window as any).__agrisureUtterance = utterance;
+
       window.speechSynthesis.speak(utterance);
     } else {
-      setTimeout(() => setIsSpeaking(false), 3500);
+      setIsSpeaking(true);
+      setTimeout(() => setIsSpeaking(false), 4000);
     }
   };
 
@@ -961,6 +1049,7 @@ export const LanguageProvider: React.FC<{ children: React.ReactNode }> = ({ chil
         showVisualGuide,
         setShowVisualGuide,
         playVoiceAdvisory,
+        stopVoiceAdvisory,
         isSpeaking,
       }}
     >
