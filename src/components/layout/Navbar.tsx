@@ -262,65 +262,100 @@ export const Navbar: React.FC = () => {
           </div>
         </div>
 
-        {/* Mobile Navigation Drawer */}
+        {/* Mobile Navigation Drawer with Glassmorphism */}
         {mobileMenuOpen && (
-          <div className="md:hidden bg-[#0B2119] border-b border-[#10B981]/20 px-4 pt-2 pb-6 space-y-2">
-            <div className="text-xs font-semibold text-emerald-400 uppercase tracking-wider mb-2">
-              Current Role: {role}
+          <div className="md:hidden bg-[#071511]/95 backdrop-blur-2xl border-b border-[#10B981]/30 px-4 pt-3 pb-6 space-y-3 animate-in fade-in slide-in-from-top-4 duration-200">
+            <div className="flex items-center justify-between pb-2 border-b border-emerald-900/50">
+              <span className="text-[11px] font-mono font-bold text-[#34D399] uppercase tracking-wider">
+                ACTIVE ROLE: {role}
+              </span>
+              <span className="text-[10px] text-slate-400">
+                Nadia Sector Hub
+              </span>
             </div>
             
-            {role === 'FARMER' && (
-              <>
-                <Link href="/farmer/dashboard" onClick={() => setMobileMenuOpen(false)} className="block py-2 text-sm text-slate-200">
-                  Dashboard (Plot #204)
-                </Link>
-                <Link href="/farmer/farms" onClick={() => setMobileMenuOpen(false)} className="block py-2 text-sm text-slate-200">
-                  My Farms
-                </Link>
-                <Link href="/farmer/disease" onClick={() => setMobileMenuOpen(false)} className="block py-2 text-sm text-slate-200">
-                  Disease AI Scanner
-                </Link>
-                <Link href="/farmer/optimization" onClick={() => setMobileMenuOpen(false)} className="block py-2 text-sm text-slate-200">
-                  GA-PSO Nutrient Optimizer
-                </Link>
-                <Link href="/operations/iot" onClick={() => setMobileMenuOpen(false)} className="block py-2 text-sm text-slate-200">
-                  IoT Telemetry
-                </Link>
-              </>
-            )}
+            <div className="space-y-1">
+              {role === 'FARMER' && (
+                <>
+                  <Link href="/farmer/dashboard" onClick={() => setMobileMenuOpen(false)} className={`flex items-center space-x-2.5 px-3 py-2.5 rounded-xl text-sm font-semibold transition-colors ${pathname === '/farmer/dashboard' ? 'bg-[#10B981]/20 text-[#34D399] border border-[#10B981]/40' : 'text-slate-200 hover:bg-white/5'}`}>
+                    <Activity className="w-4 h-4 text-[#10B981]" />
+                    <span>Farmer Dashboard (Plot #204)</span>
+                  </Link>
+                  <Link href="/farmer/farms" onClick={() => setMobileMenuOpen(false)} className={`flex items-center space-x-2.5 px-3 py-2.5 rounded-xl text-sm font-semibold transition-colors ${pathname.startsWith('/farmer/farms') ? 'bg-[#10B981]/20 text-[#34D399] border border-[#10B981]/40' : 'text-slate-200 hover:bg-white/5'}`}>
+                    <Layers className="w-4 h-4 text-[#10B981]" />
+                    <span>My Farm Plots</span>
+                  </Link>
+                  <Link href="/farmer/disease" onClick={() => setMobileMenuOpen(false)} className={`flex items-center space-x-2.5 px-3 py-2.5 rounded-xl text-sm font-semibold transition-colors ${pathname === '/farmer/disease' ? 'bg-[#10B981]/20 text-[#34D399] border border-[#10B981]/40' : 'text-slate-200 hover:bg-white/5'}`}>
+                    <Sparkles className="w-4 h-4 text-[#10B981]" />
+                    <span>Disease AI Scanner</span>
+                  </Link>
+                  <Link href="/farmer/optimization" onClick={() => setMobileMenuOpen(false)} className={`flex items-center space-x-2.5 px-3 py-2.5 rounded-xl text-sm font-semibold transition-colors ${pathname === '/farmer/optimization' ? 'bg-[#10B981]/20 text-[#34D399] border border-[#10B981]/40' : 'text-slate-200 hover:bg-white/5'}`}>
+                    <Cpu className="w-4 h-4 text-[#10B981]" />
+                    <span>GA-PSO Nutrient Optimizer</span>
+                  </Link>
+                  <Link href="/operations/iot" onClick={() => setMobileMenuOpen(false)} className={`flex items-center space-x-2.5 px-3 py-2.5 rounded-xl text-sm font-semibold transition-colors ${pathname === '/operations/iot' ? 'bg-[#10B981]/20 text-[#34D399] border border-[#10B981]/40' : 'text-slate-200 hover:bg-white/5'}`}>
+                    <Activity className="w-4 h-4 text-[#10B981]" />
+                    <span>IoT Telemetry & Pump Relay</span>
+                  </Link>
+                  <Link href="/farmer/insurance" onClick={() => setMobileMenuOpen(false)} className={`flex items-center space-x-2.5 px-3 py-2.5 rounded-xl text-sm font-semibold transition-colors ${pathname === '/farmer/insurance' ? 'bg-[#10B981]/20 text-[#34D399] border border-[#10B981]/40' : 'text-slate-200 hover:bg-white/5'}`}>
+                    <ShieldCheck className="w-4 h-4 text-[#10B981]" />
+                    <span>Parametric Insurance</span>
+                  </Link>
+                </>
+              )}
 
-            {role === 'INSURER' && (
-              <>
-                <Link href="/insurer/dashboard" onClick={() => setMobileMenuOpen(false)} className="block py-2 text-sm text-slate-200">
-                  Underwriting Portfolio
-                </Link>
-                <Link href="/insurer/risk-map" onClick={() => setMobileMenuOpen(false)} className="block py-2 text-sm text-slate-200">
-                  IU Risk Map
-                </Link>
-                <Link href="/insurer/claims" onClick={() => setMobileMenuOpen(false)} className="block py-2 text-sm text-slate-200">
-                  Claims Desk & Evidence
-                </Link>
-                <Link href="/insurer/payouts" onClick={() => setMobileMenuOpen(false)} className="block py-2 text-sm text-slate-200">
-                  Payout Engine
-                </Link>
-                <Link href="/insurer/audit" onClick={() => setMobileMenuOpen(false)} className="block py-2 text-sm text-slate-200">
-                  Audit Trail
-                </Link>
-              </>
-            )}
+              {role === 'INSURER' && (
+                <>
+                  <Link href="/insurer/dashboard" onClick={() => setMobileMenuOpen(false)} className={`flex items-center space-x-2.5 px-3 py-2.5 rounded-xl text-sm font-semibold transition-colors ${pathname === '/insurer/dashboard' ? 'bg-[#10B981]/20 text-[#34D399] border border-[#10B981]/40' : 'text-slate-200 hover:bg-white/5'}`}>
+                    <Activity className="w-4 h-4 text-[#10B981]" />
+                    <span>Underwriting Portfolio</span>
+                  </Link>
+                  <Link href="/insurer/risk-map" onClick={() => setMobileMenuOpen(false)} className={`flex items-center space-x-2.5 px-3 py-2.5 rounded-xl text-sm font-semibold transition-colors ${pathname === '/insurer/risk-map' ? 'bg-[#10B981]/20 text-[#34D399] border border-[#10B981]/40' : 'text-slate-200 hover:bg-white/5'}`}>
+                    <Layers className="w-4 h-4 text-[#10B981]" />
+                    <span>IU Spatial Risk Map</span>
+                  </Link>
+                  <Link href="/insurer/claims" onClick={() => setMobileMenuOpen(false)} className={`flex items-center space-x-2.5 px-3 py-2.5 rounded-xl text-sm font-semibold transition-colors ${pathname.startsWith('/insurer/claims') ? 'bg-[#10B981]/20 text-[#34D399] border border-[#10B981]/40' : 'text-slate-200 hover:bg-white/5'}`}>
+                    <ShieldCheck className="w-4 h-4 text-[#10B981]" />
+                    <span>Claims Desk & Evidence</span>
+                  </Link>
+                  <Link href="/insurer/payouts" onClick={() => setMobileMenuOpen(false)} className={`flex items-center space-x-2.5 px-3 py-2.5 rounded-xl text-sm font-semibold transition-colors ${pathname === '/insurer/payouts' ? 'bg-[#10B981]/20 text-[#34D399] border border-[#10B981]/40' : 'text-slate-200 hover:bg-white/5'}`}>
+                    <Zap className="w-4 h-4 text-[#10B981]" />
+                    <span>Payout Engine & Banking</span>
+                  </Link>
+                  <Link href="/insurer/audit" onClick={() => setMobileMenuOpen(false)} className={`flex items-center space-x-2.5 px-3 py-2.5 rounded-xl text-sm font-semibold transition-colors ${pathname === '/insurer/audit' ? 'bg-[#10B981]/20 text-[#34D399] border border-[#10B981]/40' : 'text-slate-200 hover:bg-white/5'}`}>
+                    <ShieldCheck className="w-4 h-4 text-[#10B981]" />
+                    <span>Cryptographic Audit Trail</span>
+                  </Link>
+                </>
+              )}
 
-            <div className="border-t border-emerald-900/50 pt-2 space-y-1">
-              <Link href="/how-it-works" onClick={() => setMobileMenuOpen(false)} className="block py-1.5 text-xs text-slate-400">
-                01-06 How It Works
+              {(role === 'ADMIN' || role === 'FIELD_AGENT') && (
+                <>
+                  <Link href="/intelligence/map" onClick={() => setMobileMenuOpen(false)} className={`flex items-center space-x-2.5 px-3 py-2.5 rounded-xl text-sm font-semibold transition-colors ${pathname === '/intelligence/map' ? 'bg-[#10B981]/20 text-[#34D399] border border-[#10B981]/40' : 'text-slate-200 hover:bg-white/5'}`}>
+                    <Satellite className="w-4 h-4 text-[#10B981]" />
+                    <span>Satellite GIS Map</span>
+                  </Link>
+                  <Link href="/intelligence/weather" onClick={() => setMobileMenuOpen(false)} className={`flex items-center space-x-2.5 px-3 py-2.5 rounded-xl text-sm font-semibold transition-colors ${pathname === '/intelligence/weather' ? 'bg-[#10B981]/20 text-[#34D399] border border-[#10B981]/40' : 'text-slate-200 hover:bg-white/5'}`}>
+                    <CloudRain className="w-4 h-4 text-[#10B981]" />
+                    <span>Weather & Shock Simulator</span>
+                  </Link>
+                  <Link href="/operations/iot" onClick={() => setMobileMenuOpen(false)} className={`flex items-center space-x-2.5 px-3 py-2.5 rounded-xl text-sm font-semibold transition-colors ${pathname === '/operations/iot' ? 'bg-[#10B981]/20 text-[#34D399] border border-[#10B981]/40' : 'text-slate-200 hover:bg-white/5'}`}>
+                    <Cpu className="w-4 h-4 text-[#10B981]" />
+                    <span>IoT Fleet Console</span>
+                  </Link>
+                </>
+              )}
+            </div>
+
+            <div className="border-t border-emerald-900/50 pt-2.5 space-y-1 text-xs">
+              <Link href="/how-it-works" onClick={() => setMobileMenuOpen(false)} className="block py-2 text-slate-400 hover:text-emerald-300">
+                01-06 Operational Architecture
               </Link>
-              <Link href="/technology/chf" onClick={() => setMobileMenuOpen(false)} className="block py-1.5 text-xs text-slate-400">
-                CHF Engine Formulas
+              <Link href="/technology/chf" onClick={() => setMobileMenuOpen(false)} className="block py-2 text-slate-400 hover:text-emerald-300">
+                Shannon Entropy CHF Engine
               </Link>
-              <Link href="/intelligence/map" onClick={() => setMobileMenuOpen(false)} className="block py-1.5 text-xs text-slate-400">
-                Satellite GIS Map
-              </Link>
-              <Link href="/intelligence/weather" onClick={() => setMobileMenuOpen(false)} className="block py-1.5 text-xs text-slate-400">
-                Weather Intelligence
+              <Link href="/research" onClick={() => setMobileMenuOpen(false)} className="block py-2 text-slate-400 hover:text-emerald-300">
+                Research Publications & Validation
               </Link>
             </div>
           </div>

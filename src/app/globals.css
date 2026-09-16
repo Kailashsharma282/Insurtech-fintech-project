@@ -114,3 +114,134 @@ body {
   border-radius: 0.75rem;
   z-index: 10;
 }
+
+/* ==========================================================================
+   3D PERSPECTIVE & HIGH-LEVEL ANIMATION UTILITIES
+   ========================================================================== */
+
+/* 3D Perspective Containers */
+.perspective-1000 {
+  perspective: 1000px;
+}
+.perspective-1200 {
+  perspective: 1200px;
+}
+.preserve-3d {
+  transform-style: preserve-3d;
+}
+.backface-hidden {
+  backface-visibility: hidden;
+}
+
+/* 3D Translation Z-Layers */
+.translate-z-10 {
+  transform: translateZ(10px);
+}
+.translate-z-20 {
+  transform: translateZ(20px);
+}
+.translate-z-30 {
+  transform: translateZ(35px);
+}
+.translate-z-40 {
+  transform: translateZ(50px);
+}
+
+/* Keyframe Animations */
+@keyframes float-slow {
+  0%, 100% {
+    transform: translateY(0px) rotate(0deg);
+  }
+  50% {
+    transform: translateY(-8px) rotate(0.5deg);
+  }
+}
+
+@keyframes pulse-slow {
+  0%, 100% {
+    opacity: 0.6;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.9;
+    transform: scale(1.04);
+  }
+}
+
+@keyframes scanline-sweep {
+  0% {
+    transform: translateY(-100%);
+  }
+  100% {
+    transform: translateY(600%);
+  }
+}
+
+@keyframes radar-spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes shimmer-sweep {
+  0% {
+    background-position: -200% 0;
+  }
+  100% {
+    background-position: 200% 0;
+  }
+}
+
+@keyframes neon-glow {
+  0%, 100% {
+    box-shadow: 0 0 15px rgba(16, 185, 129, 0.2), 0 0 30px rgba(16, 185, 129, 0.1);
+  }
+  50% {
+    box-shadow: 0 0 25px rgba(16, 185, 129, 0.4), 0 0 45px rgba(16, 185, 129, 0.2);
+  }
+}
+
+/* Animation Utility Classes */
+.animate-float-slow {
+  animation: float-slow 7s ease-in-out infinite;
+}
+
+.animate-pulse-slow {
+  animation: pulse-slow 8s ease-in-out infinite;
+}
+
+.animate-scanline {
+  animation: scanline-sweep 8s linear infinite;
+}
+
+.animate-radar {
+  animation: radar-spin 12s linear infinite;
+}
+
+.animate-neon-glow {
+  animation: neon-glow 4s ease-in-out infinite;
+}
+
+/* Glassmorphism 3D Card */
+.glass-card-3d {
+  background: rgba(255, 255, 255, 0.88);
+  backdrop-filter: blur(16px);
+  border: 1px solid rgba(226, 232, 240, 0.8);
+  box-shadow: 0 10px 30px -5px rgba(15, 23, 42, 0.04), 0 0 1px 1px rgba(255, 255, 255, 0.8) inset;
+}
+
+.glass-card-3d-dark {
+  background: rgba(11, 33, 25, 0.88);
+  backdrop-filter: blur(20px);
+  border: 1px solid rgba(16, 185, 129, 0.25);
+  box-shadow: 0 15px 35px -10px rgba(0, 0, 0, 0.5), 0 0 1px 1px rgba(52, 211, 153, 0.15) inset;
+}
+
+/* Responsive Table Horizontal Touch Scroll Wrapper */
+.touch-scroll-x {
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
