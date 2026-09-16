@@ -670,6 +670,36 @@ def build_pdf(filename="AgriSure_Intelligence_Data_Flow_Specification.pdf"):
                 "<b>POST /api/admin/exceptions/[id]/resolve:</b> Mark exception resolved with corrective action (e.g. flag sensor for calibration, accept farmer bank update, re-run claim check)."
             ],
             "widgets": "Exception Severity Table, Anomaly Waveform Inspector, Manual Override Action Form."
+        },
+
+        # MODULE 6: IDENTITY, AUTHENTICATION & ONBOARDING
+        {
+            "route": "/login",
+            "name": "Unified Multi-Role Portal Authentication Gateway",
+            "role": "All Personas (Farmer, Insurer, Admin, Field Agent)",
+            "fetch": [
+                "<b>Role Configuration Presets:</b> Pre-configured identities for Rajesh Mondal (Plot #204), Priya Sengupta (Lead Underwriter), Dr. Arindam Banerjee (Systems Architect), and Bikram Sen (Field Surveyor).",
+                "<b>Active Session Verification:</b> Reads JWT session cookie and localStorage <code>agrisure_auth_user</code>."
+            ],
+            "mutate": [
+                "<b>POST /api/auth/login:</b> Validates mobile phone + OTP (Farmer) or corporate email + password (Insurer/Admin). Generates signed session token, updates authenticated profile in store, and redirects to role dashboard.",
+                "<b>SMS OTP Dispatch:</b> Emits 4-digit verification code to farmer's mobile number (+91 98321 44820)."
+            ],
+            "widgets": "4-Role Interactive 3D Tabs, Password / OTP Mode Switcher, Quick 1-Click Evaluation Login Buttons, Error Alert Banner."
+        },
+        {
+            "route": "/register",
+            "name": "Multi-Role User Onboarding & Entity Registration",
+            "role": "New Farmers & Industry Partners",
+            "fetch": [
+                "<b>Geographical District Directory:</b> West Bengal agricultural districts (Nadia, Purba Bardhaman, Hooghly, Murshidabad).",
+                "<b>Crop Profiles & Calibrated Insurance Baselines:</b> Aman Paddy, Boro Paddy, Potato, Jute, and Mustard."
+            ],
+            "mutate": [
+                "<b>POST /api/auth/register:</b> Creates User record. For farmers, registers cultivated acreage (ha), village/panchayat, and bank IFSC for direct DBT payouts. For insurers, logs carrier name and IRDAI license ID.",
+                "<b>State Mutation:</b> Instantly logs user in, establishes persistent session, and provisions initial farm or underwriter portfolio."
+            ],
+            "widgets": "Role-Specific Dynamic Form Fields, Bank DBT Account Inputs, Cultivation Acreage Spinners, Instant Role Dashboard Redirection."
         }
     ]
 
@@ -773,7 +803,9 @@ def build_pdf(filename="AgriSure_Intelligence_Data_Flow_Specification.pdf"):
         ["GET", "/api/iot/tick", "None (Polled every 3s)", "Emits incremental sensor jitter, simulates live telemetry stream and checks triggers."],
         ["POST", "/api/disease/predict", "Body: {image: base64, crop: string, farmId: string}", "Infers 38-class plant pathology via CNN vision model, returns confidence & remedies."],
         ["POST", "/api/optimization/run", "Body: {farmId, targetYield, populationSize, iterations}", "Executes GA-PSO optimizer, returns recommended NPK kg/ha & irrigation schedule."],
-        ["POST", "/api/simulate/event", "Body: {type: 'HEAVY_RAINFALL'|'HEATWAVE'|'DROUGHT'}", "Injects extreme weather shock, forces threshold breach, auto-generates claim."]
+        ["POST", "/api/simulate/event", "Body: {type: 'HEAVY_RAINFALL'|'HEATWAVE'|'DROUGHT'}", "Injects extreme weather shock, forces threshold breach, auto-generates claim."],
+        ["POST", "/api/auth/login", "Body: {role, identifier, password, otp}", "Validates role credentials, generates signed JWT session token, returns user profile."],
+        ["POST", "/api/auth/register", "Body: {name, role, phone, email, district, village, crop, bankAccount}", "Registers new farmer/insurer entity, provisions initial portfolio, auto-authenticates session."]
     ]
 
     api_table_rows = [
