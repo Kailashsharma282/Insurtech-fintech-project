@@ -259,24 +259,70 @@ export const SEED_IOT_DEVICES: IoTDevice[] = Array.from({ length: 20 }).map((_, 
 });
 
 // 5. Policies
-export const SEED_POLICIES: Policy[] = SEED_FARMS.map((farm, idx) => ({
-  id: farm.activePolicyId,
-  policyNumber: `POL-WB-2026-${3000 + idx}`,
-  farmerId: farm.farmerId,
-  farmerName: farm.farmerName,
-  farmId: farm.id,
-  farmPlot: farm.plotNumber,
-  insuranceUnitCode: farm.insuranceUnitCode,
-  crop: farm.currentCrop,
-  sumInsured: farm.sumInsured,
-  premiumAmount: Math.round(farm.sumInsured * 0.05),
-  subsidyAmount: Math.round(farm.sumInsured * 0.035),
-  farmerShare: Math.round(farm.sumInsured * 0.015),
-  triggerChf: 0.55,
-  startDate: '2026-06-01',
-  endDate: '2026-11-30',
-  status: 'ACTIVE'
-}));
+export const SEED_POLICIES: Policy[] = [
+  ...SEED_FARMS.map((farm, idx) => ({
+    id: farm.activePolicyId,
+    policyNumber: `POL-WB-2026-${3000 + idx}`,
+    farmerId: farm.farmerId,
+    farmerName: farm.farmerName,
+    farmId: farm.id,
+    farmPlot: farm.plotNumber,
+    insuranceUnitCode: farm.insuranceUnitCode,
+    crop: farm.currentCrop,
+    sumInsured: farm.sumInsured,
+    premiumAmount: Math.round(farm.sumInsured * 0.05),
+    subsidyAmount: Math.round(farm.sumInsured * 0.035),
+    farmerShare: Math.round(farm.sumInsured * 0.015),
+    triggerChf: 0.55,
+    startDate: '2026-06-01',
+    endDate: '2026-11-30',
+    status: (idx === 3 ? 'PENDING_APPROVAL' : (idx === 7 ? 'REJECTED' : 'ACTIVE')) as Policy['status'],
+    submittedAt: '2026-09-14T09:00:00Z',
+    reviewedAt: idx === 7 ? '2026-09-15T14:30:00Z' : undefined,
+    rejectionReason: idx === 7 ? 'EXCEEDS_SPATIAL_IU_RISK_CAP' : undefined,
+    underwriterNotes: idx === 7 ? 'Insurance Unit portfolio risk exceeds maximum 85% exposure threshold' : undefined
+  })),
+  {
+    id: 'pol-app-subhash-2026',
+    policyNumber: 'POL-WB-2026-APP-4012',
+    farmerId: 'farmer-1',
+    farmerName: 'Subhash Biswas',
+    farmId: 'farm-plot-204',
+    farmPlot: 'Plot #204',
+    insuranceUnitCode: 'WB-NAD-001',
+    crop: 'Boro Winter Paddy 2026-27',
+    sumInsured: 55000,
+    premiumAmount: 2750,
+    subsidyAmount: 2200,
+    farmerShare: 550,
+    triggerChf: 0.55,
+    startDate: '2026-11-01',
+    endDate: '2027-04-30',
+    status: 'PENDING_APPROVAL',
+    submittedAt: '2026-09-16T11:20:00Z',
+    underwriterNotes: 'Awaiting spatial NDVI baseline verification for upcoming Boro season cycle'
+  },
+  {
+    id: 'pol-app-ananya-2026',
+    policyNumber: 'POL-WB-2026-APP-4019',
+    farmerId: 'farmer-4',
+    farmerName: 'Ananya Mukherjee',
+    farmId: 'farm-plot-208',
+    farmPlot: 'Plot #208',
+    insuranceUnitCode: 'WB-HOO-001',
+    crop: 'Early Mustard Seed',
+    sumInsured: 42000,
+    premiumAmount: 2100,
+    subsidyAmount: 1680,
+    farmerShare: 420,
+    triggerChf: 0.58,
+    startDate: '2026-10-15',
+    endDate: '2027-02-28',
+    status: 'PENDING_APPROVAL',
+    submittedAt: '2026-09-16T14:45:00Z',
+    underwriterNotes: 'New cover application. Sensor telemetry calibrated.'
+  }
+];
 
 // Primary Demo Claim: CLM-2026-084 (Plot #212 Ranaghat / Nadia - CHF drop to 0.49 triggered automatically)
 export const PRIMARY_DEMO_CLAIM: Claim = {
