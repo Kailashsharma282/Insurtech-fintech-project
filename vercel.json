@@ -3,7 +3,6 @@
   "framework": "nextjs",
   "buildCommand": "next build",
   "installCommand": "npm install",
-  "regions": ["bom1", "cle1"],
   "env": {
     "IOT_POLL_INTERVAL_MS": "3000",
     "DEMO_PRIMARY_PLOT": "Plot #204",
