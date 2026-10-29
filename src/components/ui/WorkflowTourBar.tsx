@@ -120,8 +120,9 @@ export const WorkflowTourBar: React.FC = () => {
               <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
               <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
             </span>
-            <span className="font-bold text-xs sm:text-sm tracking-tight text-emerald-300">
-              End-to-End Parametric Workflow Tour
+            <span className="font-bold text-xs sm:text-sm tracking-tight text-emerald-300 truncate">
+              <span className="sm:hidden">Workflow Tour</span>
+              <span className="hidden sm:inline">End-to-End Parametric Workflow Tour</span>
             </span>
             <span className="text-[10px] hidden md:inline px-2 py-0.5 rounded-full bg-emerald-500/20 text-emerald-300 font-mono">
               6-Stage Lifecycle
@@ -136,7 +137,7 @@ export const WorkflowTourBar: React.FC = () => {
               title="Instantly inject 142mm cloudburst shock"
             >
               <Zap className="w-3 h-3 text-amber-300" />
-              <span>{runningAction === 'shock' ? 'Simulating...' : 'Simulate Shock'}</span>
+              <span>{runningAction === 'shock' ? 'Simulating...' : '<span className="hidden sm:inline">Simulate </span>Shock'}</span>
             </button>
 
             <button
@@ -151,7 +152,7 @@ export const WorkflowTourBar: React.FC = () => {
 
         {/* Expandable Stages Grid */}
         {!collapsed && (
-          <div className="p-3 sm:p-4 grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-2 bg-[#0B2119]/80">
+          <div className="p-3 sm:p-4 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-2 bg-[#0B2119]/90 max-h-[55vh] overflow-y-auto">
             {stages.map((stage) => {
               const active = stage.isActive;
               return (

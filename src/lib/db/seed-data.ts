@@ -139,7 +139,7 @@ export const PRIMARY_DEMO_FARM: Farm = {
   insuranceUnitCode: 'WB-GHT-001',
   plotNumber: 'Plot #204',
   name: 'Plot #204 - Ghatal Greenfield',
-  district: 'Nadia',
+  district: 'Paschim Medinipur',
   village: 'Ghatal',
   gramPanchayat: 'Ghatal Central',
   acreage: 2.8,

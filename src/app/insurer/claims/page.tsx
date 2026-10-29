@@ -124,8 +124,9 @@ export default function ClaimsDeskPage() {
 
         {/* Claims Table with all 11 required columns (Section 19) */}
         <div className="bg-white rounded-3xl border border-[#E2E8F0] shadow-sm overflow-hidden">
+          <div className="sm:hidden px-4 py-2 bg-slate-50 border-b border-slate-200 text-[10px] text-slate-500 flex items-center justify-between"><span>&larr; Swipe to view all columns &rarr;</span><span className="font-mono text-emerald-700 font-bold">11 Evidence Columns</span></div>
           <div className="overflow-x-auto">
-            <table className="w-full text-left text-xs text-slate-700">
+            <table className="w-full min-w-[900px] text-left text-xs text-slate-700">
               <thead className="bg-slate-50 text-slate-500 font-bold border-b border-slate-200 uppercase tracking-wider text-[10px]">
                 <tr>
                   <th className="px-6 py-4">Claim #</th>

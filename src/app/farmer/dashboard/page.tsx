@@ -293,7 +293,7 @@ export default function FarmerDashboard() {
                 </div>
 
                 <div className="text-xs text-slate-300 leading-relaxed">
-                  Direct wireless pump actuation via ESP32 solenoid switch connected to Baganchra Drip Sub-main.
+                  Direct wireless pump actuation via ESP32 solenoid switch connected to Ghatal Drip Sub-main.
                 </div>
 
                 <div className="p-3.5 rounded-2xl bg-[#102820] border border-emerald-900/50 text-xs flex justify-between items-center">
@@ -380,7 +380,7 @@ export default function FarmerDashboard() {
               <div className="flex items-center justify-between border-b border-slate-100 pb-3">
                 <h4 className="font-bold text-sm text-[#0F172A] flex items-center space-x-2">
                   <CloudSun className="w-4 h-4 text-amber-500" />
-                  <span>Nadia Weather Forecast</span>
+                  <span>Ghatal Weather Forecast</span>
                 </h4>
                 <span className="text-[10px] text-slate-400 font-mono">AWS Station #4</span>
               </div>

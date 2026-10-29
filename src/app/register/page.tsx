@@ -222,7 +222,8 @@ export default function RegisterPage() {
                         onChange={(e) => setDistrict(e.target.value)}
                         className="w-full px-3.5 py-2.5 bg-[#102820] border border-emerald-600/40 rounded-xl text-white text-sm focus:outline-none focus:ring-2 focus:ring-[#10B981]"
                       >
-                        <option value="Nadia">Nadia (Pilot District)</option>
+                        <option value="Ghatal, Paschim Medinipur">Ghatal, Paschim Medinipur (Pilot District)</option>
+                        <option value="Nadia">Nadia</option>
                         <option value="Burdwan">Purba Bardhaman</option>
                         <option value="Hooghly">Hooghly</option>
                         <option value="Murshidabad">Murshidabad</option>

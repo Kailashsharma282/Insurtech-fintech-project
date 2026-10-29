@@ -291,7 +291,7 @@ export default function LoginPage() {
                 disabled={loading}
                 className="w-full py-3.5 rounded-xl bg-gradient-to-r from-[#10B981] to-[#059669] hover:from-[#34D399] hover:to-[#10B981] text-white font-bold text-sm shadow-xl shadow-[#10B981]/25 transition-all transform hover:-translate-y-0.5 active:translate-y-0 flex items-center justify-center space-x-2"
               >
-                <span>{loading ? 'Authenticating...' : `Sign in to ${rolePresets[selectedRole].title}`}</span>
+                <span className="truncate">{loading ? 'Authenticating...' : `Enter as ${selectedRole === 'FARMER' ? 'Farmer' : (selectedRole === 'INSURER' ? 'Insurer' : (selectedRole === 'FIELD_AGENT' ? 'Field Agent' : 'Admin'))}`}</span>
                 <ArrowRight className="w-4 h-4" />
               </button>
             </form>

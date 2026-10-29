@@ -126,8 +126,7 @@ export default function WeatherRiskPage() {
             </div>
 
             <p className="text-xs text-slate-300 leading-relaxed">
-              Excess precipitation (&gt; 140mm) recorded over Nadia District. Soil moisture probes spiked to 84%. 
-              Automated underwriter workflow has flagged Insurance Unit WB-NAD-002 for priority satellite SAR verification.
+              Excess precipitation (&gt; 140mm) recorded over Ghatal basin (Paschim Medinipur). Soil moisture probes spiked to 84%. Automated underwriter workflow has flagged Insurance Unit WB-GHT-001 for priority satellite SAR verification.
             </p>
           </div>
         )}

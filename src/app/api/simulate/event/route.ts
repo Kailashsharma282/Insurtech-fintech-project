@@ -16,7 +16,7 @@ export async function POST(req: NextRequest) {
 
     const alert = store.getAlerts()[0];
     alert.title = 'Flash Precipitation Shock: 142mm Recorded';
-    alert.description = 'Severe localized cloudburst over Nadia basin. Volumetric root moisture spiked to 84%. Drainage advisory issued.';
+    alert.description = 'Severe localized cloudburst over Ghatal basin (Paschim Medinipur). Volumetric root moisture spiked to 84%. Drainage advisory issued.';
     alert.severity = 'CRITICAL';
     alert.isRead = false;
 

@@ -18,7 +18,7 @@ export const AgriMap: React.FC<AgriMapProps> = ({
   selectedFarmId,
   onSelectFarm,
   activeLayer = 'chf',
-  center = [23.2384, 88.4312], // Nadia District center
+  center = [22.6681, 87.7214], // Ghatal, Paschim Medinipur pilot center
   zoom = 12,
   height = '500px'
 }) => {

@@ -233,8 +233,9 @@ export default function PayoutsEnginePage() {
 
         {/* Payouts Register Table */}
         <div className="bg-white rounded-3xl border border-[#E2E8F0] shadow-sm overflow-hidden">
+          <div className="sm:hidden px-4 py-2 bg-slate-50 border-b border-slate-200 text-[10px] text-slate-500 flex items-center justify-between"><span>&larr; Swipe to view all columns &rarr;</span><span className="font-mono text-emerald-700 font-bold">Payout Ledger</span></div>
           <div className="overflow-x-auto">
-            <table className="w-full text-left text-xs text-slate-700 font-mono">
+            <table className="w-full min-w-[750px] text-left text-xs text-slate-700 font-mono">
               <thead className="bg-slate-50 text-slate-500 font-bold border-b border-slate-200 uppercase tracking-wider text-[10px] font-sans">
                 <tr>
                   <th className="px-6 py-4">Payout Ref #</th>

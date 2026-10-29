@@ -137,7 +137,7 @@ export default function AuditTrailPage() {
 
                 <div>
                   <span className="text-slate-400 block text-[10px]">Baseline Version</span>
-                  <span className="text-slate-800 truncate block">{item.baselineVersion || 'Nadia-Aman-4Yr-Norm-2026'}</span>
+                  <span className="text-slate-800 truncate block">{item.baselineVersion || 'Ghatal-Aman-4Yr-Norm-2026'}</span>
                 </div>
 
                 <div>

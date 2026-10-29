@@ -260,7 +260,7 @@ export const Navbar: React.FC = () => {
                 title="Select Regional Language"
               >
                 <span className="text-base">{currentLangObj.flag}</span>
-                <span className="max-w-[70px] sm:max-w-[85px] truncate">{currentLangObj.native}</span>
+                <span className="hidden xs:inline max-w-[65px] sm:max-w-[85px] truncate">{currentLangObj.native}</span>
                 <ChevronDown className="w-3 h-3 text-emerald-400 shrink-0" />
               </button>
 
@@ -285,7 +285,7 @@ export const Navbar: React.FC = () => {
               <button
                 type="button"
                 onClick={() => setSimulationModalOpen(true)}
-                className="h-9 px-2.5 rounded-xl bg-emerald-900/40 hover:bg-emerald-800/50 border border-emerald-500/30 text-emerald-300 text-xs font-bold transition-all flex items-center space-x-1.5 shrink-0 whitespace-nowrap"
+                className="hidden sm:flex h-9 px-2.5 rounded-xl bg-emerald-900/40 hover:bg-emerald-800/50 border border-emerald-500/30 text-emerald-300 text-xs font-bold transition-all items-center space-x-1.5 shrink-0 whitespace-nowrap"
                 title="Inject Satellite / Weather Event Simulation"
               >
                 <Zap className="w-3.5 h-3.5 text-[#34D399]" />
@@ -380,6 +380,19 @@ export const Navbar: React.FC = () => {
           <div className="lg:hidden bg-[#071511]/98 backdrop-blur-2xl border-b border-emerald-500/30 px-4 pt-4 pb-6 space-y-4 animate-in slide-in-from-top-3 duration-200">
             
             {/* Quick Action Tiles in Mobile Drawer */}
+            {/* Quick Simulation Trigger inside Mobile Drawer */}
+            <button
+              type="button"
+              onClick={() => { setSimulationModalOpen(true); setMobileMenuOpen(false); }}
+              className="w-full p-2.5 rounded-xl bg-emerald-950/70 hover:bg-emerald-900 border border-emerald-500/40 text-emerald-300 text-xs font-bold flex items-center justify-between transition-colors shadow-sm"
+            >
+              <span className="flex items-center space-x-2">
+                <Zap className="w-4 h-4 text-amber-400" />
+                <span>Simulate Weather / Cloudburst Shock</span>
+              </span>
+              <span className="text-emerald-400 text-[10px] font-mono uppercase bg-emerald-500/20 px-2 py-0.5 rounded border border-emerald-500/30">Action</span>
+            </button>
+
             <div className="grid grid-cols-2 gap-2">
               <button
                 type="button"
