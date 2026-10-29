@@ -3,10 +3,42 @@ import { Users, ShieldCheck, Database, Code, CheckCircle2, Layers } from 'lucide
 
 export default function TeamPage() {
   const credentials = [
-    { role: 'FARMER', user: 'Subhash Biswas', id: 'farmer-1', focus: 'Plot #204 Ghatal, Paschim Medinipur (Aman Paddy 2.8ha)', loginHint: 'Switch role via top navigation' },
-    { role: 'INSURER', user: 'Dr. S. Sen (Chief Underwriter)', id: 'underwriter-01', focus: 'Portfolio Loss Ratio & 11-Section Claim Appraisal', loginHint: 'Switch role via top navigation' },
-    { role: 'ADMIN', user: 'AgriSure Ops Lead', id: 'admin-01', focus: 'Earth Observation ingestion, IoT heartbeats & exceptions', loginHint: 'Switch role via top navigation' },
-    { role: 'FIELD_AGENT', user: 'Prabir Bhattacharya (ID: FA-WB-441)', id: 'agent-441', focus: 'Geotagged ground truth & loss verification', loginHint: 'Switch role via top navigation' },
+    { 
+      role: 'FARMER', 
+      user: 'Subhash Biswas', 
+      id: 'usr-farmer-01', 
+      focus: 'Plot #204 Ghatal, Paschim Medinipur (Aman Paddy 2.8ha)', 
+      identifier: '+91 98321 44820', 
+      password: 'Farmer@2026',
+      loginHint: 'Sign in with registered mobile number & password' 
+    },
+    { 
+      role: 'INSURER', 
+      user: 'Dr. S. Sen (Chief Actuary)', 
+      id: 'usr-insurer-01', 
+      focus: 'Portfolio Loss Ratio & 11-Section Claim Appraisal', 
+      identifier: 'underwriter@agrisure.in', 
+      password: 'Insurer@2026',
+      loginHint: 'Sign in with underwriter email & password' 
+    },
+    { 
+      role: 'ADMIN', 
+      user: 'AgriSure Ops Lead', 
+      id: 'usr-admin-01', 
+      focus: 'Earth Observation ingestion, IoT heartbeats & exceptions', 
+      identifier: 'admin@agrisure.in', 
+      password: 'Admin@2026',
+      loginHint: 'Sign in with ops admin email & password' 
+    },
+    { 
+      role: 'FIELD_AGENT', 
+      user: 'Prabir Bhattacharya (FA-WB-441)', 
+      id: 'usr-agent-01', 
+      focus: 'Geotagged ground truth & loss verification', 
+      identifier: '+91 94330 12345', 
+      password: 'Agent@2026',
+      loginHint: 'Sign in with field officer phone & password' 
+    },
   ];
 
   return (
@@ -28,25 +60,42 @@ export default function TeamPage() {
 
         {/* Credentials / Roles Table */}
         <div className="bg-white rounded-3xl border border-[#E2E8F0] shadow-sm p-6 sm:p-8 space-y-6">
-          <div className="border-b border-slate-100 pb-3 flex items-center justify-between">
-            <h3 className="text-lg font-bold text-[#0F172A]">Pilot Stakeholder Roles & Access Scopes</h3>
-            <span className="text-xs text-[#059669] font-medium bg-emerald-50 px-3 py-1 rounded-full border border-emerald-200">
-              Role-Based Access Control Active
+          <div className="border-b border-slate-100 pb-3 flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+            <div>
+              <h3 className="text-lg font-bold text-[#0F172A]">Pilot Stakeholder Roles & Access Scopes</h3>
+              <p className="text-xs text-slate-500">Authenticated via PBKDF2 password hashes and signed HMAC-SHA256 JWT cookies</p>
+            </div>
+            <span className="text-xs text-[#059669] font-medium bg-emerald-50 px-3 py-1 rounded-full border border-emerald-200 self-start sm:self-auto">
+              RBAC Enforcement Active
             </span>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             {credentials.map((c) => (
-              <div key={c.role} className="p-5 rounded-2xl border border-slate-200 bg-slate-50 space-y-2">
+              <div key={c.role} className="p-5 rounded-2xl border border-slate-200 bg-slate-50 space-y-3">
                 <div className="flex items-center justify-between">
                   <span className="text-xs font-mono font-bold px-2.5 py-1 rounded bg-[#071511] text-[#34D399]">
                     {c.role}
                   </span>
                   <span className="text-xs text-slate-500 font-mono">{c.id}</span>
                 </div>
-                <div className="font-bold text-sm text-slate-900">{c.user}</div>
-                <p className="text-xs text-slate-600">{c.focus}</p>
-                <div className="pt-2 text-[11px] text-emerald-700 font-medium">
+                <div>
+                  <div className="font-bold text-sm text-slate-900">{c.user}</div>
+                  <p className="text-xs text-slate-600 mt-0.5">{c.focus}</p>
+                </div>
+                
+                <div className="pt-2 border-t border-slate-200 text-xs font-mono space-y-1 bg-white p-3 rounded-xl border">
+                  <div className="flex justify-between items-center">
+                    <span className="text-slate-500">Login ID:</span>
+                    <strong className="text-slate-900">{c.identifier}</strong>
+                  </div>
+                  <div className="flex justify-between items-center">
+                    <span className="text-slate-500">Security Password:</span>
+                    <code className="text-emerald-700 font-bold bg-emerald-50 px-2 py-0.5 rounded border border-emerald-200">{c.password}</code>
+                  </div>
+                </div>
+
+                <div className="text-[11px] text-emerald-700 font-medium">
                   &rarr; {c.loginHint}
                 </div>
               </div>

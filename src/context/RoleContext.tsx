@@ -49,9 +49,9 @@ const DEFAULT_PROFILES: Record<Role, UserProfile> = {
   },
   INSURER: {
     id: 'usr-insurer-01',
-    name: 'Priya Sengupta',
+    name: 'Dr. S. Sen (Chief Actuary)',
     role: 'INSURER',
-    email: 'p.sengupta@agrisure.in',
+    email: 'underwriter@agrisure.in',
     organization: 'Agriculture Insurance Co. of India',
     licenseId: 'IRDAI-AGR-2024-8842',
     district: 'Kolkata HQ (West Bengal Cluster)',
@@ -67,10 +67,10 @@ const DEFAULT_PROFILES: Record<Role, UserProfile> = {
   },
   FIELD_AGENT: {
     id: 'usr-agent-01',
-    name: 'Bikram Sen',
+    name: 'Prabir Bhattacharya (FA-WB-441)',
     role: 'FIELD_AGENT',
-    phone: '+91 94330 19284',
-    district: 'Nadia & Murshidabad',
+    phone: '+91 94330 12345',
+    district: 'Ghatal, Paschim Medinipur',
     organization: 'State Agri Extension Wing (FA-WB-441)',
     createdAt: '2026-03-20T11:30:00Z',
   },
@@ -145,15 +145,22 @@ export const RoleProvider: React.FC<{ children: React.ReactNode }> = ({ children
     const newProfile = DEFAULT_PROFILES[newRole];
     setUser(newProfile);
 
-    // Synchronize server cookie session
+    // Synchronize server cookie session with verified pilot credentials
+    const pilotPasswords: Record<Role, string> = {
+      FARMER: 'Farmer@2026',
+      INSURER: 'Insurer@2026',
+      ADMIN: 'Admin@2026',
+      FIELD_AGENT: 'Agent@2026',
+    };
+
     try {
       await fetch('/api/auth/login', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           role: newRole,
-          identifier: newProfile.phone || newProfile.email || 'operator@agrisure.in',
-          name: newProfile.name,
+          identifier: newProfile.phone || newProfile.email || 'underwriter@agrisure.in',
+          password: pilotPasswords[newRole],
         }),
       });
     } catch {
@@ -171,7 +178,11 @@ export const RoleProvider: React.FC<{ children: React.ReactNode }> = ({ children
       const res = await fetch('/api/auth/login', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(credentials),
+        body: JSON.stringify({
+          role: credentials.role,
+          identifier: credentials.identifier,
+          password: credentials.passwordOrOtp,
+        }),
       });
 
       const data = await res.json();

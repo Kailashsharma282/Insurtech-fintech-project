@@ -2,15 +2,23 @@ import { NextResponse } from 'next/server';
 import { signJwt, SESSION_COOKIE_NAME } from '@/lib/auth';
 import { Role } from '@/lib/types';
 import { store } from '@/lib/db/store';
+import { userStore } from '@/lib/db/user-store';
 
 export async function POST(request: Request) {
   try {
     const body = await request.json();
-    const { role = 'FARMER', identifier, password, otp, name } = body;
+    const { role = 'FARMER', identifier, password } = body;
 
     if (!identifier || identifier.trim() === '') {
       return NextResponse.json(
         { success: false, error: 'Mobile Phone or Email is required.' },
+        { status: 400 }
+      );
+    }
+
+    if (!password || password.trim() === '') {
+      return NextResponse.json(
+        { success: false, error: 'Password is required to authenticate.' },
         { status: 400 }
       );
     }
@@ -23,52 +31,38 @@ export async function POST(request: Request) {
       FIELD_AGENT: '/intelligence/map',
     };
 
-    // Determine default display names & details based on persona
-    let displayName = name;
-    let district = 'Nadia';
-    let village = 'Santipur';
-    let organization = undefined;
+    // Authenticate against UserStore (verifies PBKDF2 password hash)
+    const authResult = userStore.authenticate(identifier, password, role as Role);
 
-    if (role === 'FARMER') {
-      displayName = name || 'Subhash Biswas';
-      district = 'Paschim Medinipur';
-      village = 'Ghatal, West Bengal';
-    } else if (role === 'INSURER') {
-      displayName = name || 'Dr. S. Sen (Chief Actuary)';
-      district = 'Kolkata Underwriting HQ';
-      organization = 'Agriculture Insurance Company';
-    } else if (role === 'ADMIN') {
-      displayName = name || 'AgriSure Operations Lead';
-      district = 'Geospatial Engineering Lab';
-      organization = 'AgriSure Systems';
-    } else if (role === 'FIELD_AGENT') {
-      displayName = name || 'Prabir Bhattacharya (FA-WB-441)';
-      district = 'Nadia & Murshidabad';
-      organization = 'State Agri Extension Wing';
+    if (authResult.error || !authResult.user) {
+      return NextResponse.json(
+        { success: false, error: authResult.error || 'Invalid credentials. Authentication rejected.' },
+        { status: 401 }
+      );
     }
 
-    const userId = `usr_${role.toLowerCase()}_${Date.now()}`;
+    const verifiedUser = authResult.user;
 
-    // Create real signed JWT token
+    // Create signed HMAC-SHA256 JWT token
     const token = signJwt({
-      userId,
-      name: displayName,
-      role: role as Role,
+      userId: verifiedUser.id,
+      name: verifiedUser.name,
+      role: verifiedUser.role,
       identifier: identifier.trim(),
-      district,
-      village,
-      organization,
+      district: verifiedUser.district,
+      village: verifiedUser.village,
+      organization: verifiedUser.organization,
     });
 
     const userProfile = {
-      id: userId,
-      name: displayName,
-      role,
-      phone: role === 'FARMER' || role === 'FIELD_AGENT' ? identifier : undefined,
-      email: role === 'INSURER' || role === 'ADMIN' ? identifier : undefined,
-      district,
-      village,
-      organization,
+      id: verifiedUser.id,
+      name: verifiedUser.name,
+      role: verifiedUser.role,
+      phone: verifiedUser.phone,
+      email: verifiedUser.email,
+      district: verifiedUser.district,
+      village: verifiedUser.village,
+      organization: verifiedUser.organization,
       token,
       authenticatedAt: new Date().toISOString(),
     };
@@ -76,10 +70,10 @@ export async function POST(request: Request) {
     // Log the successful authentication in store audit logs
     store.addAuditLog({
       entityType: 'AUTH_SESSION',
-      entityId: userId,
+      entityId: verifiedUser.id,
       action: 'USER_LOGIN_AUTHENTICATED',
-      actor: `${role}:${displayName}`,
-      metadata: { role, identifier, authMethod: otp ? 'OTP_SMS' : 'PASSWORD_HASH' },
+      actor: `${verifiedUser.role}:${verifiedUser.name}`,
+      metadata: { role: verifiedUser.role, identifier, authMethod: 'PASSWORD_PBKDF2_SHA512' },
       hashSha256: `sha256:${Buffer.from(token).toString('base64').substring(0, 20)}...`,
       verificationStatus: 'VALID_CHAIN'
     });
@@ -88,7 +82,7 @@ export async function POST(request: Request) {
       success: true,
       message: 'Authentication successful.',
       user: userProfile,
-      redirectUrl: redirects[role as Role] || '/farmer/dashboard',
+      redirectUrl: redirects[verifiedUser.role] || '/farmer/dashboard',
     });
 
     // Set HTTP-only secure session cookie
