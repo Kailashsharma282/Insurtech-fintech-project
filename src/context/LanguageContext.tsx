@@ -45,7 +45,7 @@ const TRANSLATIONS: Record<LanguageCode, Record<string, string>> = {
     // Farmer Hub
     'farmer.greeting': 'Namaskar, Subhash Biswas',
     'farmer.selected_farm': 'Selected Farm',
-    'farmer.plot_name': 'Plot #204 (Baganchra, Nadia)',
+    'farmer.plot_name': 'Plot #204 (Ghatal, West Bengal)',
     'farmer.crop_health': 'Crop Health',
     'farmer.crop_health_status': 'OPTIMAL VIGOUR (0.71)',
     'farmer.crop_health_desc': 'Normal is 0.76 (93% of normal vigour)',
@@ -129,7 +129,7 @@ const TRANSLATIONS: Record<LanguageCode, Record<string, string>> = {
     'hero.cta_insurer': 'Underwriting Desk',
     'hero.philosophy': '“Insurance backs up the yield-preservation system when unavoidable natural shocks exceed mitigation capability. It is the safety net, not the first line of defense.”',
     'hero.runtime_title': 'CLOSED-LOOP SYSTEM RUNTIME',
-    'hero.runtime_pilot': 'Primary Pilot: Plot #204 (Rajesh Mondal, Nadia District) • Kharif Season',
+    'hero.runtime_pilot': 'Primary Pilot: Plot #204 (Rajesh Mondal, Ghatal, West Bengal) • Kharif Season',
     'hero.card1_title': '1. Satellite',
     'hero.card1_desc': 'Sentinel-2 MSI (10m) & Sentinel-1 SAR dual-pol passes',
     'hero.card2_title': '2. Field IoT',

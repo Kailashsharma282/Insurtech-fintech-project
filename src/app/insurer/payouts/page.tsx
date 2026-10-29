@@ -12,7 +12,9 @@ import {
   ArrowRight,
   ShieldCheck,
   RefreshCw,
-  ExternalLink
+  ExternalLink,
+  Lock,
+  Info
 } from 'lucide-react';
 import { store } from '@/lib/db/store';
 import { Payout } from '@/lib/types';
@@ -22,6 +24,7 @@ export default function PayoutsEnginePage() {
   const [statusFilter, setStatusFilter] = useState<'ALL' | 'PENDING' | 'PROCESSING' | 'SUCCESSFUL' | 'FAILED'>('ALL');
   const [selectedPayout, setSelectedPayout] = useState<Payout>(payouts[0]);
   const [actionLoading, setActionLoading] = useState(false);
+  const [notice, setNotice] = useState<{ type: 'info' | 'error' | 'success'; text: string } | null>(null);
 
   const filtered = payouts.filter(p => {
     if (statusFilter === 'ALL') return true;
@@ -30,16 +33,26 @@ export default function PayoutsEnginePage() {
 
   const handleExecute = async (payoutId: string) => {
     setActionLoading(true);
+    setNotice(null);
     try {
       const res = await fetch(`/api/payouts/${payoutId}/execute`, { method: 'POST' });
       const data = await res.json();
       if (data.success) {
         setPayouts([...store.getPayouts()]);
         setSelectedPayout(store.getPayoutById(payoutId) || payouts[0]);
+        setNotice({ type: 'success', text: data.message });
+      } else {
+        // Payment paused for Ghatal pilot
+        setNotice({
+          type: 'info',
+          text: data.error || 'Disbursements are currently paused for the Ghatal pilot deployment. Fund transfers are held pending banking mandate activation.'
+        });
       }
     } catch {
-      store.executePayout(payoutId);
-      setPayouts([...store.getPayouts()]);
+      setNotice({
+        type: 'info',
+        text: 'Electronic banking gateway is paused for the Ghatal pilot. Payout remains safely held in pending status.'
+      });
     } finally {
       setActionLoading(false);
     }
@@ -56,12 +69,15 @@ export default function PayoutsEnginePage() {
               <span className="text-xs font-mono uppercase tracking-wider text-[#059669] font-bold">
                 Direct Benefit Transfer Gateway
               </span>
+              <span className="px-2 py-0.5 rounded-full bg-amber-100 text-amber-800 text-[10px] font-bold">
+                Ghatal Pilot Mode (Payments Paused)
+              </span>
             </div>
             <h1 className="text-2xl sm:text-3xl font-black text-[#0F172A] tracking-tight">
               Parametric Payout & Disbursement Engine
             </h1>
             <p className="text-xs sm:text-sm text-slate-500 mt-1">
-              Automated clearing with simulated RBI NEFT reference IDs. Zero claims paperwork.
+              Underwriting claim clearance desk. Real-time index settlement queue for Ghatal, West Bengal.
             </p>
           </div>
 
@@ -71,6 +87,38 @@ export default function PayoutsEnginePage() {
             </span>
           </div>
         </div>
+
+        {/* Policy Notice Banner: Payments Disabled For Now */}
+        <div className="p-4 sm:p-5 rounded-2xl bg-amber-50 border border-amber-200 text-amber-950 flex flex-col sm:flex-row sm:items-center justify-between gap-3 shadow-sm">
+          <div className="flex items-start space-x-3">
+            <div className="p-2 rounded-xl bg-amber-100 text-amber-800 shrink-0">
+              <Lock className="w-4 h-4" />
+            </div>
+            <div className="text-xs space-y-1">
+              <div className="font-bold text-slate-900 flex items-center gap-1.5">
+                <span>Disbursements Paused: Ghatal Pilot Configuration</span>
+              </div>
+              <p className="text-slate-600">
+                Direct electronic fund payouts are intentionally held for this deployment. Underwriting evidence dossiers and claim approvals remain 100% active, while financial bank disbursements remain safely on hold.
+              </p>
+            </div>
+          </div>
+          <span className="shrink-0 px-3 py-1 rounded-xl bg-white border border-amber-200 text-amber-900 font-mono text-[11px] font-bold text-center">
+            GATEWAY_STATUS: HELD
+          </span>
+        </div>
+
+        {/* Feedback Alert */}
+        {notice && (
+          <div className={`p-4 rounded-2xl text-xs font-semibold flex items-center space-x-2.5 transition-all ${
+            notice.type === 'success' ? 'bg-emerald-50 text-emerald-900 border border-emerald-200' :
+            notice.type === 'info' ? 'bg-blue-50 text-blue-900 border border-blue-200' :
+            'bg-red-50 text-red-900 border border-red-200'
+          }`}>
+            <Info className="w-4 h-4 shrink-0" />
+            <span>{notice.text}</span>
+          </div>
+        )}
 
         {/* Status Filter Tabs (Section 21: pending, processing, successful, failed) */}
         <div className="flex items-center space-x-2 bg-white p-1.5 rounded-2xl border border-slate-200 shadow-sm text-xs font-semibold overflow-x-auto">
@@ -123,10 +171,10 @@ export default function PayoutsEnginePage() {
                   <button
                     onClick={() => handleExecute(selectedPayout.id)}
                     disabled={actionLoading}
-                    className="mt-2 px-4 py-2 rounded-xl bg-[#10B981] hover:bg-emerald-600 text-white font-semibold text-xs shadow-md shadow-emerald-950/20 flex items-center space-x-1.5"
+                    className="mt-2 px-4 py-2 rounded-xl bg-amber-600 hover:bg-amber-500 text-white font-semibold text-xs shadow-md shadow-amber-950/20 flex items-center space-x-1.5 transition-all"
                   >
-                    <span>Execute NEFT Settlement</span>
-                    <ArrowRight className="w-3.5 h-3.5" />
+                    <Lock className="w-3.5 h-3.5" />
+                    <span>{actionLoading ? 'Verifying Gateway...' : 'Execute Settlement (Held)'}</span>
                   </button>
                 )}
               </div>
@@ -145,7 +193,7 @@ export default function PayoutsEnginePage() {
                 </div>
 
                 <div className="p-3 rounded-2xl bg-[#102820] border border-emerald-800/40">
-                  <span className="text-slate-400 block text-[10px]">2. Sat Verification</span>
+                  <span className="text-slate-400 block text-[10px]">2. Satellite Pass</span>
                   <strong className="text-slate-200 text-xs mt-1 block">{selectedPayout.timeline.satelliteVerification}</strong>
                 </div>
 
@@ -171,14 +219,14 @@ export default function PayoutsEnginePage() {
 
                 <div className="p-3 rounded-2xl bg-[#102820] border border-emerald-800/40">
                   <span className="text-slate-400 block text-[10px]">7. Bank Confirmation</span>
-                  <strong className="text-emerald-400 text-xs mt-1 block">{selectedPayout.timeline.bankConfirmation}</strong>
+                  <strong className="text-amber-400 text-xs mt-1 block">Held (Pilot Mandate Verification)</strong>
                 </div>
 
               </div>
             </div>
 
             <div className="pt-2 text-[11px] text-slate-400 italic">
-              * Note: Simulated banking references are generated for sandbox demonstration. Never implies live commercial bank access.
+              * Note: Payout gateway is configured with SIMULATE_BANK_GATEWAY=false for the Ghatal pilot.
             </div>
           </div>
         )}

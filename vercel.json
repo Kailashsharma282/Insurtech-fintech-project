@@ -4,6 +4,25 @@
   "buildCommand": "next build",
   "installCommand": "npm install",
   "regions": ["bom1", "cle1"],
+  "env": {
+    "IOT_POLL_INTERVAL_MS": "3000",
+    "DEMO_PRIMARY_PLOT": "Plot #204",
+    "DEMO_VILLAGE": "Ghatal",
+    "DEMO_DISTRICT": "Ghatal, Paschim Medinipur",
+    "SIMULATE_SENTINEL_FEEDS": "true",
+    "SIMULATE_BANK_GATEWAY": "false",
+    "COPERNICUS_CLIENT_ID": "",
+    "COPERNICUS_CLIENT_SECRET": "",
+    "OPENWEATHER_API_KEY": "",
+    "RAZORPAY_KEY_ID": "",
+    "RAZORPAY_KEY_SECRET": "",
+    "TWILIO_ACCOUNT_SID": "",
+    "TWILIO_AUTH_TOKEN": "",
+    "TWILIO_PHONE_NUMBER": "",
+    "MQTT_BROKER_URL": "",
+    "MQTT_USERNAME": "",
+    "MQTT_PASSWORD": ""
+  },
   "headers": [
     {
       "source": "/api/(.*)",

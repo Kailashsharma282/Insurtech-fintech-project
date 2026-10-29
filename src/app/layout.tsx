@@ -8,6 +8,7 @@ import { Footer } from "@/components/layout/Footer";
 import { LanguageModal } from "@/components/ui/LanguageModal";
 import { FullPageTranslator } from "@/components/ui/FullPageTranslator";
 import { FloatingGuidanceBar } from "@/components/ui/FloatingGuidanceBar";
+import { WorkflowTourBar } from "@/components/ui/WorkflowTourBar";
 
 export const metadata: Metadata = {
   title: "AgriSure Intelligence | Satellite Remote Sensing × Agronomic AI × IoT Telemetry × Parametric Underwriting",
@@ -31,6 +32,7 @@ export default function RootLayout({
             <main className="flex-1 w-full">
               {children}
             </main>
+            <WorkflowTourBar />
             <FloatingGuidanceBar />
             <FarmerBottomNav />
             <Footer />

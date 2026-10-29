@@ -21,13 +21,27 @@ Vercel is the recommended platform for Next.js App Router applications, providin
    NODE_ENV=production
    JWT_SECRET=your-random-32-character-secret-string
    DATABASE_URL=postgresql://user:password@host:5432/dbname?sslmode=require
+   NEXTAUTH_URL=https://your-project.vercel.app
    IOT_POLL_INTERVAL_MS=3000
    DEMO_PRIMARY_PLOT=Plot #204
    DEMO_DISTRICT=Nadia
    SIMULATE_SENTINEL_FEEDS=true
    SIMULATE_BANK_GATEWAY=true
+
+   # Optional External Service Placeholders
+   COPERNICUS_CLIENT_ID=
+   COPERNICUS_CLIENT_SECRET=
+   OPENWEATHER_API_KEY=
+   RAZORPAY_KEY_ID=
+   RAZORPAY_KEY_SECRET=
+   TWILIO_ACCOUNT_SID=
+   TWILIO_AUTH_TOKEN=
+   TWILIO_PHONE_NUMBER=
+   MQTT_BROKER_URL=
+   MQTT_USERNAME=
+   MQTT_PASSWORD=
    ```
-   *(Note: If you don't connect an external PostgreSQL database immediately, the application seamlessly runs on the pre-loaded in-memory store so all 43 pages and endpoints function out of the box).*
+   *(Note: `vercel.json` already defines fallback placeholders, so your deployment is guaranteed to build cleanly without errors).*
 6. Click **Deploy**.
 
 ### Method B: Deploy using Vercel CLI
@@ -50,6 +64,7 @@ Render supports both native Node.js runtimes and Docker deployments, as well as 
 4. Render will automatically configure:
    - Web Service: `agrisure-intelligence` (Node.js runtime, build command `npm install && npm run build`, start command `npm start`)
    - Managed Database: `agrisure-postgres` (PostgreSQL with auto-linked `DATABASE_URL`)
+   - Environment Variables & Placeholders matching `render.yaml`
 5. Click **Apply**.
 
 ### Method B: Deploy as a Docker Web Service on Render

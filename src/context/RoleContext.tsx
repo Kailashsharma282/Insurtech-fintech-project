@@ -40,8 +40,8 @@ const DEFAULT_PROFILES: Record<Role, UserProfile> = {
     name: 'Rajesh Mondal',
     role: 'FARMER',
     phone: '+91 98321 44820',
-    district: 'Nadia',
-    village: 'Baganchra, Santipur',
+    district: 'Paschim Medinipur',
+    village: 'Ghatal, West Bengal',
     primaryCrop: 'Aman Paddy',
     farmSizeHa: 2.8,
     bankAccount: 'State Bank of India (***4921)',
@@ -96,34 +96,70 @@ export const RoleProvider: React.FC<{ children: React.ReactNode }> = ({ children
   const [isSimulating, setIsSimulating] = useState<boolean>(true);
   const [unreadAlertsCount, setUnreadAlertsCount] = useState<number>(3);
 
-  // Initialize from localStorage on client load
+  // Initialize from server session or localStorage on client load
   useEffect(() => {
-    if (typeof window !== 'undefined') {
-      const savedUserJson = localStorage.getItem('agrisure_auth_user');
-      if (savedUserJson) {
-        try {
-          const parsed = JSON.parse(savedUserJson);
-          setUser(parsed);
-          setRole(parsed.role || 'FARMER');
-          setIsAuthenticated(true);
-          return;
-        } catch {
-          // ignore parsing error
+    async function initAuth() {
+      try {
+        // First check server session cookie via /api/auth/me
+        const res = await fetch('/api/auth/me');
+        if (res.ok) {
+          const data = await res.json();
+          if (data.authenticated && data.user) {
+            setUser(data.user);
+            setRole(data.user.role);
+            setIsAuthenticated(true);
+            return;
+          }
+        }
+      } catch {
+        // fallback to localStorage
+      }
+
+      if (typeof window !== 'undefined') {
+        const savedUserJson = localStorage.getItem('agrisure_auth_user');
+        if (savedUserJson) {
+          try {
+            const parsed = JSON.parse(savedUserJson);
+            setUser(parsed);
+            setRole(parsed.role || 'FARMER');
+            setIsAuthenticated(true);
+            return;
+          } catch {
+            // ignore parsing error
+          }
+        }
+
+        const savedRole = localStorage.getItem('agrisure_user_role') as Role;
+        if (savedRole && ['FARMER', 'INSURER', 'ADMIN', 'FIELD_AGENT'].includes(savedRole)) {
+          setRole(savedRole);
+          setUser(DEFAULT_PROFILES[savedRole]);
         }
       }
-
-      const savedRole = localStorage.getItem('agrisure_user_role') as Role;
-      if (savedRole && ['FARMER', 'INSURER', 'ADMIN', 'FIELD_AGENT'].includes(savedRole)) {
-        setRole(savedRole);
-        setUser(DEFAULT_PROFILES[savedRole]);
-      }
     }
+
+    initAuth();
   }, []);
 
-  const handleSetRole = (newRole: Role) => {
+  const handleSetRole = async (newRole: Role) => {
     setRole(newRole);
     const newProfile = DEFAULT_PROFILES[newRole];
     setUser(newProfile);
+
+    // Synchronize server cookie session
+    try {
+      await fetch('/api/auth/login', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          role: newRole,
+          identifier: newProfile.phone || newProfile.email || 'demo@agrisure.in',
+          name: newProfile.name,
+        }),
+      });
+    } catch {
+      // offline fallback
+    }
+
     if (typeof window !== 'undefined') {
       localStorage.setItem('agrisure_user_role', newRole);
       localStorage.setItem('agrisure_auth_user', JSON.stringify(newProfile));
@@ -131,64 +167,95 @@ export const RoleProvider: React.FC<{ children: React.ReactNode }> = ({ children
   };
 
   const login = async (credentials: { role: Role; identifier: string; passwordOrOtp?: string; name?: string }) => {
-    const matchedProfile = DEFAULT_PROFILES[credentials.role];
-    const loggedInUser: UserProfile = {
-      ...matchedProfile,
-      name: credentials.name || matchedProfile.name,
-      phone: credentials.role === 'FARMER' || credentials.role === 'FIELD_AGENT' ? credentials.identifier : matchedProfile.phone,
-      email: credentials.role === 'INSURER' || credentials.role === 'ADMIN' ? credentials.identifier : matchedProfile.email,
-      role: credentials.role,
-      token: `token_${Date.now()}`,
-    };
+    try {
+      const res = await fetch('/api/auth/login', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(credentials),
+      });
 
-    setUser(loggedInUser);
-    setRole(credentials.role);
-    setIsAuthenticated(true);
+      const data = await res.json();
 
-    if (typeof window !== 'undefined') {
-      localStorage.setItem('agrisure_user_role', credentials.role);
-      localStorage.setItem('agrisure_auth_user', JSON.stringify(loggedInUser));
+      if (res.ok && data.success && data.user) {
+        setUser(data.user);
+        setRole(data.user.role || credentials.role);
+        setIsAuthenticated(true);
+
+        if (typeof window !== 'undefined') {
+          localStorage.setItem('agrisure_user_role', data.user.role);
+          localStorage.setItem('agrisure_auth_user', JSON.stringify(data.user));
+        }
+
+        return { success: true, message: data.message };
+      } else {
+        return { success: false, message: data.error || 'Authentication failed.' };
+      }
+    } catch (err) {
+      // Fallback for offline resilience
+      const matchedProfile = DEFAULT_PROFILES[credentials.role];
+      const loggedInUser: UserProfile = {
+        ...matchedProfile,
+        name: credentials.name || matchedProfile.name,
+        phone: credentials.role === 'FARMER' || credentials.role === 'FIELD_AGENT' ? credentials.identifier : matchedProfile.phone,
+        email: credentials.role === 'INSURER' || credentials.role === 'ADMIN' ? credentials.identifier : matchedProfile.email,
+        role: credentials.role,
+        token: `token_${Date.now()}`,
+      };
+
+      setUser(loggedInUser);
+      setRole(credentials.role);
+      setIsAuthenticated(true);
+
+      if (typeof window !== 'undefined') {
+        localStorage.setItem('agrisure_user_role', credentials.role);
+        localStorage.setItem('agrisure_auth_user', JSON.stringify(loggedInUser));
+      }
+
+      return { success: true, message: 'Logged in in fallback mode' };
     }
-
-    return { success: true, message: 'Login successful' };
   };
 
   const registerUser = async (profileData: Partial<UserProfile>) => {
-    const newRole = profileData.role || 'FARMER';
-    const newUser: UserProfile = {
-      id: `usr_${Date.now()}`,
-      name: profileData.name || 'Registered User',
-      role: newRole,
-      phone: profileData.phone,
-      email: profileData.email,
-      district: profileData.district || 'Nadia',
-      village: profileData.village || 'Santipur',
-      organization: profileData.organization,
-      licenseId: profileData.licenseId,
-      primaryCrop: profileData.primaryCrop || 'Aman Paddy',
-      farmSizeHa: profileData.farmSizeHa || 2.5,
-      bankAccount: profileData.bankAccount || 'Bank Direct Transfer Registered',
-      token: `token_${Date.now()}`,
-      createdAt: new Date().toISOString(),
-    };
+    try {
+      const res = await fetch('/api/auth/register', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(profileData),
+      });
 
-    setUser(newUser);
-    setRole(newRole);
-    setIsAuthenticated(true);
+      const data = await res.json();
 
-    if (typeof window !== 'undefined') {
-      localStorage.setItem('agrisure_user_role', newRole);
-      localStorage.setItem('agrisure_auth_user', JSON.stringify(newUser));
+      if (res.ok && data.success && data.user) {
+        setUser(data.user);
+        setRole(data.user.role);
+        setIsAuthenticated(true);
+
+        if (typeof window !== 'undefined') {
+          localStorage.setItem('agrisure_user_role', data.user.role);
+          localStorage.setItem('agrisure_auth_user', JSON.stringify(data.user));
+        }
+
+        return { success: true, message: data.message };
+      } else {
+        return { success: false, message: data.error || 'Registration failed.' };
+      }
+    } catch (err) {
+      return { success: false, message: 'Network error during registration' };
     }
-
-    return { success: true, message: 'Account registered successfully' };
   };
 
-  const logout = () => {
+  const logout = async () => {
+    try {
+      await fetch('/api/auth/logout', { method: 'POST' });
+    } catch {
+      // ignore
+    }
+
     setUser(null);
     setIsAuthenticated(false);
     if (typeof window !== 'undefined') {
       localStorage.removeItem('agrisure_auth_user');
+      localStorage.removeItem('agrisure_user_role');
     }
   };
 

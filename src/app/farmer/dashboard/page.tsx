@@ -96,10 +96,10 @@ export default function FarmerDashboard() {
                 <span className="text-xl sm:text-2xl md:text-3xl font-black text-[#0F172A] tracking-tight">
                   {t('farmer.greeting')}
                 </span>
-                <span className="w-2.5 h-2.5 rounded-full bg-[#10B981] pulse-indicator" title="Connected to Nadia IoT gateway"></span>
+                <span className="w-2.5 h-2.5 rounded-full bg-[#10B981] pulse-indicator" title="Connected to Ghatal IoT gateway"></span>
               </div>
               <p className="text-xs sm:text-sm text-slate-500 mt-1">
-                Field Hub: <strong className="text-slate-800">Santipur Central, Nadia District, West Bengal</strong>
+                Field Hub: <strong className="text-slate-800">Ghatal Central, Paschim Medinipur, West Bengal</strong>
               </p>
             </div>
 

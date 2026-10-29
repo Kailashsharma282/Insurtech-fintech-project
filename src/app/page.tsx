@@ -340,14 +340,14 @@ export default function HomePage() {
                       <span className="font-bold text-sm text-white">Live Field Sensor Unit</span>
                     </div>
                     <span className="text-xs font-mono px-2.5 py-1 rounded-full bg-emerald-500/20 text-[#34D399] border border-emerald-500/30 font-bold">
-                      Nadia / Aman Paddy
+                      Ghatal / Aman Paddy
                     </span>
                   </div>
 
                   <div className="grid grid-cols-2 gap-4 text-xs">
                     <div className="p-3 rounded-xl bg-[#102820]/80 border border-emerald-900/50">
                       <div className="text-slate-400 text-[11px]">Plot Identifier</div>
-                      <div className="font-bold text-white text-sm mt-0.5">Plot #204 (Baganchra)</div>
+                      <div className="font-bold text-white text-sm mt-0.5">Plot #204 (Ghatal)</div>
                     </div>
                     <div className="p-3 rounded-xl bg-[#102820]/80 border border-emerald-900/50">
                       <div className="text-slate-400 text-[11px]">Composite Health (CHF)</div>

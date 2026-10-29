@@ -37,8 +37,8 @@ const AVAILABLE_PLOTS: PlotOption[] = [
     plotNumber: 'Plot #204',
     crop: 'Aman Paddy',
     areaHa: 2.8,
-    district: 'Nadia (Baganchra)',
-    insuranceUnitCode: 'WB-NAD-001',
+    district: 'Ghatal, Paschim Medinipur',
+    insuranceUnitCode: 'WB-GHT-001',
     defaultSumInsured: 140000,
   },
   {
@@ -47,7 +47,7 @@ const AVAILABLE_PLOTS: PlotOption[] = [
     crop: 'Jute',
     areaHa: 1.5,
     district: 'Nadia (Santipur)',
-    insuranceUnitCode: 'WB-NAD-001',
+    insuranceUnitCode: 'WB-GHT-001',
     defaultSumInsured: 75000,
   },
   {
