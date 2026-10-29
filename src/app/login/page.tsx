@@ -12,12 +12,7 @@ import {
   Mail, 
   Lock, 
   ArrowRight, 
-  CheckCircle2, 
-  Sparkles,
-  HelpCircle,
-  KeyRound,
-  Shield,
-  Zap
+  KeyRound
 } from 'lucide-react';
 import { useRole } from '@/context/RoleContext';
 import { Role } from '@/lib/types';
@@ -28,60 +23,59 @@ export default function LoginPage() {
   const router = useRouter();
   const { login } = useRole();
   const [selectedRole, setSelectedRole] = useState<Role>('FARMER');
-  const [identifier, setIdentifier] = useState<string>('+91 98321 44820');
-  const [password, setPassword] = useState<string>('••••••••');
+  const [identifier, setIdentifier] = useState<string>('');
+  const [password, setPassword] = useState<string>('');
   const [useOtp, setUseOtp] = useState<boolean>(true);
   const [otpSent, setOtpSent] = useState<boolean>(false);
-  const [otpValue, setOtpValue] = useState<string>('4820');
+  const [otpValue, setOtpValue] = useState<string>('');
   const [loading, setLoading] = useState<boolean>(false);
   const [errorMsg, setErrorMsg] = useState<string | null>(null);
 
-  const rolePresets: Record<Role, { title: string; subtitle: string; icon: any; defaultId: string; demoName: string; redirect: string }> = {
+  const rolePresets: Record<Role, { title: string; subtitle: string; icon: any; placeholder: string; redirect: string }> = {
     FARMER: {
       title: 'Farmer Portal',
-      subtitle: 'Nadia District & West Bengal Pilot Hub',
-      icon: SproutIcon,
-      defaultId: '+91 98321 44820',
-      demoName: 'Rajesh Mondal (Plot #204)',
+      subtitle: 'Ghatal, Paschim Medinipur • West Bengal Pilot Hub',
+      icon: '🧑‍🌾',
+      placeholder: '+91 98321 00000',
       redirect: '/farmer/dashboard',
     },
     INSURER: {
       title: 'Underwriter & Actuary Desk',
-      subtitle: 'Portfolio Loss Ratio & Automated Parametric Settlement',
-      icon: ShieldCheck,
-      defaultId: 'p.sengupta@agrisure.in',
-      demoName: 'Priya Sengupta (Lead Underwriter)',
+      subtitle: 'Portfolio Loss Ratio & Parametric Settlement',
+      icon: '🏛️',
+      placeholder: 'underwriter@agrisure.in',
       redirect: '/insurer/dashboard',
     },
     ADMIN: {
       title: 'Platform Operations & Systems Admin',
-      subtitle: 'IoT Telemetry Fleet & Deep Learning Model Registry',
-      icon: Cpu,
-      defaultId: 'admin@agrisure.in',
-      demoName: 'Dr. Arindam Banerjee (Systems Architect)',
+      subtitle: 'Telemetry Infrastructure & Spatial Model Registry',
+      icon: '⚙️',
+      placeholder: 'admin@agrisure.in',
       redirect: '/admin/overview',
     },
     FIELD_AGENT: {
       title: 'Field Verification & Survey Officer',
-      subtitle: 'GPS Surveying, CCE Ground Truth & Disease Scouting',
-      icon: UserCheck,
-      defaultId: '+91 94330 19284',
-      demoName: 'Bikram Sen (Field Surveyor FA-WB-441)',
+      subtitle: 'GPS Parcel Ground Truth & Damage Scouting',
+      icon: '🔍',
+      placeholder: '+91 94330 00000',
       redirect: '/intelligence/map',
     },
   };
 
-  function SproutIcon(props: any) {
-    return <span {...props}>🧑‍🌾</span>;
-  }
-
   const handleRoleSelect = (r: Role) => {
     setSelectedRole(r);
-    setIdentifier(rolePresets[r].defaultId);
+    setIdentifier('');
+    setPassword('');
+    setOtpValue('');
+    setOtpSent(false);
     setErrorMsg(null);
   };
 
   const handleSendOtp = () => {
+    if (!identifier || identifier.trim() === '') {
+      setErrorMsg('Please enter your mobile number first.');
+      return;
+    }
     setOtpSent(true);
     setErrorMsg(null);
   };
@@ -94,38 +88,26 @@ export default function LoginPage() {
     try {
       const res = await login({
         role: selectedRole,
-        identifier,
+        identifier: identifier.trim(),
         passwordOrOtp: useOtp ? otpValue : password,
-        name: rolePresets[selectedRole].demoName,
       });
 
       if (res.success) {
         router.push(rolePresets[selectedRole].redirect);
       } else {
-        setErrorMsg(res.message || 'Authentication failed. Please verify credentials.');
+        setErrorMsg(res.message || 'Authentication failed. Please check your credentials.');
       }
     } catch {
-      setErrorMsg('Network error. Please try again.');
+      setErrorMsg('Authentication error. Please try again.');
     } finally {
       setLoading(false);
     }
   };
 
-  const handleQuickDemoLogin = (r: Role) => {
-    handleRoleSelect(r);
-    login({
-      role: r,
-      identifier: rolePresets[r].defaultId,
-      name: rolePresets[r].demoName,
-    }).then(() => {
-      router.push(rolePresets[r].redirect);
-    });
-  };
-
   return (
     <div className="min-h-screen bg-[#071511] text-white flex flex-col justify-center py-12 sm:py-16 px-4 sm:px-6 lg:px-8 relative overflow-hidden">
       
-      {/* 3D Cyber Background */}
+      {/* Background Graphic Grid */}
       <CyberBackground variant="hero" showParticles={true} showGrid={true} />
 
       <div className="sm:mx-auto sm:w-full sm:max-w-md relative z-10 text-center space-y-3">
@@ -139,7 +121,7 @@ export default function LoginPage() {
                 AgriSure
               </span>
               <span className="text-[10px] uppercase font-mono px-1.5 py-0.5 rounded bg-[#10B981]/20 text-[#34D399] border border-[#10B981]/30 font-bold">
-                LOGIN
+                PORTAL
               </span>
             </div>
             <p className="text-[11px] text-slate-400">
@@ -152,7 +134,7 @@ export default function LoginPage() {
           Secure Portal Authentication
         </h2>
         <p className="text-xs sm:text-sm text-slate-300">
-          Select your operational role to access your verified dashboard.
+          Sign in to access your verified operational dashboard.
         </p>
       </div>
 
@@ -173,7 +155,7 @@ export default function LoginPage() {
                 }`}
               >
                 <span className="text-sm">
-                  {r === 'FARMER' ? '🧑‍🌾' : (r === 'INSURER' ? '🏛️' : (r === 'FIELD_AGENT' ? '🔍' : '⚙️'))}
+                  {rolePresets[r].icon}
                 </span>
                 <span className="truncate w-full text-center">
                   {r === 'FARMER' ? 'Farmer' : (r === 'INSURER' ? 'Insurer' : (r === 'FIELD_AGENT' ? 'Field Agent' : 'Admin'))}
@@ -232,21 +214,21 @@ export default function LoginPage() {
                     required
                     value={identifier}
                     onChange={(e) => setIdentifier(e.target.value)}
-                    placeholder={selectedRole === 'FARMER' ? '+91 98321 44820' : 'name@company.com'}
+                    placeholder={rolePresets[selectedRole].placeholder}
                     className="w-full pl-10 pr-4 py-3 bg-[#102820] border border-emerald-600/40 rounded-xl text-white placeholder-slate-500 text-sm focus:outline-none focus:ring-2 focus:ring-[#10B981] font-mono"
                   />
                 </div>
               </div>
 
               {/* Farmer OTP vs Password toggle */}
-              {selectedRole === 'FARMER' && (
+              {(selectedRole === 'FARMER' || selectedRole === 'FIELD_AGENT') && (
                 <div className="flex items-center justify-between text-xs py-1">
                   <button
                     type="button"
                     onClick={() => setUseOtp(!useOtp)}
                     className="text-[#34D399] hover:underline font-semibold"
                   >
-                    {useOtp ? 'Prefer to use Password instead?' : 'Switch to SMS OTP Login (Recommended)'}
+                    {useOtp ? 'Prefer password login?' : 'Switch to mobile OTP'}
                   </button>
                 </div>
               )}
@@ -258,9 +240,6 @@ export default function LoginPage() {
                     <label className="block text-xs font-bold text-slate-300 uppercase tracking-wider">
                       Account Password
                     </label>
-                    <a href="#" className="text-xs text-slate-400 hover:text-[#34D399]">
-                      Forgot?
-                    </a>
                   </div>
                   <div className="relative">
                     <div className="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-slate-400">
@@ -271,7 +250,7 @@ export default function LoginPage() {
                       required
                       value={password}
                       onChange={(e) => setPassword(e.target.value)}
-                      placeholder="••••••••"
+                      placeholder="Enter your account password"
                       className="w-full pl-10 pr-4 py-3 bg-[#102820] border border-emerald-600/40 rounded-xl text-white placeholder-slate-500 text-sm focus:outline-none focus:ring-2 focus:ring-[#10B981]"
                     />
                   </div>
@@ -287,7 +266,7 @@ export default function LoginPage() {
                       onClick={handleSendOtp}
                       className="text-xs text-[#34D399] hover:underline font-semibold"
                     >
-                      {otpSent ? 'Resend SMS OTP' : 'Send OTP via SMS'}
+                      {otpSent ? 'OTP Sent (Resend)' : 'Send OTP'}
                     </button>
                   </div>
                   <div className="relative">
@@ -299,13 +278,10 @@ export default function LoginPage() {
                       maxLength={6}
                       value={otpValue}
                       onChange={(e) => setOtpValue(e.target.value)}
-                      placeholder="Enter 4-digit OTP"
+                      placeholder="Enter verification code"
                       className="w-full pl-10 pr-4 py-3 bg-[#102820] border border-emerald-600/40 rounded-xl text-white placeholder-slate-500 text-sm focus:outline-none focus:ring-2 focus:ring-[#10B981] font-mono tracking-widest text-center"
                     />
                   </div>
-                  <p className="text-[11px] text-slate-400">
-                    * Rural SMS Gateway simulated: Default demo code is <strong className="text-emerald-300">4820</strong>.
-                  </p>
                 </div>
               )}
 
@@ -315,43 +291,18 @@ export default function LoginPage() {
                 disabled={loading}
                 className="w-full py-3.5 rounded-xl bg-gradient-to-r from-[#10B981] to-[#059669] hover:from-[#34D399] hover:to-[#10B981] text-white font-bold text-sm shadow-xl shadow-[#10B981]/25 transition-all transform hover:-translate-y-0.5 active:translate-y-0 flex items-center justify-center space-x-2"
               >
-                <span>{loading ? 'Authenticating...' : `Enter as ${selectedRole}`}</span>
+                <span>{loading ? 'Authenticating...' : `Sign in to ${rolePresets[selectedRole].title}`}</span>
                 <ArrowRight className="w-4 h-4" />
               </button>
             </form>
 
-            {/* Quick 1-Click Evaluation Login for Reviewers */}
-            <div className="pt-2 border-t border-emerald-900/60 space-y-2.5">
-              <div className="text-[11px] font-mono text-slate-400 text-center uppercase tracking-wider">
-                Instant Demo Access (One-Click Credentials)
-              </div>
-              <div className="grid grid-cols-2 gap-2">
-                <button
-                  type="button"
-                  onClick={() => handleQuickDemoLogin('FARMER')}
-                  className="p-2.5 rounded-xl bg-[#102820] hover:bg-emerald-900/50 border border-emerald-800/40 text-left transition-colors"
-                >
-                  <div className="text-xs font-bold text-emerald-300">🧑‍🌾 Rajesh Mondal</div>
-                  <div className="text-[10px] text-slate-400">Nadia Plot #204</div>
-                </button>
-                <button
-                  type="button"
-                  onClick={() => handleQuickDemoLogin('INSURER')}
-                  className="p-2.5 rounded-xl bg-[#102820] hover:bg-emerald-900/50 border border-emerald-800/40 text-left transition-colors"
-                >
-                  <div className="text-xs font-bold text-emerald-300">🏛️ Priya Sengupta</div>
-                  <div className="text-[10px] text-slate-400">Lead Underwriter</div>
-                </button>
-              </div>
-            </div>
-
             {/* Registration Link */}
-            <div className="text-center pt-2">
+            <div className="text-center pt-2 border-t border-emerald-900/40">
               <span className="text-xs text-slate-400">
-                Don&apos;t have an account yet?{' '}
+                New user?{' '}
               </span>
               <Link href="/register" className="text-xs font-bold text-[#34D399] hover:underline">
-                Register as Farmer or Insurer &rarr;
+                Create new account &rarr;
               </Link>
             </div>
 

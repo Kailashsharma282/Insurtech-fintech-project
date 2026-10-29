@@ -38,8 +38,8 @@ export default function RegisterPage() {
   const [password, setPassword] = useState<string>('');
 
   // Farmer Specific Fields
-  const [district, setDistrict] = useState<string>('Nadia');
-  const [village, setVillage] = useState<string>('');
+  const [district, setDistrict] = useState<string>('Ghatal, Paschim Medinipur');
+  const [village, setVillage] = useState<string>('Ghatal');
   const [primaryCrop, setPrimaryCrop] = useState<string>('Aman Paddy');
   const [farmSizeHa, setFarmSizeHa] = useState<string>('2.5');
   const [bankAccount, setBankAccount] = useState<string>('');
