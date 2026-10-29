@@ -25,7 +25,7 @@ interface RoleContextType {
   setRole: (role: Role) => void;
   user: UserProfile | null;
   isAuthenticated: boolean;
-  login: (credentials: { role: Role; identifier: string; passwordOrOtp?: string; name?: string }) => Promise<{ success: boolean; message?: string }>;
+  login: (credentials: { role: Role; identifier: string; password?: string; name?: string }) => Promise<{ success: boolean; message?: string }>;
   logout: () => void;
   registerUser: (profileData: Partial<UserProfile>) => Promise<{ success: boolean; message?: string }>;
   isSimulating: boolean;
@@ -173,7 +173,7 @@ export const RoleProvider: React.FC<{ children: React.ReactNode }> = ({ children
     }
   };
 
-  const login = async (credentials: { role: Role; identifier: string; passwordOrOtp?: string; name?: string }) => {
+  const login = async (credentials: { role: Role; identifier: string; password?: string; name?: string }) => {
     try {
       const res = await fetch('/api/auth/login', {
         method: 'POST',
@@ -181,7 +181,7 @@ export const RoleProvider: React.FC<{ children: React.ReactNode }> = ({ children
         body: JSON.stringify({
           role: credentials.role,
           identifier: credentials.identifier,
-          password: credentials.passwordOrOtp,
+          password: credentials.password,
         }),
       });
 

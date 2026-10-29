@@ -99,7 +99,7 @@ export default function LoginPage() {
       const res = await login({
         role: selectedRole,
         identifier: identifier.trim(),
-        passwordOrOtp: password,
+        password: password,
       });
 
       if (res.success) {
