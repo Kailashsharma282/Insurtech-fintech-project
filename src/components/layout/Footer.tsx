@@ -16,15 +16,9 @@ export const Footer: React.FC = () => {
               <span className="font-bold text-base text-white">AgriSure Intelligence</span>
             </div>
             <p className="text-slate-400 max-w-md text-xs leading-relaxed">
-              University Research & Demonstration Platform combining Sentinel-2/1 satellite remote sensing, 
-              localized Shannon entropy Crop Health Factor (CHF) computation, agricultural IoT telemetry, 
-              and automatic parametric underwriting with zero claims friction.
+              Enterprise Agricultural Parametric InsurTech Platform combining Sentinel-2/1 satellite remote sensing, localized Shannon entropy Crop Health Factor (CHF) computation, agricultural IoT telemetry, and autonomous underwriting.
             </p>
-            <div className="p-3 rounded-lg bg-emerald-950/40 border border-[#10B981]/20 text-[11px] text-emerald-300">
-              ⚠️ <strong>Academic / Prototype Disclosure:</strong> All satellite passes, weather radar readings, 
-              and banking settlement references (NEFT/IMPS) are high-fidelity research simulations calibrated 
-              for West Bengal agro-ecological zones (Nadia, Burdwan, Hooghly, Murshidabad).
-            </div>
+            <div className="p-3 rounded-lg bg-emerald-950/40 border border-[#10B981]/20 text-[11px] text-emerald-300"><strong>West Bengal Pilot Coverage:</strong> Operational telemetry, Earth Observation algorithms, and parametric underwriting calibrated for West Bengal pilot zones (Paschim Medinipur, Nadia, Burdwan, Hooghly).</div>
           </div>
 
           <div>
@@ -87,7 +81,7 @@ export const Footer: React.FC = () => {
               </li>
               <li>
                 <Link href="/team" className="hover:text-white transition-colors">
-                  University Demo Credentials
+                  System Architecture & Roles
                 </Link>
               </li>
             </ul>

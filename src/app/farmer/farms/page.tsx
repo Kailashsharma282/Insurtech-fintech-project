@@ -192,7 +192,7 @@ export default function FarmsListPage() {
                         <span className="font-extrabold text-base text-[#0F172A]">{farm.plotNumber}</span>
                         {isPrimary && (
                           <span className="text-[10px] font-mono px-2 py-0.5 rounded bg-emerald-100 text-emerald-800 font-bold">
-                            PRIMARY DEMO
+                            PILOT PLOT
                           </span>
                         )}
                       </div>

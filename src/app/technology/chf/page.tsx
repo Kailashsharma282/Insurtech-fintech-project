@@ -39,7 +39,7 @@ export default function ChfEnginePage() {
     setInputs(prev => ({ ...prev, [key]: val }));
   };
 
-  const resetToDemo = () => {
+  const resetToBaseline = () => {
     setInputs({
       ndvi: 0.68,
       lswi: 0.38,
@@ -136,10 +136,10 @@ export default function ChfEnginePage() {
             </span>
             <div className="flex items-center space-x-2">
               <button
-                onClick={resetToDemo}
+                onClick={resetToBaseline}
                 className="px-3 py-1.5 rounded-lg bg-emerald-900/50 hover:bg-emerald-800/60 border border-emerald-700/40 text-emerald-200 text-xs transition-colors"
               >
-                Reset Demo (Plot #204)
+                Reset Baseline (Plot #204)
               </button>
               <button
                 onClick={setToShock}

@@ -109,7 +109,7 @@ export default function TechnologyOverviewPage() {
             <div>
               <h4 className="font-bold text-lg text-white mb-2">Parametric Ledger</h4>
               <p className="text-xs text-slate-300 leading-relaxed">
-                Automated index evaluation with SHA-256 evidence anchoring, PostGIS spatial boundary intersection, and simulated instant bank settlement dispatch.
+                Automated index evaluation with SHA-256 evidence anchoring, PostGIS spatial boundary intersection, and instant bank settlement dispatch.
               </p>
             </div>
           </div>

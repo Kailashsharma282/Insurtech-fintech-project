@@ -113,7 +113,7 @@ export default function OptimizationPage() {
                 <Sliders className="w-4 h-4 text-[#059669]" />
                 <span>Field & Soil Inputs</span>
               </h3>
-              <span className="text-[10px] font-mono text-slate-400">Plot #204 Nadia</span>
+              <span className="text-[10px] font-mono text-slate-400">Plot #204 Ghatal</span>
             </div>
 
             <div className="space-y-4 text-xs">

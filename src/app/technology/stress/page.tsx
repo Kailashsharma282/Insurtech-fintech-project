@@ -75,7 +75,7 @@ export default function EarlyStressDetectionPage() {
                 <span className="px-3 py-1 rounded-full bg-red-500/20 text-red-300 border border-red-500/40 text-xs font-bold uppercase tracking-wider">
                   Priority: High
                 </span>
-                <span className="text-xs font-mono text-emerald-300">Plot #204 Nadia</span>
+                <span className="text-xs font-mono text-emerald-300">Plot #204 Ghatal</span>
               </div>
             </div>
 

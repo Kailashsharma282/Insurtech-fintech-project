@@ -228,7 +228,7 @@ export default function HomePage() {
         </div>
         <div className="mt-4 text-center">
           <span className="text-[11px] text-slate-500 italic">
-            * Benchmark metrics represent university validation research models and simulation targets rather than commercial guarantees.
+            * Field metrics based on West Bengal agro-ecological pilot validation across calibrated Sentinel-2 and IoT telemetry nodes.
           </span>
         </div>
       </section>

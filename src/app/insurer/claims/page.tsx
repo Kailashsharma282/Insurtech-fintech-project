@@ -147,11 +147,7 @@ export default function ClaimsDeskPage() {
                   <tr key={claim.id} className="hover:bg-slate-50/80 transition-colors font-sans">
                     <td className="px-6 py-4 font-bold text-slate-900 font-mono">
                       {claim.claimNumber}
-                      {claim.claimNumber === 'CLM-2026-084' && (
-                        <span className="ml-2 text-[9px] px-1.5 py-0.5 rounded bg-emerald-100 text-emerald-800 font-bold">
-                          DEMO
-                        </span>
-                      )}
+                      
                     </td>
                     <td className="px-6 py-4 text-slate-500 font-mono text-[11px]">{claim.policyNumber}</td>
                     <td className="px-6 py-4 font-semibold text-slate-900">{claim.farmerName}</td>

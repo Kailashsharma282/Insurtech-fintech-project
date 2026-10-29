@@ -182,7 +182,7 @@ export default function HowItWorksPage() {
                 href="/farmer/dashboard"
                 className="px-4 py-2 rounded-xl bg-emerald-50 hover:bg-emerald-100 text-[#059669] text-xs font-semibold border border-emerald-200 transition-colors"
               >
-                View Live Demo Farm &rarr;
+                View Live Pilot Farm &rarr;
               </Link>
             </div>
           </div>

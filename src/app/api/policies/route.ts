@@ -43,7 +43,7 @@ export async function POST(request: NextRequest) {
       farmerName: farmerName || 'Subhash Biswas',
       farmId: farmId || 'farm-plot-204',
       farmPlot: farmPlot || 'Plot #204',
-      insuranceUnitCode: insuranceUnitCode || 'WB-NAD-001',
+      insuranceUnitCode: insuranceUnitCode || 'WB-GHT-001',
       crop: crop || 'Aman Paddy',
       sumInsured: Number(sumInsured) || 50000,
       premiumAmount: Number(premiumAmount) || 2500,
