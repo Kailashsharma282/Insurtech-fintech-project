@@ -90,7 +90,7 @@ export default function FarmerInsurancePage() {
             {/* Apply New Policy CTA */}
             <Link
               href="/farmer/insurance/apply"
-              className="px-4 py-2.5 rounded-2xl bg-gradient-to-r from-[#10B981] to-[#059669] hover:from-[#34D399] hover:to-[#10B981] text-white font-bold text-xs shadow-lg shadow-emerald-950/20 transition-all flex items-center space-x-1.5 transform hover:-translate-y-0.5"
+              className="px-4 py-2.5 rounded-2xl bg-emerald-700 hover:bg-emerald-800 text-white font-bold text-xs shadow-lg shadow-emerald-950/20 transition-all flex items-center space-x-1.5 transform hover:-translate-y-0.5"
             >
               <Plus className="w-4 h-4" />
               <span>{t('ins.apply_title')}</span>
@@ -114,6 +114,34 @@ export default function FarmerInsurancePage() {
             </Link>
           </div>
         )}
+
+        {/* Ghatal CHF Insurance Validation Callout */}
+        <div className="p-5 rounded-2xl bg-white border border-emerald-300 shadow-sm flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+          <div className="space-y-1">
+            <div className="flex items-center gap-2">
+              <span className="px-2.5 py-0.5 rounded-full bg-emerald-100 text-emerald-900 text-[10px] font-bold uppercase tracking-wider">
+                Ghatal Block PMFBY Registry
+              </span>
+              <span className="text-xs text-slate-500 font-mono">10-Season Benchmark</span>
+            </div>
+            <h3 className="text-base font-extrabold text-slate-900">
+              Validate Insurance Claims with Multi-Satellite CHF
+            </h3>
+            <p className="text-xs text-slate-600">
+              Inspect official village yield benchmarks (2017-18 to 2026-27), candidate farmer registry, and test live indemnity determination with calculated CHF.
+            </p>
+          </div>
+          <div className="flex items-center gap-2 shrink-0">
+            <Link
+              href="/farmer/insurance-validation"
+              className="px-4 py-2 rounded-xl bg-emerald-800 hover:bg-emerald-900 text-white font-bold text-xs transition-colors flex items-center space-x-1.5"
+            >
+              <FileText className="w-4 h-4" />
+              <span>Open Validation Hub</span>
+              <ArrowRight className="w-3.5 h-3.5" />
+            </Link>
+          </div>
+        </div>
 
         {/* Filter Navigation Tabs */}
         <div className="flex items-center space-x-2 overflow-x-auto pb-1 text-xs">
@@ -301,7 +329,7 @@ export default function FarmerInsurancePage() {
           </div>
           <Link
             href="/farmer/insurance/apply"
-            className="px-6 py-3 rounded-2xl bg-gradient-to-r from-[#10B981] to-[#059669] hover:from-[#34D399] hover:to-[#10B981] text-white font-black text-xs shadow-lg shadow-emerald-950/20 transition-all flex items-center justify-center space-x-2 shrink-0"
+            className="px-6 py-3 rounded-2xl bg-emerald-700 hover:bg-emerald-800 text-white font-black text-xs shadow-lg shadow-emerald-950/20 transition-all flex items-center justify-center space-x-2 shrink-0"
           >
             <span>👉 {t('ins.apply_new')}</span>
           </Link>

@@ -719,3 +719,4 @@ if __name__ == "__main__":
     build_pdf(out_file)
     # Also save a copy in the root workspace directory
     build_pdf("Ghatal_Block_Crop_Health_Indicators_2025_Report.pdf")
+

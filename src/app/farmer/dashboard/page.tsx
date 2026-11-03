@@ -122,6 +122,63 @@ export default function FarmerDashboard() {
           </div>
         </Card3D>
 
+        {/* Quick Access: PMFBY Insurance Validation & Photo Diagnostic Hub */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          
+          <div className="p-5 sm:p-6 rounded-2xl bg-white border border-slate-200 shadow-sm flex flex-col justify-between space-y-4">
+            <div className="space-y-1.5">
+              <div className="flex items-center gap-2">
+                <span className="px-2.5 py-0.5 rounded-full bg-emerald-100 text-emerald-900 text-[10px] font-bold uppercase tracking-wider">
+                  PMFBY Ghatal Hub
+                </span>
+                <span className="text-xs text-slate-500 font-mono">Satellite CHF: 0.421</span>
+              </div>
+              <h3 className="text-base sm:text-lg font-bold text-slate-900">
+                Insurance Claim Validation & 10-Yr Historical Yields
+              </h3>
+              <p className="text-xs text-slate-600 leading-relaxed">
+                Validate your crop insurance indemnity amount using calculated satellite CHF against official village yield benchmarks (2017-18 to 2026-27) and ground CCE records.
+              </p>
+            </div>
+            <div>
+              <Link
+                href="/farmer/insurance-validation"
+                className="inline-flex items-center gap-1.5 px-4 py-2 bg-slate-900 hover:bg-slate-800 text-white rounded-xl text-xs font-bold transition-colors"
+              >
+                <span>Open Insurance Validation Hub</span>
+                <ArrowRight className="w-3.5 h-3.5" />
+              </Link>
+            </div>
+          </div>
+
+          <div className="p-5 sm:p-6 rounded-2xl bg-white border border-slate-200 shadow-sm flex flex-col justify-between space-y-4">
+            <div className="space-y-1.5">
+              <div className="flex items-center gap-2">
+                <span className="px-2.5 py-0.5 rounded-full bg-blue-100 text-blue-900 text-[10px] font-bold uppercase tracking-wider">
+                  Camera Diagnostic AI
+                </span>
+                <span className="text-xs text-slate-500 font-mono">NPK & Water Check</span>
+              </div>
+              <h3 className="text-base sm:text-lg font-bold text-slate-900">
+                Instant Leaf Photo Diagnosis — NPK & Water Need
+              </h3>
+              <p className="text-xs text-slate-600 leading-relaxed">
+                Upload or snap a leaf photo. Instantly see whether water is required, check Nitrogen, Phosphorus, Potassium conditions, and receive exact fertilizer dosages.
+              </p>
+            </div>
+            <div>
+              <Link
+                href="/farmer/disease"
+                className="inline-flex items-center gap-1.5 px-4 py-2 bg-emerald-800 hover:bg-emerald-900 text-white rounded-xl text-xs font-bold transition-colors"
+              >
+                <span>Analyze Leaf Photo</span>
+                <ArrowRight className="w-3.5 h-3.5" />
+              </Link>
+            </div>
+          </div>
+
+        </div>
+
         {/* 5 KPI Cards (Plain Language UX per Section 6 & 32) with 3D Tilt */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4">
           

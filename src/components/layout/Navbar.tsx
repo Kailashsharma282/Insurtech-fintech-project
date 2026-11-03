@@ -124,6 +124,12 @@ export const Navbar: React.FC = () => {
                     {t('nav.insurance')}
                   </Link>
                   <Link 
+                    href="/farmer/insurance-validation" 
+                    className="px-2.5 py-1.5 rounded-lg transition-all text-slate-300 hover:text-white hover:bg-white/5 whitespace-nowrap shrink-0"
+                  >
+                    Insurance Validation
+                  </Link>
+                  <Link 
                     href="/technology/chf" 
                     className="px-2.5 py-1.5 rounded-lg transition-all text-emerald-300 hover:text-white hover:bg-emerald-900/40 whitespace-nowrap shrink-0 font-bold border border-emerald-600/40"
                   >
@@ -149,6 +155,12 @@ export const Navbar: React.FC = () => {
                     className={`px-2.5 py-1.5 rounded-lg transition-all whitespace-nowrap shrink-0 ${pathname === '/farmer/insurance' ? 'bg-emerald-500/20 text-[#34D399] border border-emerald-500/40' : 'text-slate-300 hover:text-white hover:bg-white/5'}`}
                   >
                     {t('nav.insurance')}
+                  </Link>
+                  <Link 
+                    href="/farmer/insurance-validation" 
+                    className={`px-2.5 py-1.5 rounded-lg transition-all whitespace-nowrap shrink-0 ${pathname === '/farmer/insurance-validation' ? 'bg-emerald-500/20 text-[#34D399] border border-emerald-500/40' : 'text-slate-300 hover:text-white hover:bg-white/5'}`}
+                  >
+                    Validation Hub
                   </Link>
                   <Link 
                     href="/technology/chf" 
@@ -447,6 +459,10 @@ export const Navbar: React.FC = () => {
                   </Link>
                   <Link href="/farmer/insurance" onClick={() => setMobileMenuOpen(false)} className="flex items-center justify-between px-3 py-2.5 rounded-xl text-xs font-bold text-slate-200 hover:bg-emerald-900/30">
                     <span className="flex items-center space-x-2"><ShieldCheck className="w-4 h-4 text-[#10B981]" /><span>{t('nav.insurance')}</span></span>
+                    <span>➡️</span>
+                  </Link>
+                  <Link href="/farmer/insurance-validation" onClick={() => setMobileMenuOpen(false)} className="flex items-center justify-between px-3 py-2.5 rounded-xl text-xs font-bold text-emerald-300 bg-emerald-950/40 border border-emerald-500/30">
+                    <span className="flex items-center space-x-2"><ShieldCheck className="w-4 h-4 text-[#10B981]" /><span>Insurance Validation Hub</span></span>
                     <span>➡️</span>
                   </Link>
                   <Link href="/farmer/insurance/apply" onClick={() => setMobileMenuOpen(false)} className="flex items-center justify-between px-3 py-2.5 rounded-xl text-xs font-black text-emerald-400 bg-emerald-950/60 border border-emerald-500/30">

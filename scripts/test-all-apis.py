@@ -319,6 +319,32 @@ def run_tests():
     ok = status == 200 and body.get("success") is True
     tests.append(("POST /api/auth/logout", status, ok, f"Session terminated and cookie cleared"))
 
+    # 35. INSURANCE: Ghatal Excel Registry & Historical Yields
+    status, body, _ = request_json("/api/insurance/validate-chf", method="GET")
+    v_count = body.get("villageCount", 0) if isinstance(body, dict) else 0
+    c_count = body.get("candidatesCount", 0) if isinstance(body, dict) else 0
+    ok = status == 200 and body.get("success") is True and v_count > 0
+    tests.append(("GET /api/insurance/validate-chf", status, ok, f"Retrieved {v_count} village historical tables (2017-27) & {c_count} candidates"))
+
+    # 36. INSURANCE: Validate Claim with Calculated CHF Algorithm
+    val_payload = {"candidateId": "cand-001", "calculatedChf": 0.421, "chfThreshold": 0.55}
+    status, body, _ = request_json("/api/insurance/validate-chf", method="POST", data=val_payload)
+    val_data = body.get("data", {}) if isinstance(body, dict) else {}
+    payout = val_data.get("determinedInsuranceAmount", 0)
+    loss_pct = val_data.get("validatedLossPct", 0)
+    ok = status == 200 and body.get("success") is True and payout > 0
+    tests.append(("POST /api/insurance/validate-chf", status, ok, f"Validated CHF 0.421 -> Loss {loss_pct}%, Determined Payout ₹{payout:,}"))
+
+    # 37. PHOTO DIAGNOSTIC: NPK Condition & Water Requirement
+    diag_payload = {"crop": "Aman Paddy", "sampleId": 1}
+    status, body, _ = request_json("/api/disease/predict", method="POST", data=diag_payload)
+    diag_data = body.get("data", {}) if isinstance(body, dict) else {}
+    water_req = diag_data.get("waterRequirement", {})
+    npk = diag_data.get("npkCondition", {})
+    water_badge = water_req.get("statusBadge", "")
+    ok = status == 200 and body.get("success") is True and bool(water_badge) and "nitrogen" in npk
+    tests.append(("POST /api/disease/predict (NPK & Water)", status, ok, f"{water_badge} ({water_req.get('estimatedSoilMoisturePct')}% moist) | NPK Balance {npk.get('overallBalanceScore')}/100"))
+
     print("\n" + "=" * 75)
     print(" DETAILED EXECUTION MATRIX")
     print("=" * 75)
