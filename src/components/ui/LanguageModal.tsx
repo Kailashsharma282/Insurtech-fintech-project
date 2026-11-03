@@ -76,10 +76,10 @@ export const LanguageModal: React.FC<LanguageModalProps> = ({ isOpen: controlled
 
   return (
     <div className="fixed inset-0 z-[100] flex items-center justify-center bg-black/80 backdrop-blur-md p-4 animate-in fade-in duration-200">
-      <div className="bg-gradient-to-b from-[#0B2119] via-[#071511] to-[#040D0A] border-2 border-[#10B981]/50 rounded-3xl max-w-2xl w-full p-6 sm:p-8 text-white shadow-2xl relative overflow-hidden">
+      <div className="bg-gradient-to-b bg-[#0F172A] border-2 border-blue-500/50 rounded-3xl max-w-2xl w-full p-6 sm:p-8 text-white shadow-2xl relative overflow-hidden">
         
         {/* Ambient glow */}
-        <div className="absolute -right-24 -top-24 w-60 h-60 bg-[#10B981]/20 rounded-full blur-3xl pointer-events-none" />
+        <div className="absolute -right-24 -top-24 w-60 h-60 bg-blue-600/20 rounded-full blur-3xl pointer-events-none" />
         <div className="absolute -left-24 -bottom-24 w-60 h-60 bg-emerald-600/20 rounded-full blur-3xl pointer-events-none" />
 
         {/* Close button if user already had a language */}
@@ -127,14 +127,14 @@ export const LanguageModal: React.FC<LanguageModalProps> = ({ isOpen: controlled
                 onClick={() => handleSelectLanguage(lang.code)}
                 className={`p-4 rounded-2xl border-2 transition-all flex items-center justify-between group text-left ${
                   isSelected
-                    ? 'bg-emerald-950/80 border-[#10B981] shadow-lg shadow-emerald-950/50 scale-[1.02]'
+                    ? 'bg-emerald-950/80 border-blue-500 shadow-lg shadow-slate-900/50 scale-[1.02]'
                     : 'bg-[#102820]/70 border-emerald-900/60 hover:border-emerald-500/50 hover:bg-[#102820]'
                 }`}
               >
                 <div className="flex items-center space-x-3.5">
                   <span className="text-2xl sm:text-3xl shrink-0 drop-shadow">{lang.flag}</span>
                   <div>
-                    <div className="font-black text-base sm:text-lg text-white group-hover:text-[#34D399] transition-colors">
+                    <div className="font-black text-base sm:text-lg text-white group-hover:text-blue-400 transition-colors">
                       {lang.native}
                     </div>
                     <div className="text-xs text-slate-400 font-medium">
@@ -145,7 +145,7 @@ export const LanguageModal: React.FC<LanguageModalProps> = ({ isOpen: controlled
 
                 <div className="shrink-0 flex items-center space-x-1">
                   {isSelected ? (
-                    <CheckCircle2 className="w-5 h-5 text-[#34D399]" />
+                    <CheckCircle2 className="w-5 h-5 text-blue-400" />
                   ) : (
                     <ArrowRight className="w-4 h-4 text-slate-500 group-hover:text-emerald-400 group-hover:translate-x-1 transition-all" />
                   )}

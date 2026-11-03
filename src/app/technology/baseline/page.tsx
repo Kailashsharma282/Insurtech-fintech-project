@@ -67,7 +67,7 @@ export default function BaselineEnginePage() {
               <select
                 value={selectedCrop}
                 onChange={(e) => setSelectedCrop(e.target.value)}
-                className="w-full p-2.5 rounded-xl border border-slate-300 bg-white font-medium focus:ring-1 focus:ring-[#10B981]"
+                className="w-full p-2.5 rounded-xl border border-slate-300 bg-white font-medium focus:ring-1 focus:ring-blue-500"
               >
                 <option value="Aman Paddy">Aman Paddy (Rice)</option>
                 <option value="Potato">Potato (Tuber)</option>
@@ -80,7 +80,7 @@ export default function BaselineEnginePage() {
               <select
                 value={selectedSeason}
                 onChange={(e) => setSelectedSeason(e.target.value)}
-                className="w-full p-2.5 rounded-xl border border-slate-300 bg-white font-medium focus:ring-1 focus:ring-[#10B981]"
+                className="w-full p-2.5 rounded-xl border border-slate-300 bg-white font-medium focus:ring-1 focus:ring-blue-500"
               >
                 <option value="Kharif 2026">Kharif 2026 (Monsoon)</option>
                 <option value="Rabi 2025-26">Rabi 2025-26 (Winter)</option>
@@ -93,7 +93,7 @@ export default function BaselineEnginePage() {
               <select
                 value={selectedUnitCode}
                 onChange={(e) => setSelectedUnitCode(e.target.value)}
-                className="w-full p-2.5 rounded-xl border border-slate-300 bg-white font-medium focus:ring-1 focus:ring-[#10B981]"
+                className="w-full p-2.5 rounded-xl border border-slate-300 bg-white font-medium focus:ring-1 focus:ring-blue-500"
               >
                 {SEED_INSURANCE_UNITS.map(u => (
                   <option key={u.code} value={u.code}>
@@ -107,11 +107,11 @@ export default function BaselineEnginePage() {
         </div>
 
         {/* Selected IU Baseline Stat Card */}
-        <div className="p-8 rounded-3xl bg-[#071511] text-white border border-[#10B981]/40 shadow-2xl">
+        <div className="p-8 rounded-3xl bg-[#0F172A] text-white border border-slate-700 shadow-2xl">
           <div className="grid grid-cols-1 md:grid-cols-4 gap-6 text-center md:text-left">
             
             <div>
-              <div className="text-xs font-mono text-[#34D399] uppercase">Insurance Unit</div>
+              <div className="text-xs font-mono text-blue-400 uppercase">Insurance Unit</div>
               <div className="text-xl font-bold text-white mt-1">{insuranceUnit.name}</div>
               <div className="text-xs text-slate-400 mt-0.5">{insuranceUnit.district} &bull; {insuranceUnit.crop}</div>
             </div>
@@ -123,7 +123,7 @@ export default function BaselineEnginePage() {
             </div>
 
             <div className="border-t md:border-t-0 md:border-l border-emerald-900/60 pt-4 md:pt-0 md:pl-6">
-              <div className="text-xs font-mono text-[#34D399] uppercase">Current Season CHF</div>
+              <div className="text-xs font-mono text-blue-400 uppercase">Current Season CHF</div>
               <div className="text-3xl font-black text-white mt-1">{insuranceUnit.currentChf.toFixed(3)}</div>
               <div className={`text-xs mt-0.5 font-bold ${insuranceUnit.currentChf < 0.55 ? 'text-red-400' : 'text-emerald-400'}`}>
                 Risk: {insuranceUnit.riskState.replace('_', ' ')}
@@ -179,7 +179,7 @@ export default function BaselineEnginePage() {
           
           <div className="p-6 rounded-3xl bg-white border border-[#E2E8F0] space-y-3">
             <div className="flex items-center space-x-2 text-[#0F172A] font-bold text-base">
-              <Layers className="w-5 h-5 text-[#059669]" />
+              <Layers className="w-5 h-5 text-blue-600" />
               <span>Stratified Clustering & Insurance Unit Definition</span>
             </div>
             <p className="text-slate-600 text-xs sm:text-sm leading-relaxed">
@@ -189,7 +189,7 @@ export default function BaselineEnginePage() {
 
           <div className="p-6 rounded-3xl bg-white border border-[#E2E8F0] space-y-3">
             <div className="flex items-center space-x-2 text-[#0F172A] font-bold text-base">
-              <Sliders className="w-5 h-5 text-[#059669]" />
+              <Sliders className="w-5 h-5 text-blue-600" />
               <span>Management Bias vs Weather Separation</span>
             </div>
             <p className="text-slate-600 text-xs sm:text-sm leading-relaxed">

@@ -108,14 +108,14 @@ export default function FarmDetailsPage() {
           <div className="flex items-center space-x-3">
             <Link
               href="/operations/iot"
-              className="px-4 py-2.5 rounded-xl bg-slate-900 hover:bg-slate-800 text-[#34D399] font-mono text-xs font-semibold flex items-center space-x-2"
+              className="px-4 py-2.5 rounded-xl bg-slate-900 hover:bg-slate-800 text-blue-400 font-mono text-xs font-semibold flex items-center space-x-2"
             >
               <Radio className="w-3.5 h-3.5" />
               <span>IoT Telemetry</span>
             </Link>
             <Link
               href="/farmer/optimization"
-              className="px-4 py-2.5 rounded-xl bg-[#10B981] hover:bg-emerald-600 text-white text-xs font-semibold flex items-center space-x-2 shadow-sm"
+              className="px-4 py-2.5 rounded-xl bg-blue-600 hover:bg-blue-700 text-white text-xs font-semibold flex items-center space-x-2 shadow-sm"
             >
               <Sparkles className="w-3.5 h-3.5" />
               <span>Optimize Nutrients</span>
@@ -137,7 +137,7 @@ export default function FarmDetailsPage() {
               onClick={() => setActiveTab(tab.id as any)}
               className={`px-4 py-3 border-b-2 transition-colors whitespace-nowrap ${
                 activeTab === tab.id 
-                  ? 'border-[#10B981] text-[#059669]' 
+                  ? 'border-blue-500 text-blue-600' 
                   : 'border-transparent text-slate-500 hover:text-slate-800'
               }`}
             >
@@ -179,7 +179,7 @@ export default function FarmDetailsPage() {
               
               <div className="p-6 rounded-3xl bg-white border border-[#E2E8F0] shadow-sm space-y-4">
                 <h3 className="font-bold text-base text-[#0F172A] border-b border-slate-100 pb-3 flex items-center space-x-2">
-                  <Sprout className="w-4 h-4 text-[#059669]" />
+                  <Sprout className="w-4 h-4 text-blue-600" />
                   <span>Crop Phenology & Cultivation Specifications</span>
                 </h3>
                 <div className="grid grid-cols-2 gap-3 text-xs">
@@ -212,7 +212,7 @@ export default function FarmDetailsPage() {
 
               <div className="p-6 rounded-3xl bg-white border border-[#E2E8F0] shadow-sm space-y-4">
                 <h3 className="font-bold text-base text-[#0F172A] border-b border-slate-100 pb-3 flex items-center space-x-2">
-                  <MapPin className="w-4 h-4 text-[#059669]" />
+                  <MapPin className="w-4 h-4 text-blue-600" />
                   <span>Cadastral & Spatial Boundary Specs</span>
                 </h3>
                 <div className="grid grid-cols-2 gap-3 text-xs">
@@ -269,7 +269,7 @@ export default function FarmDetailsPage() {
                     onClick={() => setActiveChart(chartKey)}
                     className={`px-3 py-1.5 rounded-lg font-bold transition-colors ${
                       activeChart === chartKey 
-                        ? 'bg-[#071511] text-[#34D399]' 
+                        ? 'bg-blue-600 text-white' 
                         : 'bg-slate-100 text-slate-600 hover:bg-slate-200'
                     }`}
                   >
@@ -290,7 +290,7 @@ export default function FarmDetailsPage() {
                   <Legend wrapperStyle={{ fontSize: '12px', paddingTop: '10px' }} />
                   
                   {activeChart === 'CHF' && (
-                    <Line type="monotone" dataKey="CHF" name="Crop Health Factor (CHF)" stroke="#10B981" strokeWidth={3} dot={{ r: 5 }} />
+                    <Line type="monotone" dataKey="CHF" name="Crop Health Factor (CHF)" stroke="#2563EB" strokeWidth={3} dot={{ r: 5 }} />
                   )}
                   {activeChart === 'NDVI' && (
                     <Line type="monotone" dataKey="NDVI" name="Normalized Difference Vegetation Index (NDVI)" stroke="#059669" strokeWidth={3} dot={{ r: 5 }} />
@@ -438,7 +438,7 @@ export default function FarmDetailsPage() {
                   {idx < timelineStages.length - 1 && (
                     <div className="absolute left-4 top-8 bottom-0 w-0.5 bg-emerald-200"></div>
                   )}
-                  <div className="w-8 h-8 rounded-full bg-emerald-100 border-2 border-[#10B981] flex items-center justify-center text-emerald-700 shrink-0 z-10">
+                  <div className="w-8 h-8 rounded-full bg-emerald-100 border-2 border-blue-500 flex items-center justify-center text-emerald-700 shrink-0 z-10">
                     <CheckCircle2 className="w-4 h-4" />
                   </div>
                   <div className="p-4 rounded-2xl bg-slate-50 border border-slate-200 flex-1 space-y-1">

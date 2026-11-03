@@ -47,7 +47,7 @@ export default function SatelliteMapPage() {
         <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-4">
           <div>
             <div className="flex items-center space-x-2">
-              <span className="text-xs font-mono uppercase tracking-wider text-[#059669] font-bold">
+              <span className="text-xs font-mono uppercase tracking-wider text-blue-600 font-bold">
                 Sentinel-2 & Sentinel-1 GIS Viewer
               </span>
             </div>
@@ -70,7 +70,7 @@ export default function SatelliteMapPage() {
                 onClick={() => setSelectedLayer(layer.id as any)}
                 className={`px-3 py-1.5 rounded-xl transition-colors ${
                   selectedLayer === layer.id 
-                    ? 'bg-[#071511] text-[#34D399]' 
+                    ? 'bg-blue-600 text-white' 
                     : 'text-slate-600 hover:text-slate-900'
                 }`}
               >
@@ -83,7 +83,7 @@ export default function SatelliteMapPage() {
         {/* Filters Bar */}
         <div className="bg-white p-4 rounded-2xl border border-[#E2E8F0] shadow-sm flex flex-wrap items-center gap-3 text-xs">
           <span className="font-semibold text-slate-700 flex items-center space-x-1">
-            <Filter className="w-3.5 h-3.5 text-[#059669]" />
+            <Filter className="w-3.5 h-3.5 text-blue-600" />
             <span>Map Filters:</span>
           </span>
 
@@ -210,7 +210,7 @@ export default function SatelliteMapPage() {
 
             <Link
               href={`/farmer/farms/${selectedFarm.id}`}
-              className="w-full flex items-center justify-center py-3 rounded-2xl bg-[#10B981] hover:bg-emerald-600 text-white font-semibold text-xs transition-colors shadow-sm"
+              className="w-full flex items-center justify-center py-3 rounded-2xl bg-blue-600 hover:bg-blue-700 text-white font-semibold text-xs transition-colors shadow-sm"
             >
               <span>Open Complete Farm Intelligence</span>
               <ArrowRight className="w-3.5 h-3.5 ml-1.5" />

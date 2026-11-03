@@ -14,7 +14,7 @@ export default function FarmerPaymentsPage() {
         
         <div className="border-b border-slate-200 pb-5">
           <div className="flex items-center space-x-2 mb-1">
-            <span className="text-xs font-mono uppercase tracking-wider text-[#059669] font-bold">
+            <span className="text-xs font-mono uppercase tracking-wider text-blue-600 font-bold">
               Direct Benefit Transfer Registry
             </span>
             <span className="px-2 py-0.5 rounded-full bg-amber-100 text-amber-800 text-[10px] font-bold">
@@ -45,7 +45,7 @@ export default function FarmerPaymentsPage() {
             <div key={p.id} className="p-6 rounded-3xl bg-white border border-[#E2E8F0] shadow-sm space-y-4">
               <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-slate-100 pb-3">
                 <div>
-                  <span className="text-[10px] font-mono uppercase text-[#059669] font-bold">Disbursement Voucher</span>
+                  <span className="text-[10px] font-mono uppercase text-blue-600 font-bold">Disbursement Voucher</span>
                   <h3 className="font-bold text-lg text-slate-900">{p.payoutRef}</h3>
                 </div>
                 <div className="text-right">

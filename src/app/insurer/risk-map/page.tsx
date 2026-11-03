@@ -35,7 +35,7 @@ export default function InsurerRiskMapPage() {
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-slate-200 pb-5">
           <div>
             <div className="flex items-center space-x-2">
-              <span className="text-xs font-mono uppercase tracking-wider text-[#059669] font-bold">
+              <span className="text-xs font-mono uppercase tracking-wider text-blue-600 font-bold">
                 Gram Panchayat Level Underwriting
               </span>
             </div>
@@ -98,7 +98,7 @@ export default function InsurerRiskMapPage() {
                   onClick={() => setSelectedUnit(u)}
                   className={`px-3 py-1.5 rounded-xl font-mono text-xs font-bold transition-all whitespace-nowrap ${
                     selectedUnit.code === u.code 
-                      ? 'bg-[#071511] text-[#34D399] shadow-sm' 
+                      ? 'bg-blue-600 text-white shadow-sm' 
                       : 'bg-slate-50 hover:bg-slate-100 text-slate-600'
                   }`}
                 >
@@ -174,7 +174,7 @@ export default function InsurerRiskMapPage() {
 
                 <div className="flex justify-between py-1 border-b border-slate-100">
                   <span className="text-slate-500">Claim Settlement Status:</span>
-                  <span className={`font-bold ${selectedUnit.currentChf < 0.55 ? 'text-red-600' : 'text-[#059669]'}`}>
+                  <span className={`font-bold ${selectedUnit.currentChf < 0.55 ? 'text-red-600' : 'text-blue-600'}`}>
                     {selectedUnit.claimStatus}
                   </span>
                 </div>

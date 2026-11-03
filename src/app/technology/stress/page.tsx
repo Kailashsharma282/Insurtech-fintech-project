@@ -57,7 +57,7 @@ export default function EarlyStressDetectionPage() {
 
         {/* Highlight Recommendation Card */}
         <div className="max-w-4xl mx-auto">
-          <div className="p-6 rounded-3xl bg-[#071511] text-white border border-[#10B981]/40 shadow-2xl relative overflow-hidden">
+          <div className="p-6 rounded-3xl bg-[#0F172A] text-white border border-slate-700 shadow-2xl relative overflow-hidden">
             <div className="absolute top-0 right-0 w-64 h-64 bg-emerald-500/10 rounded-full blur-3xl pointer-events-none"></div>
 
             <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-emerald-900/60 pb-5 mb-5">
@@ -101,7 +101,7 @@ export default function EarlyStressDetectionPage() {
               <span className="text-slate-400">Actuate directly from Farmer Operations:</span>
               <Link
                 href="/operations/iot"
-                className="inline-flex items-center px-4 py-2 rounded-lg bg-[#10B981] hover:bg-emerald-600 text-white font-semibold transition-colors"
+                className="inline-flex items-center px-4 py-2 rounded-lg bg-blue-600 hover:bg-blue-700 text-white font-semibold transition-colors"
               >
                 <span>Trigger Pump Relay Now</span>
                 <ArrowRight className="w-3.5 h-3.5 ml-1.5" />
@@ -141,7 +141,7 @@ export default function EarlyStressDetectionPage() {
                 <Legend wrapperStyle={{ fontSize: '12px', paddingTop: '10px' }} />
                 
                 {/* Normal Baseline */}
-                <Line yAxisId="left" type="monotone" dataKey="normalBaseline" name="Historical Normal CHF" stroke="#10B981" strokeDasharray="5 5" strokeWidth={2} dot={false} />
+                <Line yAxisId="left" type="monotone" dataKey="normalBaseline" name="Historical Normal CHF" stroke="#2563EB" strokeDasharray="5 5" strokeWidth={2} dot={false} />
                 {/* Standard Optical NDVI */}
                 <Line yAxisId="left" type="monotone" dataKey="opticalNdvi" name="Optical NDVI (Slow Response)" stroke="#F59E0B" strokeWidth={2.5} />
                 {/* UV-NDVI */}
@@ -172,7 +172,7 @@ export default function EarlyStressDetectionPage() {
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
           <div className="p-6 rounded-3xl bg-white border border-[#E2E8F0] space-y-4">
             <div className="flex items-center space-x-2 text-[#0F172A] font-bold text-base">
-              <Satellite className="w-5 h-5 text-[#059669]" />
+              <Satellite className="w-5 h-5 text-blue-600" />
               <span>Sentinel-1 C-SAR VH Polarimetric Sensitivity</span>
             </div>
             <p className="text-slate-600 text-xs sm:text-sm leading-relaxed">
@@ -186,7 +186,7 @@ export default function EarlyStressDetectionPage() {
 
           <div className="p-6 rounded-3xl bg-white border border-[#E2E8F0] space-y-4">
             <div className="flex items-center space-x-2 text-[#0F172A] font-bold text-base">
-              <Activity className="w-5 h-5 text-[#059669]" />
+              <Activity className="w-5 h-5 text-blue-600" />
               <span>Physiological Crop Stress vs Visible Wilting</span>
             </div>
             <p className="text-slate-600 text-xs sm:text-sm leading-relaxed">

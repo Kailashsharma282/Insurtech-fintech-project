@@ -25,7 +25,7 @@ export default function AdminOverviewPage() {
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-slate-200 pb-5">
           <div>
             <div className="flex items-center space-x-2">
-              <span className="text-xs font-mono uppercase tracking-wider text-[#059669] font-bold">
+              <span className="text-xs font-mono uppercase tracking-wider text-blue-600 font-bold">
                 Platform Administration & Telemetry Operations
               </span>
             </div>
@@ -107,10 +107,10 @@ export default function AdminOverviewPage() {
         </div>
 
         {/* Database Counts Banner */}
-        <div className="bg-[#071511] p-8 rounded-3xl text-white border border-[#10B981]/30 shadow-xl space-y-6">
+        <div className="bg-[#0F172A] p-8 rounded-3xl text-white border border-slate-700 shadow-xl space-y-6">
           <div className="border-b border-emerald-900/60 pb-4 flex items-center justify-between">
             <h3 className="font-bold text-lg text-white">Database Entities Summary (Section 24 & 26)</h3>
-            <span className="text-xs font-mono text-[#34D399]">West Bengal Pilot Cluster</span>
+            <span className="text-xs font-mono text-blue-400">West Bengal Pilot Cluster</span>
           </div>
 
           <div className="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-7 gap-4 text-center font-mono text-xs">

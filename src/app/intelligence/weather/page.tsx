@@ -73,7 +73,7 @@ export default function WeatherRiskPage() {
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-slate-200 pb-5">
           <div>
             <div className="flex items-center space-x-2">
-              <span className="text-xs font-mono uppercase tracking-wider text-[#059669] font-bold">
+              <span className="text-xs font-mono uppercase tracking-wider text-blue-600 font-bold">
                 Agro-Meteorological Intel
               </span>
             </div>
@@ -88,7 +88,7 @@ export default function WeatherRiskPage() {
           <button
             onClick={handleSimulateHeavyRain}
             disabled={simulating}
-            className="px-5 py-2.5 rounded-2xl bg-[#071511] hover:bg-slate-800 text-[#34D399] border border-[#10B981]/40 text-xs font-semibold flex items-center space-x-2 shadow-lg shadow-emerald-950/20"
+            className="px-5 py-2.5 rounded-2xl bg-[#0F172A] hover:bg-slate-800 text-blue-400 border border-slate-700 text-xs font-semibold flex items-center space-x-2 shadow-lg shadow-slate-900/10"
           >
             {simulating ? <RefreshCw className="w-4 h-4 animate-spin" /> : <Zap className="w-4 h-4" />}
             <span>Trigger "Heavy Rainfall" Simulation</span>
@@ -97,7 +97,7 @@ export default function WeatherRiskPage() {
 
         {/* Weather-Event Simulation Card Required by Section 14 */}
         {simulatedEvent && (
-          <div className="p-6 rounded-3xl bg-[#071511] text-white border-2 border-blue-500/50 shadow-2xl space-y-4">
+          <div className="p-6 rounded-3xl bg-[#0F172A] text-white border-2 border-blue-500/50 shadow-2xl space-y-4">
             <div className="flex items-center justify-between border-b border-blue-900/60 pb-3">
               <div className="flex items-center space-x-2">
                 <CloudRain className="w-5 h-5 text-blue-400" />

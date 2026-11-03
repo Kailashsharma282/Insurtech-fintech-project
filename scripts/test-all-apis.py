@@ -26,7 +26,7 @@ if hasattr(sys.stdout, 'reconfigure'):
     except:
         pass
 
-BASE_URL = "http://localhost:3006"
+BASE_URL = sys.argv[1] if len(sys.argv) > 1 else "http://localhost:3000"
 
 def request_json(path, method="GET", data=None, cookie=None):
     url = f"{BASE_URL}{path}"

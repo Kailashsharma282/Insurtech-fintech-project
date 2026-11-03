@@ -136,7 +136,7 @@ export default function InsurerPoliciesPage() {
         {toastMessage && (
           <div className={`fixed top-20 right-4 z-50 p-4 rounded-2xl shadow-2xl text-xs font-bold flex items-center space-x-2 animate-in slide-in-from-top-3 ${
             toastMessage.type === 'success' 
-              ? 'bg-[#071511] text-[#34D399] border border-[#10B981]' 
+              ? 'bg-blue-600 text-white border border-blue-500' 
               : 'bg-red-950 text-red-200 border border-red-500'
           }`}>
             {toastMessage.type === 'success' ? <CheckCircle2 className="w-5 h-5" /> : <AlertTriangle className="w-5 h-5" />}
@@ -148,7 +148,7 @@ export default function InsurerPoliciesPage() {
         <Card3D depth={4} glowOnHover={false} className="bg-white p-5 sm:p-7 rounded-3xl border border-[#E2E8F0] shadow-sm">
           <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
             <div>
-              <div className="inline-flex items-center space-x-1.5 px-3 py-1 rounded-full bg-emerald-50 border border-emerald-200 text-[#059669] text-xs font-bold uppercase tracking-wider mb-2">
+              <div className="inline-flex items-center space-x-1.5 px-3 py-1 rounded-full bg-emerald-50 border border-emerald-200 text-blue-600 text-xs font-bold uppercase tracking-wider mb-2">
                 <Sparkles className="w-3.5 h-3.5" />
                 <span>Underwriting Review Desk</span>
               </div>
@@ -171,7 +171,7 @@ export default function InsurerPoliciesPage() {
               </button>
               <Link
                 href="/insurer/dashboard"
-                className="px-4 py-2.5 rounded-2xl bg-[#071511] hover:bg-slate-800 text-[#34D399] font-bold text-xs shadow-sm transition-all"
+                className="px-4 py-2.5 rounded-2xl bg-[#0F172A] hover:bg-slate-800 text-blue-400 font-bold text-xs shadow-sm transition-all"
               >
                 Portfolio Dashboard &rarr;
               </Link>
@@ -358,7 +358,7 @@ export default function InsurerPoliciesPage() {
                             type="button"
                             disabled={actionLoading}
                             onClick={() => handleApprove(policy)}
-                            className="flex-1 sm:flex-initial px-4 py-2.5 rounded-xl bg-[#10B981] hover:bg-emerald-600 text-white font-black text-xs shadow-md shadow-emerald-950/20 transition-all flex items-center justify-center space-x-1.5 transform active:scale-95"
+                            className="flex-1 sm:flex-initial px-4 py-2.5 rounded-xl bg-blue-600 hover:bg-blue-700 text-white font-black text-xs shadow-md shadow-slate-900/10 transition-all flex items-center justify-center space-x-1.5 transform active:scale-95"
                           >
                             <Check className="w-4 h-4" />
                             <span>Accept & Issue 🟢</span>

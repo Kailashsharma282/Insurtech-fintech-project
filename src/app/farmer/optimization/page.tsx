@@ -73,31 +73,31 @@ export default function OptimizationPage() {
         </div>
 
         {/* Algorithm Visualization Pipeline (Section 12) */}
-        <div className="p-6 rounded-3xl bg-[#071511] text-white border border-[#10B981]/30 shadow-xl">
+        <div className="p-6 rounded-3xl bg-[#0F172A] text-white border border-slate-700 shadow-xl">
           <div className="text-center mb-4">
-            <span className="text-[10px] font-mono uppercase tracking-widest text-[#34D399]">
+            <span className="text-[10px] font-mono uppercase tracking-widest text-blue-400">
               Algorithm Convergence Architecture
             </span>
           </div>
           <div className="grid grid-cols-1 sm:grid-cols-5 gap-3 text-center text-xs font-mono">
             <div className="p-3 rounded-xl bg-[#102820] border border-emerald-900/40">
-              <span className="text-[#34D399] block font-bold">1. Candidate Solutions</span>
+              <span className="text-blue-400 block font-bold">1. Candidate Solutions</span>
               <span className="text-[10px] text-slate-400">Random Initial Population</span>
             </div>
             <div className="p-3 rounded-xl bg-[#102820] border border-emerald-900/40">
-              <span className="text-[#34D399] block font-bold">2. Genetic Algorithm</span>
+              <span className="text-blue-400 block font-bold">2. Genetic Algorithm</span>
               <span className="text-[10px] text-slate-400">Crossover & Mutation</span>
             </div>
             <div className="p-3 rounded-xl bg-[#102820] border border-emerald-900/40">
-              <span className="text-[#34D399] block font-bold">3. Particle Swarm</span>
+              <span className="text-blue-400 block font-bold">3. Particle Swarm</span>
               <span className="text-[10px] text-slate-400">Velocity p_best & g_best</span>
             </div>
             <div className="p-3 rounded-xl bg-[#102820] border border-emerald-900/40">
-              <span className="text-[#34D399] block font-bold">4. Fast Convergence</span>
+              <span className="text-blue-400 block font-bold">4. Fast Convergence</span>
               <span className="text-[10px] text-slate-400">Pareto Fitness Frontier</span>
             </div>
             <div className="p-3 rounded-xl bg-[#102820] border border-emerald-900/40">
-              <span className="text-[#34D399] block font-bold">5. Optimized Plan</span>
+              <span className="text-blue-400 block font-bold">5. Optimized Plan</span>
               <span className="text-[10px] text-slate-400">Micro-Dosed Prescription</span>
             </div>
           </div>
@@ -110,7 +110,7 @@ export default function OptimizationPage() {
           <div className="lg:col-span-4 bg-white p-6 rounded-3xl border border-[#E2E8F0] shadow-sm space-y-5">
             <div className="border-b border-slate-100 pb-3 flex items-center justify-between">
               <h3 className="font-bold text-base text-[#0F172A] flex items-center space-x-2">
-                <Sliders className="w-4 h-4 text-[#059669]" />
+                <Sliders className="w-4 h-4 text-blue-600" />
                 <span>Field & Soil Inputs</span>
               </h3>
               <span className="text-[10px] font-mono text-slate-400">Plot #204 Ghatal</span>
@@ -142,7 +142,7 @@ export default function OptimizationPage() {
                   max="120"
                   value={inputs.cropAgeDays}
                   onChange={(e) => setInputs({ ...inputs, cropAgeDays: parseInt(e.target.value) })}
-                  className="w-full accent-[#10B981]"
+                  className="w-full accent-blue-600"
                 />
               </div>
 
@@ -214,7 +214,7 @@ export default function OptimizationPage() {
               <button
                 onClick={runEngine}
                 disabled={optimizing}
-                className="w-full py-3 rounded-xl bg-[#10B981] hover:bg-emerald-600 text-white font-semibold text-xs transition-colors flex items-center justify-center space-x-2 shadow-md shadow-emerald-950/10"
+                className="w-full py-3 rounded-xl bg-blue-600 hover:bg-blue-700 text-white font-semibold text-xs transition-colors flex items-center justify-center space-x-2 shadow-md shadow-slate-900/10"
               >
                 {optimizing ? <RefreshCw className="w-4 h-4 animate-spin" /> : <Zap className="w-4 h-4" />}
                 <span>{optimizing ? 'Executing GA-PSO...' : 'Run Optimization Algorithm'}</span>
@@ -295,7 +295,7 @@ export default function OptimizationPage() {
                         <Legend wrapperStyle={{ fontSize: '11px', paddingTop: '8px' }} />
                         <Line type="monotone" dataKey="gaScore" name="Genetic Algorithm (GA)" stroke="#F59E0B" strokeWidth={2} dot={false} />
                         <Line type="monotone" dataKey="psoScore" name="Particle Swarm (PSO)" stroke="#3B82F6" strokeWidth={2} dot={false} />
-                        <Line type="monotone" dataKey="hybridScore" name="Hybrid GA+PSO (Optimal)" stroke="#10B981" strokeWidth={3} dot={{ r: 3 }} />
+                        <Line type="monotone" dataKey="hybridScore" name="Hybrid GA+PSO (Optimal)" stroke="#2563EB" strokeWidth={3} dot={{ r: 3 }} />
                       </LineChart>
                     </ResponsiveContainer>
                   </div>

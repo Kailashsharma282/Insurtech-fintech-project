@@ -1,16 +1,16 @@
 import React from 'react';
 import Link from 'next/link';
-import { Satellite, Shield, Cpu, BookOpen, GitFork } from 'lucide-react';
+import { Satellite } from 'lucide-react';
 
 export const Footer: React.FC = () => {
   return (
-    <footer className="bg-[#071511] border-t border-[#10B981]/20 text-slate-400 text-xs mt-16 pb-20 md:pb-8">
+    <footer className="bg-[#0F172A] border-t border-slate-800 text-slate-400 text-xs mt-16 pb-20 md:pb-8">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
         <div className="grid grid-cols-1 md:grid-cols-4 gap-8 mb-8">
           
           <div className="md:col-span-2 space-y-3">
             <div className="flex items-center space-x-2">
-              <div className="w-7 h-7 rounded-lg bg-[#10B981] flex items-center justify-center text-white">
+              <div className="w-7 h-7 rounded-lg bg-blue-600 flex items-center justify-center text-white">
                 <Satellite className="w-4 h-4" />
               </div>
               <span className="font-bold text-base text-white">AgriSure Intelligence</span>
@@ -18,7 +18,9 @@ export const Footer: React.FC = () => {
             <p className="text-slate-400 max-w-md text-xs leading-relaxed">
               Enterprise Agricultural Parametric InsurTech Platform combining Sentinel-2/1 satellite remote sensing, localized Shannon entropy Crop Health Factor (CHF) computation, agricultural IoT telemetry, and autonomous underwriting.
             </p>
-            <div className="p-3 rounded-lg bg-emerald-950/40 border border-[#10B981]/20 text-[11px] text-emerald-300"><strong>West Bengal Pilot Coverage:</strong> Operational telemetry, Earth Observation algorithms, and parametric underwriting calibrated for West Bengal pilot zones (Paschim Medinipur, Nadia, Burdwan, Hooghly).</div>
+            <div className="p-3 rounded-lg bg-slate-800/80 border border-slate-700 text-[11px] text-blue-300">
+              <strong>West Bengal Pilot Coverage:</strong> Operational telemetry, Earth Observation algorithms, and parametric underwriting calibrated for Ghatal Block, Paschim Medinipur.
+            </div>
           </div>
 
           <div>
@@ -27,23 +29,23 @@ export const Footer: React.FC = () => {
             </h4>
             <ul className="space-y-2">
               <li>
-                <Link href="/how-it-works" className="hover:text-white transition-colors">
-                  01-06 Six-Stage Architecture
+                <Link href="/farmer/dashboard" className="hover:text-white transition-colors">
+                  Farmer Dashboard
+                </Link>
+              </li>
+              <li>
+                <Link href="/farmer/insurance-validation" className="hover:text-white transition-colors">
+                  Insurance Claim Validation Hub
+                </Link>
+              </li>
+              <li>
+                <Link href="/farmer/disease" className="hover:text-white transition-colors">
+                  Photo AI (NPK & Water Diagnostic)
                 </Link>
               </li>
               <li>
                 <Link href="/technology/chf" className="hover:text-white transition-colors">
-                  Shannon Entropy CHF Formula
-                </Link>
-              </li>
-              <li>
-                <Link href="/technology/stress" className="hover:text-white transition-colors">
-                  UV-NDVI & Radar VH Backscatter
-                </Link>
-              </li>
-              <li>
-                <Link href="/technology/baseline" className="hover:text-white transition-colors">
-                  4-Year Localized Baseline
+                  Ghatal Block CHF Engine
                 </Link>
               </li>
               <li>
@@ -71,17 +73,12 @@ export const Footer: React.FC = () => {
               </li>
               <li>
                 <Link href="/insurer/claims" className="hover:text-white transition-colors">
-                  11-Section Evidence Packages
+                  Parametric Claims
                 </Link>
               </li>
               <li>
                 <Link href="/insurer/audit" className="hover:text-white transition-colors">
                   Cryptographic Audit Trail
-                </Link>
-              </li>
-              <li>
-                <Link href="/team" className="hover:text-white transition-colors">
-                  System Architecture & Roles
                 </Link>
               </li>
             </ul>
@@ -91,10 +88,10 @@ export const Footer: React.FC = () => {
 
         <div className="border-t border-slate-800 pt-6 flex flex-col sm:flex-row items-center justify-between text-[11px] text-slate-500">
           <div>
-            © 2026 AgriSure Intelligence. Built with Next.js 16, TypeScript, Leaflet & Recharts.
+            © 2026 AgriSure Intelligence. West Bengal Parametric Pilot.
           </div>
           <div className="flex items-center space-x-4 mt-2 sm:mt-0 font-mono">
-            <span>OBSERVE → DIAGNOSE → PRESCRIBE → ACTUATE → VERIFY → INSURE</span>
+            <span>OBSERVE &rarr; DIAGNOSE &rarr; PRESCRIBE &rarr; VERIFY &rarr; INSURE</span>
           </div>
         </div>
       </div>

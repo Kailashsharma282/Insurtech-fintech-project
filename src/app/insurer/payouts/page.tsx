@@ -66,7 +66,7 @@ export default function PayoutsEnginePage() {
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-slate-200 pb-5">
           <div>
             <div className="flex items-center space-x-2">
-              <span className="text-xs font-mono uppercase tracking-wider text-[#059669] font-bold">
+              <span className="text-xs font-mono uppercase tracking-wider text-blue-600 font-bold">
                 Direct Benefit Transfer Gateway
               </span>
               <span className="px-2 py-0.5 rounded-full bg-amber-100 text-amber-800 text-[10px] font-bold">
@@ -82,7 +82,7 @@ export default function PayoutsEnginePage() {
           </div>
 
           <div className="flex items-center space-x-2">
-            <span className="px-3 py-1.5 rounded-xl bg-slate-900 text-[#34D399] font-mono text-xs font-bold">
+            <span className="px-3 py-1.5 rounded-xl bg-slate-900 text-blue-400 font-mono text-xs font-bold">
               Total Settled: ₹{payouts.filter(p => p.status === 'SUCCESSFUL').reduce((a, b) => a + b.amount, 0).toLocaleString()}
             </span>
           </div>
@@ -128,7 +128,7 @@ export default function PayoutsEnginePage() {
               onClick={() => setStatusFilter(st)}
               className={`px-4 py-2 rounded-xl transition-colors whitespace-nowrap ${
                 statusFilter === st 
-                  ? 'bg-[#071511] text-[#34D399]' 
+                  ? 'bg-blue-600 text-white' 
                   : 'text-slate-600 hover:text-slate-900'
               }`}
             >
@@ -139,15 +139,15 @@ export default function PayoutsEnginePage() {
 
         {/* Selected Settlement Timeline Box (Section 21) */}
         {selectedPayout && (
-          <div className="p-8 rounded-3xl bg-[#071511] text-white border border-[#10B981]/30 shadow-2xl space-y-6">
+          <div className="p-8 rounded-3xl bg-[#0F172A] text-white border border-slate-700 shadow-2xl space-y-6">
             <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-emerald-900/60 pb-5">
               <div>
                 <div className="flex items-center space-x-2">
-                  <span className="text-xs font-mono text-[#34D399] uppercase font-bold">
+                  <span className="text-xs font-mono text-blue-400 uppercase font-bold">
                     Order Ref: {selectedPayout.payoutRef}
                   </span>
                   <span className={`text-[10px] font-mono px-2 py-0.5 rounded font-bold ${
-                    selectedPayout.status === 'SUCCESSFUL' ? 'bg-emerald-500/20 text-[#34D399]' :
+                    selectedPayout.status === 'SUCCESSFUL' ? 'bg-emerald-500/20 text-blue-400' :
                     selectedPayout.status === 'PROCESSING' ? 'bg-blue-500/20 text-blue-300' :
                     selectedPayout.status === 'FAILED' ? 'bg-red-500/20 text-red-300' :
                     'bg-amber-500/20 text-amber-300'
@@ -164,7 +164,7 @@ export default function PayoutsEnginePage() {
               </div>
 
               <div className="text-right">
-                <div className="text-3xl font-black text-[#34D399] font-mono">
+                <div className="text-3xl font-black text-blue-400 font-mono">
                   ₹{selectedPayout.amount.toLocaleString()}
                 </div>
                 {selectedPayout.status !== 'SUCCESSFUL' && (
@@ -281,7 +281,7 @@ export default function PayoutsEnginePage() {
                           e.stopPropagation();
                           setSelectedPayout(p);
                         }}
-                        className="text-[#059669] font-bold hover:underline"
+                        className="text-blue-600 font-bold hover:underline"
                       >
                         Inspect &rarr;
                       </button>

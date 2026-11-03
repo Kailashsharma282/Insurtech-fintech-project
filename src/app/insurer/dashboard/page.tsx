@@ -86,7 +86,7 @@ export default function InsurerDashboardPage() {
         <Card3D depth={4} glowOnHover={false} className="bg-white p-5 sm:p-7 rounded-3xl border border-[#E2E8F0] shadow-sm">
           <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
             <div>
-              <div className="inline-flex items-center space-x-1.5 px-3 py-1 rounded-full bg-emerald-50 border border-emerald-200 text-[#059669] text-xs font-bold uppercase tracking-wider mb-2">
+              <div className="inline-flex items-center space-x-1.5 px-3 py-1 rounded-full bg-emerald-50 border border-emerald-200 text-blue-600 text-xs font-bold uppercase tracking-wider mb-2">
                 <Sparkles className="w-3.5 h-3.5" />
                 <span>Parametric Underwriting Desk</span>
               </div>
@@ -114,7 +114,7 @@ export default function InsurerDashboardPage() {
               </Link>
               <Link
                 href="/insurer/risk-map"
-                className="px-4 py-2.5 rounded-2xl bg-[#071511] hover:bg-slate-800 text-[#34D399] font-bold text-xs transition-all shadow-sm flex items-center space-x-1.5 border border-[#10B981]/30 transform hover:-translate-y-0.5"
+                className="px-4 py-2.5 rounded-2xl bg-[#0F172A] hover:bg-slate-800 text-blue-400 font-bold text-xs transition-all shadow-sm flex items-center space-x-1.5 border border-slate-700 transform hover:-translate-y-0.5"
               >
                 <MapPin className="w-3.5 h-3.5" />
                 <span>IU Risk Map</span>
@@ -271,7 +271,7 @@ export default function InsurerDashboardPage() {
                     <XAxis dataKey="month" stroke="#64748B" fontSize={11} />
                     <YAxis stroke="#64748B" fontSize={11} />
                     <Tooltip contentStyle={{ backgroundColor: '#0F172A', borderRadius: '12px', color: '#fff', fontSize: '11px', border: '1px solid #10B981' }} />
-                    <Line type="monotone" dataKey="amountK" name="Disbursements (k INR)" stroke="#10B981" strokeWidth={3} dot={{ r: 5 }} />
+                    <Line type="monotone" dataKey="amountK" name="Disbursements (k INR)" stroke="#2563EB" strokeWidth={3} dot={{ r: 5 }} />
                   </LineChart>
                 </ResponsiveContainer>
               </div>

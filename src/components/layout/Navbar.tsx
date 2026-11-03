@@ -4,8 +4,7 @@ import React, { useState } from 'react';
 import Link from 'next/link';
 import { usePathname, useRouter } from 'next/navigation';
 import { useRole } from '@/context/RoleContext';
-import { useLanguage, SUPPORTED_LANGUAGES, LanguageCode } from '@/context/LanguageContext';
-import { LanguageModal } from '@/components/ui/LanguageModal';
+import { useLanguage, SUPPORTED_LANGUAGES } from '@/context/LanguageContext';
 import { Role } from '@/lib/types';
 import { 
   Satellite, 
@@ -19,17 +18,14 @@ import {
   ChevronDown,
   Zap,
   Globe,
-  Compass,
   ArrowRight,
-  Volume2
+  FileText
 } from 'lucide-react';
 
 export const Navbar: React.FC = () => {
-  const { role, setRole, user, isAuthenticated, logout, isSimulating, setIsSimulating } = useRole();
-  const { language, setLanguage, t, showVisualGuide, setShowVisualGuide, playVoiceAdvisory, isSpeaking } = useLanguage();
+  const { role, setRole, user } = useRole();
+  const { language, setLanguage, t } = useLanguage();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-  const [userDropdownOpen, setUserDropdownOpen] = useState(false);
-  const [languageModalOpen, setLanguageModalOpen] = useState(false);
   const [simulationModalOpen, setSimulationModalOpen] = useState(false);
   const [simLoading, setSimLoading] = useState(false);
   const [simMessage, setSimMessage] = useState<string | null>(null);
@@ -69,329 +65,149 @@ export const Navbar: React.FC = () => {
 
   return (
     <>
-      <header className="sticky top-0 z-50 bg-[#071511]/95 backdrop-blur-xl border-b border-emerald-500/20 text-white shadow-xl">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex items-center justify-between h-16 gap-3 lg:gap-6">
+      <header className="sticky top-0 z-50 bg-[#0F172A] border-b border-slate-800 text-white shadow-md">
+        <div className="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8">
+          <div className="flex items-center justify-between h-16 gap-2 lg:gap-4">
             
             {/* 1. Left: Brand Logo */}
             <div className="flex items-center shrink-0">
-              <Link href="/" className="flex items-center space-x-2.5 group">
-                <div className="w-9 h-9 rounded-lg bg-emerald-700 flex items-center justify-center text-white shrink-0">
-                  <Satellite className="w-4.5 h-4.5 text-white" />
+              <Link href="/farmer/dashboard" className="flex items-center space-x-2.5 group">
+                <div className="w-8 h-8 sm:w-9 sm:h-9 rounded-lg bg-blue-600 flex items-center justify-center text-white shrink-0 shadow-sm">
+                  <Satellite className="w-4 h-4 sm:w-4.5 sm:h-4.5 text-white" />
                 </div>
                 <div className="flex flex-col">
                   <div className="flex items-center space-x-1.5 leading-none">
-                    <span className="font-black text-base sm:text-lg tracking-tight text-white">
+                    <span className="font-extrabold text-sm sm:text-base tracking-tight text-white">
                       AgriSure
                     </span>
-                    <span className="text-[9px] uppercase font-mono font-bold px-1 py-0.5 rounded bg-emerald-500/20 text-[#34D399] border border-emerald-500/30">
-                      INTELLIGENCE
+                    <span className="text-[9px] uppercase font-mono font-bold px-1.5 py-0.5 rounded bg-blue-500/20 text-blue-300 border border-blue-500/30">
+                      DEMO
                     </span>
                   </div>
                   <span className="text-[9px] text-slate-400 font-medium tracking-wide hidden sm:block mt-0.5">
-                    Satellite × AI × Parametric Underwriting
+                    Ghatal Parametric InsurTech Hub
                   </span>
                 </div>
               </Link>
             </div>
 
-            {/* 2. Center: Primary Navigation Links (Clean & Non-wrapping) */}
+            {/* 2. Center: Primary Navigation Links */}
             <nav className="hidden lg:flex items-center space-x-1 text-xs font-semibold overflow-x-hidden">
-              {pathname === '/' ? (
-                <>
-                  <Link 
-                    href="/" 
-                    className="px-2.5 py-1.5 rounded-lg transition-all bg-emerald-500/20 text-[#34D399] border border-emerald-500/40 whitespace-nowrap shrink-0"
-                  >
-                    {t('nav.overview')}
-                  </Link>
-                  <Link 
-                    href="/how-it-works" 
-                    className="px-2.5 py-1.5 rounded-lg transition-all text-slate-300 hover:text-white hover:bg-white/5 whitespace-nowrap shrink-0"
-                  >
-                    {t('nav.workflow')}
-                  </Link>
-                  <Link 
-                    href="/farmer/farms" 
-                    className="px-2.5 py-1.5 rounded-lg transition-all text-slate-300 hover:text-white hover:bg-white/5 whitespace-nowrap shrink-0"
-                  >
-                    {t('nav.farms')}
-                  </Link>
-                  <Link 
-                    href="/farmer/insurance" 
-                    className="px-2.5 py-1.5 rounded-lg transition-all text-slate-300 hover:text-white hover:bg-white/5 whitespace-nowrap shrink-0"
-                  >
-                    {t('nav.insurance')}
-                  </Link>
-                  <Link 
-                    href="/farmer/insurance-validation" 
-                    className="px-2.5 py-1.5 rounded-lg transition-all text-slate-300 hover:text-white hover:bg-white/5 whitespace-nowrap shrink-0"
-                  >
-                    Insurance Validation
-                  </Link>
-                  <Link 
-                    href="/technology/chf" 
-                    className="px-2.5 py-1.5 rounded-lg transition-all text-emerald-300 hover:text-white hover:bg-emerald-900/40 whitespace-nowrap shrink-0 font-bold border border-emerald-600/40"
-                  >
-                    Ghatal CHF
-                  </Link>
-                </>
-              ) : role === 'FARMER' ? (
-                <>
-                  <Link 
-                    href="/farmer/dashboard" 
-                    className={`px-2.5 py-1.5 rounded-lg transition-all whitespace-nowrap shrink-0 ${pathname === '/farmer/dashboard' ? 'bg-emerald-500/20 text-[#34D399] border border-emerald-500/40' : 'text-slate-300 hover:text-white hover:bg-white/5'}`}
-                  >
-                    {t('nav.dashboard')}
-                  </Link>
-                  <Link 
-                    href="/farmer/farms" 
-                    className={`px-2.5 py-1.5 rounded-lg transition-all whitespace-nowrap shrink-0 ${pathname.startsWith('/farmer/farms') ? 'bg-emerald-500/20 text-[#34D399] border border-emerald-500/40' : 'text-slate-300 hover:text-white hover:bg-white/5'}`}
-                  >
-                    {t('nav.farms')}
-                  </Link>
-                  <Link 
-                    href="/farmer/insurance" 
-                    className={`px-2.5 py-1.5 rounded-lg transition-all whitespace-nowrap shrink-0 ${pathname === '/farmer/insurance' ? 'bg-emerald-500/20 text-[#34D399] border border-emerald-500/40' : 'text-slate-300 hover:text-white hover:bg-white/5'}`}
-                  >
-                    {t('nav.insurance')}
-                  </Link>
-                  <Link 
-                    href="/farmer/insurance-validation" 
-                    className={`px-2.5 py-1.5 rounded-lg transition-all whitespace-nowrap shrink-0 ${pathname === '/farmer/insurance-validation' ? 'bg-emerald-500/20 text-[#34D399] border border-emerald-500/40' : 'text-slate-300 hover:text-white hover:bg-white/5'}`}
-                  >
-                    Validation Hub
-                  </Link>
-                  <Link 
-                    href="/technology/chf" 
-                    className="px-2.5 py-1.5 rounded-lg transition-all text-emerald-300 hover:text-white hover:bg-emerald-900/40 whitespace-nowrap shrink-0 font-bold border border-emerald-600/40"
-                  >
-                    Ghatal CHF
-                  </Link>
-                  <Link 
-                    href="/farmer/disease" 
-                    className={`px-2.5 py-1.5 rounded-lg transition-all whitespace-nowrap shrink-0 ${pathname === '/farmer/disease' ? 'bg-emerald-500/20 text-[#34D399] border border-emerald-500/40' : 'text-slate-300 hover:text-white hover:bg-white/5'}`}
-                  >
-                    {t('nav.disease')}
-                  </Link>
-                  <Link 
-                    href="/farmer/optimization" 
-                    className={`px-2.5 py-1.5 rounded-lg transition-all whitespace-nowrap shrink-0 ${pathname === '/farmer/optimization' ? 'bg-emerald-500/20 text-[#34D399] border border-emerald-500/40' : 'text-slate-300 hover:text-white hover:bg-white/5'}`}
-                  >
-                    {t('nav.optimization')}
-                  </Link>
-                  <Link 
-                    href="/operations/iot" 
-                    className={`px-2.5 py-1.5 rounded-lg transition-all whitespace-nowrap shrink-0 ${pathname === '/operations/iot' ? 'bg-emerald-500/20 text-[#34D399] border border-emerald-500/40' : 'text-slate-300 hover:text-white hover:bg-white/5'}`}
-                  >
-                    {t('nav.iot')}
-                  </Link>
-                </>
-              ) : role === 'INSURER' ? (
-                <>
-                  <Link 
-                    href="/insurer/dashboard" 
-                    className={`px-2.5 py-1.5 rounded-lg transition-all whitespace-nowrap shrink-0 ${pathname === '/insurer/dashboard' ? 'bg-emerald-500/20 text-[#34D399] border border-emerald-500/40' : 'text-slate-300 hover:text-white hover:bg-white/5'}`}
-                  >
-                    {t('nav.underwriting')}
-                  </Link>
-                  <Link 
-                    href="/insurer/policies" 
-                    className={`px-2.5 py-1.5 rounded-lg transition-all whitespace-nowrap shrink-0 ${pathname === '/insurer/policies' ? 'bg-emerald-500/20 text-[#34D399] border border-emerald-500/40' : 'text-amber-300 hover:text-amber-200 hover:bg-white/5'}`}
-                  >
-                    <span className="flex items-center gap-1 font-bold">
-                      <span>{t('nav.policy_review')}</span>
-                      <span className="w-1.5 h-1.5 rounded-full bg-amber-400 animate-ping"></span>
-                    </span>
-                  </Link>
-                  <Link 
-                    href="/insurer/risk-map" 
-                    className={`px-2.5 py-1.5 rounded-lg transition-all whitespace-nowrap shrink-0 ${pathname === '/insurer/risk-map' ? 'bg-emerald-500/20 text-[#34D399] border border-emerald-500/40' : 'text-slate-300 hover:text-white hover:bg-white/5'}`}
-                  >
-                    {t('nav.risk_map')}
-                  </Link>
-                  <Link 
-                    href="/insurer/claims" 
-                    className={`px-2.5 py-1.5 rounded-lg transition-all whitespace-nowrap shrink-0 ${pathname.startsWith('/insurer/claims') ? 'bg-emerald-500/20 text-[#34D399] border border-emerald-500/40' : 'text-slate-300 hover:text-white hover:bg-white/5'}`}
-                  >
-                    {t('nav.claims')}
-                  </Link>
-                  <Link 
-                    href="/insurer/payouts" 
-                    className={`px-2.5 py-1.5 rounded-lg transition-all whitespace-nowrap shrink-0 ${pathname === '/insurer/payouts' ? 'bg-emerald-500/20 text-[#34D399] border border-emerald-500/40' : 'text-slate-300 hover:text-white hover:bg-white/5'}`}
-                  >
-                    {t('nav.payments')}
-                  </Link>
-                </>
-              ) : (
-                <>
-                  <Link 
-                    href="/intelligence/map" 
-                    className={`px-2.5 py-1.5 rounded-lg transition-all whitespace-nowrap shrink-0 ${pathname === '/intelligence/map' ? 'bg-emerald-500/20 text-[#34D399] border border-emerald-500/40' : 'text-slate-300 hover:text-white hover:bg-white/5'}`}
-                  >
-                    Satellite GIS Map
-                  </Link>
-                  <Link 
-                    href="/intelligence/weather" 
-                    className={`px-2.5 py-1.5 rounded-lg transition-all whitespace-nowrap shrink-0 ${pathname === '/intelligence/weather' ? 'bg-emerald-500/20 text-[#34D399] border border-emerald-500/40' : 'text-slate-300 hover:text-white hover:bg-white/5'}`}
-                  >
-                    Weather & Risk
-                  </Link>
-                  <Link 
-                    href="/technology/chf" 
-                    className={`px-2.5 py-1.5 rounded-lg transition-all whitespace-nowrap shrink-0 ${pathname === '/technology/chf' ? 'bg-emerald-500/20 text-[#34D399] border border-emerald-500/40' : 'text-slate-300 hover:text-white hover:bg-white/5'}`}
-                  >
-                    CHF Engine
-                  </Link>
-                </>
-              )}
+              <Link 
+                href="/farmer/dashboard" 
+                className={`px-2.5 py-1.5 rounded-lg transition-all whitespace-nowrap shrink-0 ${
+                  pathname === '/farmer/dashboard' 
+                    ? 'bg-blue-600/25 text-blue-300 border border-blue-500/40' 
+                    : 'text-slate-300 hover:text-white hover:bg-slate-800'
+                }`}
+              >
+                Dashboard
+              </Link>
 
-              {/* Public Tech Dropdown */}
-              <div className="relative group shrink-0">
-                <button className="flex items-center space-x-1 px-2.5 py-1.5 rounded-lg text-slate-300 hover:text-white hover:bg-white/5 whitespace-nowrap">
-                  <span>{t('nav.architecture')}</span>
-                  <ChevronDown className="w-3.5 h-3.5" />
-                </button>
-                <div className="absolute left-0 mt-1 w-52 bg-[#0B2119] border border-emerald-500/30 rounded-2xl shadow-2xl py-2 hidden group-hover:block z-50 animate-in fade-in slide-in-from-top-1">
-                  <Link href="/how-it-works" className="block px-4 py-2 text-xs text-slate-200 hover:bg-emerald-900/40 hover:text-[#34D399]">
-                    01-06 Closed Loop Architecture
-                  </Link>
-                  <Link href="/technology/stress" className="block px-4 py-2 text-xs text-slate-200 hover:bg-emerald-900/40 hover:text-[#34D399]">
-                    Early Stress Detection (UV-NDVI)
-                  </Link>
-                  <Link href="/technology/chf" className="block px-4 py-2 text-xs text-slate-200 hover:bg-emerald-900/40 hover:text-[#34D399]">
-                    Shannon Entropy Engine
-                  </Link>
-                  <Link href="/technology/baseline" className="block px-4 py-2 text-xs text-slate-200 hover:bg-emerald-900/40 hover:text-[#34D399]">
-                    4-Year Localized Baseline
-                  </Link>
-                  <div className="border-t border-emerald-900/50 my-1"></div>
-                  <Link href="/research" className="block px-4 py-2 text-xs text-slate-200 hover:bg-emerald-900/40 hover:text-[#34D399]">
-                    Agronomic Research Papers
-                  </Link>
-                </div>
-              </div>
+              <Link 
+                href="/farmer/insurance-validation" 
+                className={`px-2.5 py-1.5 rounded-lg transition-all whitespace-nowrap shrink-0 font-bold ${
+                  pathname === '/farmer/insurance-validation' 
+                    ? 'bg-blue-600/25 text-blue-300 border border-blue-500/40' 
+                    : 'text-blue-400 hover:text-white hover:bg-slate-800'
+                }`}
+              >
+                Insurance Validation
+              </Link>
+
+              <Link 
+                href="/farmer/disease" 
+                className={`px-2.5 py-1.5 rounded-lg transition-all whitespace-nowrap shrink-0 ${
+                  pathname === '/farmer/disease' 
+                    ? 'bg-blue-600/25 text-blue-300 border border-blue-500/40' 
+                    : 'text-slate-300 hover:text-white hover:bg-slate-800'
+                }`}
+              >
+                Photo AI (NPK & Water)
+              </Link>
+
+              <Link 
+                href="/farmer/farms" 
+                className={`px-2.5 py-1.5 rounded-lg transition-all whitespace-nowrap shrink-0 ${
+                  pathname.startsWith('/farmer/farms') 
+                    ? 'bg-blue-600/25 text-blue-300 border border-blue-500/40' 
+                    : 'text-slate-300 hover:text-white hover:bg-slate-800'
+                }`}
+              >
+                Farms
+              </Link>
+
+              <Link 
+                href="/farmer/insurance" 
+                className={`px-2.5 py-1.5 rounded-lg transition-all whitespace-nowrap shrink-0 ${
+                  pathname === '/farmer/insurance' 
+                    ? 'bg-blue-600/25 text-blue-300 border border-blue-500/40' 
+                    : 'text-slate-300 hover:text-white hover:bg-slate-800'
+                }`}
+              >
+                Policies
+              </Link>
+
+              <Link 
+                href="/farmer/optimization" 
+                className={`px-2.5 py-1.5 rounded-lg transition-all whitespace-nowrap shrink-0 ${
+                  pathname === '/farmer/optimization' 
+                    ? 'bg-blue-600/25 text-blue-300 border border-blue-500/40' 
+                    : 'text-slate-300 hover:text-white hover:bg-slate-800'
+                }`}
+              >
+                GA-PSO Optimizer
+              </Link>
+
+              <Link 
+                href="/technology/chf" 
+                className={`px-2.5 py-1.5 rounded-lg transition-all whitespace-nowrap shrink-0 font-bold border ${
+                  pathname === '/technology/chf'
+                    ? 'bg-blue-600/30 text-blue-300 border-blue-500'
+                    : 'text-slate-300 hover:text-white hover:bg-slate-800 border-slate-700'
+                }`}
+              >
+                Ghatal CHF
+              </Link>
             </nav>
 
-            {/* 3. Right Toolbar: Uniform 36px Height, Pristine Spacing */}
-            <div className="flex items-center space-x-2 shrink-0 flex-nowrap">
+            {/* 3. Right: Demo Persona Pill & Quick Controls (NO LOGIN/SIGNUP) */}
+            <div className="flex items-center space-x-1.5 sm:space-x-2 shrink-0">
               
-              {/* Language Selector Button */}
-              <button
-                type="button"
-                onClick={() => setLanguageModalOpen(true)}
-                className="h-9 px-2.5 rounded-xl bg-[#0B2119] hover:bg-[#102820] border border-emerald-500/40 text-emerald-300 text-xs font-bold transition-all flex items-center space-x-1.5 shadow-sm shrink-0 whitespace-nowrap"
-                title="Select Regional Language"
-              >
-                <span className="text-base">{currentLangObj.flag}</span>
-                <span className="hidden xs:inline max-w-[65px] sm:max-w-[85px] truncate">{currentLangObj.native}</span>
-                <ChevronDown className="w-3 h-3 text-emerald-400 shrink-0" />
-              </button>
-
-              {/* Audio Voice Guide Button */}
-              {language !== 'en' && (
-                <button
-                  type="button"
-                  onClick={playVoiceAdvisory}
-                  className={`h-9 px-2.5 rounded-xl border text-xs font-bold transition-all flex items-center space-x-1.5 shrink-0 whitespace-nowrap ${
-                    isSpeaking
-                      ? 'bg-amber-500/30 border-amber-500 text-amber-300 animate-pulse'
-                      : 'bg-amber-500/10 hover:bg-amber-500/20 border-amber-500/30 text-amber-300'
-                  }`}
-                  title={t('guide.audio_prompt')}
-                >
-                  <Volume2 className={`w-3.5 h-3.5 ${isSpeaking ? 'animate-bounce text-amber-300' : 'text-amber-400'}`} />
-                  <span className="hidden xl:inline text-[11px]">{t('guide.listen_short')}</span>
-                </button>
-              )}
-
-              {/* Simulation Quick Trigger */}
+              {/* Simulate Weather Shock */}
               <button
                 type="button"
                 onClick={() => setSimulationModalOpen(true)}
-                className="hidden sm:flex h-9 px-2.5 rounded-xl bg-emerald-900/40 hover:bg-emerald-800/50 border border-emerald-500/30 text-emerald-300 text-xs font-bold transition-all items-center space-x-1.5 shrink-0 whitespace-nowrap"
+                className="h-8 sm:h-9 px-2 sm:px-2.5 rounded-lg bg-slate-800 hover:bg-slate-700 border border-slate-700 text-blue-300 text-xs font-bold transition-all flex items-center space-x-1 shrink-0"
                 title="Inject Satellite / Weather Event Simulation"
               >
-                <Zap className="w-3.5 h-3.5 text-[#34D399]" />
-                <span className="hidden sm:inline text-[11px]">Simulate</span>
+                <Zap className="w-3.5 h-3.5 text-amber-400" />
+                <span className="hidden sm:inline text-[11px]">Simulate Shock</span>
               </button>
 
-              {/* Role Switcher Pill */}
-              <div className="relative hidden md:block shrink-0">
+              {/* Instant Role Switcher (1-Click Demo) */}
+              <div className="relative shrink-0">
                 <select
                   value={role}
                   onChange={(e) => handleRoleChange(e.target.value as Role)}
-                  className="h-9 appearance-none bg-[#0B2119] hover:bg-[#102820] border border-emerald-500/40 text-[#34D399] text-xs font-bold pl-2.5 pr-7 rounded-xl focus:outline-none focus:ring-1 focus:ring-emerald-500 cursor-pointer transition-colors shrink-0"
+                  className="h-8 sm:h-9 appearance-none bg-slate-800 hover:bg-slate-700 border border-slate-700 text-white text-xs font-bold pl-2.5 pr-6 rounded-lg focus:outline-none cursor-pointer transition-colors shrink-0"
+                  title="Switch Demo Role"
                 >
-                  <option value="FARMER">🧑‍🌾 Farmer</option>
-                  <option value="INSURER">🏛️ Insurer</option>
-                  <option value="ADMIN">⚙️ Admin</option>
-                  <option value="FIELD_AGENT">🔍 Agent</option>
+                  <option value="FARMER">🧑‍🌾 Farmer Demo</option>
+                  <option value="INSURER">🏛️ Insurer Desk</option>
+                  <option value="ADMIN">⚙️ Systems Admin</option>
+                  <option value="FIELD_AGENT">🔍 Field Agent</option>
                 </select>
-                <ChevronDown className="w-3 h-3 text-emerald-400 absolute right-2 top-1/2 -translate-y-1/2 pointer-events-none" />
+                <ChevronDown className="w-3 h-3 text-slate-400 absolute right-1.5 top-1/2 -translate-y-1/2 pointer-events-none" />
               </div>
-
-              {/* User Profile / Auth Button */}
-              {isAuthenticated && user ? (
-                <div className="relative">
-                  <button
-                    onClick={() => setUserDropdownOpen(!userDropdownOpen)}
-                    className="h-9 px-2.5 rounded-xl bg-[#0B2119] hover:bg-[#102820] border border-emerald-500/40 text-emerald-200 text-xs font-bold transition-all flex items-center space-x-1.5"
-                  >
-                    <div className="w-5 h-5 rounded-full bg-emerald-500/30 flex items-center justify-center text-[10px]">
-                      {role === 'FARMER' ? '🧑‍🌾' : (role === 'INSURER' ? '🏛️' : (role === 'FIELD_AGENT' ? '🔍' : '⚙️'))}
-                    </div>
-                    <span className="hidden sm:inline max-w-[80px] truncate text-[11px]">{user.name.split(' ')[0]}</span>
-                    <ChevronDown className="w-3 h-3 text-emerald-400" />
-                  </button>
-
-                  {userDropdownOpen && (
-                    <div className="absolute right-0 mt-2 w-60 rounded-2xl bg-[#0B2119] border border-emerald-500/30 shadow-2xl p-3 text-white z-50 animate-in fade-in slide-in-from-top-2">
-                      <div className="border-b border-emerald-900/60 pb-2 mb-2">
-                        <div className="font-bold text-xs text-white truncate">{user.name}</div>
-                        <div className="text-[10px] text-emerald-400 font-mono">{user.role} &bull; {user.district || 'West Bengal'}</div>
-                      </div>
-                      <div className="space-y-1 text-xs">
-                        <button
-                          onClick={() => { setLanguageModalOpen(true); setUserDropdownOpen(false); }}
-                          className="w-full text-left px-2.5 py-1.5 rounded-lg hover:bg-emerald-900/40 text-slate-200 transition-colors flex items-center justify-between"
-                        >
-                          <span>Language ({currentLangObj.native})</span>
-                          <span>🌐</span>
-                        </button>
-                        <Link
-                          href="/login"
-                          onClick={() => setUserDropdownOpen(false)}
-                          className="block px-2.5 py-1.5 rounded-lg hover:bg-emerald-900/40 text-slate-200 transition-colors"
-                        >
-                          Switch Account
-                        </Link>
-                        <button
-                          onClick={() => { logout(); setUserDropdownOpen(false); router.push('/login'); }}
-                          className="w-full text-left px-2.5 py-1.5 rounded-lg hover:bg-red-950/50 text-red-300 transition-colors font-semibold"
-                        >
-                          Sign Out
-                        </button>
-                      </div>
-                    </div>
-                  )}
-                </div>
-              ) : (
-                <Link
-                  href="/login"
-                  className="h-9 px-3 rounded-xl bg-[#10B981] hover:bg-emerald-600 text-white text-xs font-bold shadow-md shadow-emerald-950/40 transition-all flex items-center"
-                >
-                  {t('nav.sign_in')}
-                </Link>
-              )}
 
               {/* Mobile Drawer Trigger */}
               <button
                 onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-                className="lg:hidden h-9 w-9 rounded-xl bg-[#0B2119] border border-emerald-500/30 text-slate-200 hover:text-white flex items-center justify-center transition-colors"
+                className="lg:hidden h-8 w-8 sm:h-9 sm:w-9 rounded-lg bg-slate-800 border border-slate-700 text-slate-200 hover:text-white flex items-center justify-center transition-colors"
                 aria-label="Toggle navigation drawer"
               >
-                {mobileMenuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
+                {mobileMenuOpen ? <X className="w-4 h-4" /> : <Menu className="w-4 h-4" />}
               </button>
 
             </div>
@@ -399,189 +215,205 @@ export const Navbar: React.FC = () => {
           </div>
         </div>
 
-        {/* Mobile Navigation Drawer */}
+        {/* Mobile Navigation Drawer (Clean, Solid, No Login/Signup) */}
         {mobileMenuOpen && (
-          <div className="lg:hidden bg-[#071511]/98 backdrop-blur-2xl border-b border-emerald-500/30 px-4 pt-4 pb-6 space-y-4 animate-in slide-in-from-top-3 duration-200">
+          <div className="lg:hidden bg-[#0F172A] border-b border-slate-800 px-4 pt-3 pb-5 space-y-3">
             
-            {/* Quick Action Tiles in Mobile Drawer */}
-            {/* Quick Simulation Trigger inside Mobile Drawer */}
+            {/* Quick Simulation Trigger */}
             <button
               type="button"
               onClick={() => { setSimulationModalOpen(true); setMobileMenuOpen(false); }}
-              className="w-full p-2.5 rounded-xl bg-emerald-950/70 hover:bg-emerald-900 border border-emerald-500/40 text-emerald-300 text-xs font-bold flex items-center justify-between transition-colors shadow-sm"
+              className="w-full p-2.5 rounded-xl bg-slate-800 hover:bg-slate-700 border border-slate-700 text-blue-300 text-xs font-bold flex items-center justify-between transition-colors shadow-sm"
             >
               <span className="flex items-center space-x-2">
                 <Zap className="w-4 h-4 text-amber-400" />
-                <span>Simulate Weather / Cloudburst Shock</span>
+                <span>Simulate 142mm Cloudburst Shock</span>
               </span>
-              <span className="text-emerald-400 text-[10px] font-mono uppercase bg-emerald-500/20 px-2 py-0.5 rounded border border-emerald-500/30">Action</span>
+              <span className="text-blue-300 text-[10px] font-mono uppercase bg-blue-950 px-2 py-0.5 rounded border border-blue-800">Trigger</span>
             </button>
 
-            <div className="grid grid-cols-2 gap-2">
-              <button
-                type="button"
-                onClick={() => { setLanguageModalOpen(true); setMobileMenuOpen(false); }}
-                className="p-2.5 rounded-xl bg-[#0B2119] border border-emerald-500/40 text-left flex items-center space-x-2"
-              >
-                <span className="text-xl">{currentLangObj.flag}</span>
-                <div className="min-w-0 flex-1">
-                  <span className="text-[10px] text-slate-400 block leading-tight">Language</span>
-                  <span className="text-xs font-bold text-emerald-300 truncate block">{currentLangObj.native}</span>
-                </div>
-              </button>
-
-              <div className="p-2.5 rounded-xl bg-[#0B2119] border border-emerald-500/40 text-left">
-                <span className="text-[10px] text-slate-400 block leading-tight">Current Role</span>
-                <select
-                  value={role}
-                  onChange={(e) => { handleRoleChange(e.target.value as Role); setMobileMenuOpen(false); }}
-                  className="bg-transparent text-xs font-bold text-[#34D399] w-full focus:outline-none"
-                >
-                  <option value="FARMER" className="bg-[#0B2119]">🧑‍🌾 Farmer</option>
-                  <option value="INSURER" className="bg-[#0B2119]">🏛️ Insurer</option>
-                  <option value="ADMIN" className="bg-[#0B2119]">⚙️ Admin</option>
-                  <option value="FIELD_AGENT" className="bg-[#0B2119]">🔍 Field Agent</option>
-                </select>
-              </div>
-            </div>
-
             {/* Mobile Nav Links */}
-            <div className="space-y-1 border-t border-emerald-900/50 pt-3">
-              {role === 'FARMER' && (
-                <>
-                  <Link href="/farmer/dashboard" onClick={() => setMobileMenuOpen(false)} className="flex items-center justify-between px-3 py-2.5 rounded-xl text-xs font-bold text-slate-200 hover:bg-emerald-900/30">
-                    <span className="flex items-center space-x-2"><Activity className="w-4 h-4 text-[#10B981]" /><span>{t('nav.dashboard')}</span></span>
-                    <span>➡️</span>
-                  </Link>
-                  <Link href="/farmer/farms" onClick={() => setMobileMenuOpen(false)} className="flex items-center justify-between px-3 py-2.5 rounded-xl text-xs font-bold text-slate-200 hover:bg-emerald-900/30">
-                    <span className="flex items-center space-x-2"><Layers className="w-4 h-4 text-[#10B981]" /><span>{t('nav.farms')}</span></span>
-                    <span>➡️</span>
-                  </Link>
-                  <Link href="/farmer/insurance" onClick={() => setMobileMenuOpen(false)} className="flex items-center justify-between px-3 py-2.5 rounded-xl text-xs font-bold text-slate-200 hover:bg-emerald-900/30">
-                    <span className="flex items-center space-x-2"><ShieldCheck className="w-4 h-4 text-[#10B981]" /><span>{t('nav.insurance')}</span></span>
-                    <span>➡️</span>
-                  </Link>
-                  <Link href="/farmer/insurance-validation" onClick={() => setMobileMenuOpen(false)} className="flex items-center justify-between px-3 py-2.5 rounded-xl text-xs font-bold text-emerald-300 bg-emerald-950/40 border border-emerald-500/30">
-                    <span className="flex items-center space-x-2"><ShieldCheck className="w-4 h-4 text-[#10B981]" /><span>Insurance Validation Hub</span></span>
-                    <span>➡️</span>
-                  </Link>
-                  <Link href="/farmer/insurance/apply" onClick={() => setMobileMenuOpen(false)} className="flex items-center justify-between px-3 py-2.5 rounded-xl text-xs font-black text-emerald-400 bg-emerald-950/60 border border-emerald-500/30">
-                    <span className="flex items-center space-x-2"><Sparkles className="w-4 h-4 text-[#10B981]" /><span>👉 {t('ins.apply_title')}</span></span>
-                    <span>➡️</span>
-                  </Link>
-                  <Link href="/farmer/disease" onClick={() => setMobileMenuOpen(false)} className="flex items-center justify-between px-3 py-2.5 rounded-xl text-xs font-bold text-slate-200 hover:bg-emerald-900/30">
-                    <span className="flex items-center space-x-2"><Sparkles className="w-4 h-4 text-[#10B981]" /><span>{t('nav.disease')}</span></span>
-                    <span>➡️</span>
-                  </Link>
-                  <Link href="/farmer/optimization" onClick={() => setMobileMenuOpen(false)} className="flex items-center justify-between px-3 py-2.5 rounded-xl text-xs font-bold text-slate-200 hover:bg-emerald-900/30">
-                    <span className="flex items-center space-x-2"><Cpu className="w-4 h-4 text-[#10B981]" /><span>{t('nav.optimization')}</span></span>
-                    <span>➡️</span>
-                  </Link>
-                  <Link href="/operations/iot" onClick={() => setMobileMenuOpen(false)} className="flex items-center justify-between px-3 py-2.5 rounded-xl text-xs font-bold text-slate-200 hover:bg-emerald-900/30">
-                    <span className="flex items-center space-x-2"><Activity className="w-4 h-4 text-[#10B981]" /><span>{t('nav.iot')}</span></span>
-                    <span>➡️</span>
-                  </Link>
-                </>
-              )}
+            <div className="space-y-1 border-t border-slate-800 pt-2">
+              <Link 
+                href="/farmer/dashboard" 
+                onClick={() => setMobileMenuOpen(false)} 
+                className="flex items-center justify-between px-3 py-2 rounded-lg text-xs font-bold text-slate-200 hover:bg-slate-800"
+              >
+                <span className="flex items-center space-x-2">
+                  <Activity className="w-4 h-4 text-blue-400" />
+                  <span>Farmer Dashboard</span>
+                </span>
+                <span className="text-slate-500">&rarr;</span>
+              </Link>
 
-              {role === 'INSURER' && (
-                <>
-                  <Link href="/insurer/dashboard" onClick={() => setMobileMenuOpen(false)} className="flex items-center justify-between px-3 py-2.5 rounded-xl text-xs font-bold text-slate-200 hover:bg-emerald-900/30">
-                    <span className="flex items-center space-x-2"><Activity className="w-4 h-4 text-[#10B981]" /><span>{t('nav.underwriting')}</span></span>
-                    <span>➡️</span>
-                  </Link>
-                  <Link href="/insurer/policies" onClick={() => setMobileMenuOpen(false)} className="flex items-center justify-between px-3 py-2.5 rounded-xl text-xs font-black text-amber-300 bg-amber-950/40 border border-amber-500/30">
-                    <span className="flex items-center space-x-2"><ShieldCheck className="w-4 h-4 text-amber-400" /><span>👉 {t('nav.policy_review')}</span></span>
-                    <span>➡️</span>
-                  </Link>
-                  <Link href="/insurer/risk-map" onClick={() => setMobileMenuOpen(false)} className="flex items-center justify-between px-3 py-2.5 rounded-xl text-xs font-bold text-slate-200 hover:bg-emerald-900/30">
-                    <span className="flex items-center space-x-2"><Layers className="w-4 h-4 text-[#10B981]" /><span>{t('nav.risk_map')}</span></span>
-                    <span>➡️</span>
-                  </Link>
-                  <Link href="/insurer/claims" onClick={() => setMobileMenuOpen(false)} className="flex items-center justify-between px-3 py-2.5 rounded-xl text-xs font-bold text-slate-200 hover:bg-emerald-900/30">
-                    <span className="flex items-center space-x-2"><ShieldCheck className="w-4 h-4 text-[#10B981]" /><span>{t('nav.claims')}</span></span>
-                    <span>➡️</span>
-                  </Link>
-                  <Link href="/insurer/payouts" onClick={() => setMobileMenuOpen(false)} className="flex items-center justify-between px-3 py-2.5 rounded-xl text-xs font-bold text-slate-200 hover:bg-emerald-900/30">
-                    <span className="flex items-center space-x-2"><Zap className="w-4 h-4 text-[#10B981]" /><span>{t('nav.payments')}</span></span>
-                    <span>➡️</span>
-                  </Link>
-                </>
-              )}
+              <Link 
+                href="/farmer/insurance-validation" 
+                onClick={() => setMobileMenuOpen(false)} 
+                className="flex items-center justify-between px-3 py-2 rounded-lg text-xs font-bold text-blue-300 bg-blue-950/60 border border-blue-800/60"
+              >
+                <span className="flex items-center space-x-2">
+                  <FileText className="w-4 h-4 text-blue-400" />
+                  <span>Insurance Validation Hub</span>
+                </span>
+                <span className="text-blue-400">&rarr;</span>
+              </Link>
+
+              <Link 
+                href="/farmer/disease" 
+                onClick={() => setMobileMenuOpen(false)} 
+                className="flex items-center justify-between px-3 py-2 rounded-lg text-xs font-bold text-slate-200 hover:bg-slate-800"
+              >
+                <span className="flex items-center space-x-2">
+                  <Sparkles className="w-4 h-4 text-blue-400" />
+                  <span>Photo AI (NPK & Water)</span>
+                </span>
+                <span className="text-slate-500">&rarr;</span>
+              </Link>
+
+              <Link 
+                href="/farmer/farms" 
+                onClick={() => setMobileMenuOpen(false)} 
+                className="flex items-center justify-between px-3 py-2 rounded-lg text-xs font-bold text-slate-200 hover:bg-slate-800"
+              >
+                <span className="flex items-center space-x-2">
+                  <Layers className="w-4 h-4 text-blue-400" />
+                  <span>Farms & Sensors</span>
+                </span>
+                <span className="text-slate-500">&rarr;</span>
+              </Link>
+
+              <Link 
+                href="/farmer/insurance" 
+                onClick={() => setMobileMenuOpen(false)} 
+                className="flex items-center justify-between px-3 py-2 rounded-lg text-xs font-bold text-slate-200 hover:bg-slate-800"
+              >
+                <span className="flex items-center space-x-2">
+                  <ShieldCheck className="w-4 h-4 text-blue-400" />
+                  <span>Policies</span>
+                </span>
+                <span className="text-slate-500">&rarr;</span>
+              </Link>
+
+              <Link 
+                href="/farmer/optimization" 
+                onClick={() => setMobileMenuOpen(false)} 
+                className="flex items-center justify-between px-3 py-2 rounded-lg text-xs font-bold text-slate-200 hover:bg-slate-800"
+              >
+                <span className="flex items-center space-x-2">
+                  <Cpu className="w-4 h-4 text-blue-400" />
+                  <span>GA-PSO Optimizer</span>
+                </span>
+                <span className="text-slate-500">&rarr;</span>
+              </Link>
+
+              <Link 
+                href="/technology/chf" 
+                onClick={() => setMobileMenuOpen(false)} 
+                className="flex items-center justify-between px-3 py-2 rounded-lg text-xs font-bold text-slate-200 hover:bg-slate-800"
+              >
+                <span className="flex items-center space-x-2">
+                  <Satellite className="w-4 h-4 text-blue-400" />
+                  <span>Ghatal CHF Engine</span>
+                </span>
+                <span className="text-slate-500">&rarr;</span>
+              </Link>
             </div>
 
-            {/* Switch Account */}
-            <div className="border-t border-emerald-900/50 pt-3">
-              <Link
-                href="/login"
-                onClick={() => setMobileMenuOpen(false)}
-                className="block text-center py-2.5 rounded-xl bg-emerald-900/40 border border-emerald-500/30 text-emerald-300 text-xs font-bold"
-              >
-                Sign In / Switch Account
-              </Link>
+            {/* Language Switcher in Mobile Drawer */}
+            <div className="border-t border-slate-800 pt-2 flex items-center justify-between text-xs text-slate-400">
+              <span>Language:</span>
+              <div className="flex gap-1.5">
+                {SUPPORTED_LANGUAGES.map((l) => (
+                  <button
+                    key={l.code}
+                    onClick={() => setLanguage(l.code)}
+                    className={`px-2 py-0.5 rounded text-[10px] font-bold ${
+                      language === l.code ? 'bg-blue-600 text-white' : 'bg-slate-800 text-slate-300'
+                    }`}
+                  >
+                    {l.native}
+                  </button>
+                ))}
+              </div>
             </div>
 
           </div>
         )}
       </header>
 
-      {/* Language Selection Modal (Available Anywhere via Language Button & On First Visit) */}
-      <LanguageModal
-        isOpen={languageModalOpen}
-        onClose={() => setLanguageModalOpen(false)}
-      />
-
-      {/* Simulation Modal */}
+      {/* Simulation Modal (Clean Slate / Blue Styling) */}
       {simulationModalOpen && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/75 backdrop-blur-sm p-4">
-          <div className="bg-[#0B2119] border border-emerald-500/40 rounded-3xl max-w-lg w-full p-6 text-white shadow-2xl relative">
-            <button 
-              onClick={() => setSimulationModalOpen(false)}
-              className="absolute top-5 right-5 text-slate-400 hover:text-white"
-            >
-              ✕
-            </button>
-            <div className="flex items-center space-x-2 mb-4">
-              <div className="w-8 h-8 rounded-xl bg-emerald-500/20 text-[#34D399] flex items-center justify-center">
-                <Zap className="w-5 h-5" />
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-xs p-4">
+          <div className="bg-white rounded-2xl border border-slate-200 shadow-2xl p-6 max-w-md w-full space-y-4 text-slate-900">
+            <div className="flex items-center justify-between border-b border-slate-100 pb-3">
+              <div className="flex items-center space-x-2">
+                <Zap className="w-5 h-5 text-amber-500" />
+                <h3 className="font-extrabold text-base text-slate-900">Inject Weather / Stress Event</h3>
               </div>
-              <h3 className="font-black text-lg text-white">Event Simulation Console</h3>
+              <button
+                onClick={() => setSimulationModalOpen(false)}
+                className="p-1 rounded-lg hover:bg-slate-100 text-slate-500"
+              >
+                <X className="w-4 h-4" />
+              </button>
             </div>
-            <p className="text-xs text-slate-300 mb-6">
-              Trigger instant synthetic parametric stress conditions to test satellite NDVI decay, root zone soil moisture depletion, and automated insurance claim settlement workflows.
+
+            <p className="text-xs text-slate-600 leading-relaxed">
+              Dispatches real-time simulated telemetry shocks across Ghatal Block to test automated parametric trigger evaluation.
             </p>
 
-            <div className="space-y-3">
+            <div className="space-y-2 text-xs font-semibold">
               <button
+                onClick={() => triggerSimulation('heavy_rain')}
                 disabled={simLoading}
-                onClick={() => triggerSimulation('DROUGHT_STRESS')}
-                className="w-full text-left p-3.5 rounded-2xl bg-[#102820] hover:bg-emerald-900/40 border border-emerald-500/30 transition-all flex items-center justify-between"
+                className="w-full text-left p-3 rounded-xl border border-slate-200 hover:border-blue-500 hover:bg-blue-50/50 transition-all flex items-center justify-between group"
               >
                 <div>
-                  <div className="font-bold text-xs text-amber-300">☀️ Extreme Drought & Moisture Deficit</div>
-                  <div className="text-[11px] text-slate-400">Depletes soil moisture to 14% and drops rolling CHF below 0.550</div>
+                  <div className="font-bold text-slate-900">142mm Cloudburst (Flood Inundation)</div>
+                  <span className="text-[11px] text-slate-500">Drops Sentinel-1 VH to -19.8 dB & triggers CHF deficit</span>
                 </div>
-                <ArrowRight className="w-4 h-4 text-amber-400" />
+                <ArrowRight className="w-4 h-4 text-slate-400 group-hover:text-blue-600 transition-colors" />
               </button>
 
               <button
+                onClick={() => triggerSimulation('pest_infestation')}
                 disabled={simLoading}
-                onClick={() => triggerSimulation('INUNDATION_FLOOD')}
-                className="w-full text-left p-3.5 rounded-2xl bg-[#102820] hover:bg-emerald-900/40 border border-emerald-500/30 transition-all flex items-center justify-between"
+                className="w-full text-left p-3 rounded-xl border border-slate-200 hover:border-blue-500 hover:bg-blue-50/50 transition-all flex items-center justify-between group"
               >
                 <div>
-                  <div className="font-bold text-xs text-blue-300">🌊 Flash Monsoon Inundation (220mm Rain)</div>
-                  <div className="text-[11px] text-slate-400">Triggers flood damage index & qualifies automated claim #CLM-084</div>
+                  <div className="font-bold text-slate-900">Brown Spot Fungal Outbreak</div>
+                  <span className="text-[11px] text-slate-500">Spikes canopy disease score & suggests MOP treatment</span>
                 </div>
-                <ArrowRight className="w-4 h-4 text-blue-400" />
+                <ArrowRight className="w-4 h-4 text-slate-400 group-hover:text-blue-600 transition-colors" />
+              </button>
+
+              <button
+                onClick={() => triggerSimulation('drought')}
+                disabled={simLoading}
+                className="w-full text-left p-3 rounded-xl border border-slate-200 hover:border-blue-500 hover:bg-blue-50/50 transition-all flex items-center justify-between group"
+              >
+                <div>
+                  <div className="font-bold text-slate-900">Prolonged Dry Spell (Soil Moisture 18%)</div>
+                  <span className="text-[11px] text-slate-500">Triggers emergency water requirement advisory</span>
+                </div>
+                <ArrowRight className="w-4 h-4 text-slate-400 group-hover:text-blue-600 transition-colors" />
               </button>
             </div>
 
             {simMessage && (
-              <div className="mt-4 p-3 rounded-xl bg-emerald-950 border border-emerald-500 text-xs text-emerald-200">
+              <div className="p-3 rounded-xl bg-blue-50 border border-blue-200 text-xs text-blue-900 font-medium">
                 {simMessage}
               </div>
             )}
+
+            <div className="flex justify-end pt-2">
+              <button
+                onClick={() => setSimulationModalOpen(false)}
+                className="px-4 py-2 rounded-xl bg-slate-900 hover:bg-slate-800 text-white text-xs font-bold transition-colors"
+              >
+                Close
+              </button>
+            </div>
           </div>
         </div>
       )}

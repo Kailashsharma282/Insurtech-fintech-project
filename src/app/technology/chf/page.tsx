@@ -110,7 +110,7 @@ export default function ChfEnginePage() {
         {/* Simple, Clean Header */}
         <div className="border-b border-slate-200 pb-6 flex flex-col md:flex-row md:items-center justify-between gap-4">
           <div>
-            <div className="inline-flex items-center space-x-2 px-3 py-1 rounded-md bg-emerald-100 text-emerald-800 text-xs font-bold mb-2">
+            <div className="inline-flex items-center space-x-2 px-3 py-1 rounded-md bg-blue-100 text-blue-800 text-xs font-bold mb-2">
               <span>Ghatal Block (2025 Kharif) Algorithm</span>
               <span className="font-mono">&bull; FAPAR Excluded</span>
             </div>
@@ -126,11 +126,18 @@ export default function ChfEnginePage() {
             <a
               href="/reports/Ghatal_Block_Crop_Health_Indicators_2025_Report.pdf"
               download
-              className="inline-flex items-center px-4 py-2 rounded-lg bg-emerald-700 hover:bg-emerald-800 text-white font-bold text-xs shadow-sm transition-colors space-x-1.5"
+              className="inline-flex items-center px-4 py-2 rounded-lg bg-blue-600 hover:bg-blue-700 text-white font-bold text-xs shadow-sm transition-colors space-x-1.5"
             >
               <Download className="w-4 h-4" />
               <span>Download Report PDF</span>
             </a>
+            <Link
+              href="/farmer/insurance-validation"
+              className="inline-flex items-center px-4 py-2 rounded-lg bg-slate-900 hover:bg-slate-800 text-white font-bold text-xs shadow-sm transition-colors space-x-1.5"
+            >
+              <Layers className="w-4 h-4 text-blue-400" />
+              <span>Validation Registry</span>
+            </Link>
           </div>
         </div>
 
@@ -182,7 +189,7 @@ export default function ChfEnginePage() {
             </button>
             <button
               onClick={setScenarioOptimal}
-              className="px-3 py-1.5 rounded-md text-xs font-bold bg-emerald-50 hover:bg-emerald-100 text-emerald-800 border border-emerald-300"
+              className="px-3 py-1.5 rounded-md text-xs font-bold bg-blue-50 hover:bg-blue-100 text-blue-800 border border-blue-300"
             >
               ⭐ Optimal Peak Canopy (CHF ~ 0.83)
             </button>

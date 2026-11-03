@@ -39,7 +39,7 @@ export default function AdminExceptionsPage() {
               onClick={() => setSelectedState(s.id)}
               className={`px-4 py-2 rounded-xl text-xs font-semibold transition-all ${
                 selectedState === s.id
-                  ? 'bg-[#071511] text-[#34D399] shadow-md'
+                  ? 'bg-blue-600 text-white shadow-md'
                   : 'bg-white text-slate-600 hover:text-slate-900 border border-slate-200'
               }`}
             >

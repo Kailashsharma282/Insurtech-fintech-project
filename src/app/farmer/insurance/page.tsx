@@ -60,7 +60,7 @@ export default function FarmerInsurancePage() {
         {/* Page Header */}
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-slate-200 pb-5">
           <div>
-            <div className="inline-flex items-center space-x-1.5 px-3 py-1 rounded-full bg-emerald-50 border border-emerald-200 text-[#059669] text-xs font-bold uppercase tracking-wider mb-2">
+            <div className="inline-flex items-center space-x-1.5 px-3 py-1 rounded-full bg-blue-50 border border-blue-200 text-blue-600 text-xs font-bold uppercase tracking-wider mb-2">
               <Sparkles className="w-3.5 h-3.5" />
               <span>Parametric Crop Insurance Hub</span>
             </div>
@@ -83,14 +83,14 @@ export default function FarmerInsurancePage() {
                   : 'bg-white hover:bg-slate-50 text-slate-700 border border-slate-300'
               }`}
             >
-              <Volume2 className="w-4 h-4 text-emerald-600" />
+              <Volume2 className="w-4 h-4 text-blue-600" />
               <span className="hidden sm:inline">{isSpeaking ? 'Playing...' : 'Voice Advice'}</span>
             </button>
 
             {/* Apply New Policy CTA */}
             <Link
               href="/farmer/insurance/apply"
-              className="px-4 py-2.5 rounded-2xl bg-emerald-700 hover:bg-emerald-800 text-white font-bold text-xs shadow-lg shadow-emerald-950/20 transition-all flex items-center space-x-1.5 transform hover:-translate-y-0.5"
+              className="px-4 py-2.5 rounded-2xl bg-blue-700 hover:bg-blue-800 text-white font-bold text-xs shadow-lg shadow-emerald-950/20 transition-all flex items-center space-x-1.5 transform hover:-translate-y-0.5"
             >
               <Plus className="w-4 h-4" />
               <span>{t('ins.apply_title')}</span>
@@ -116,10 +116,10 @@ export default function FarmerInsurancePage() {
         )}
 
         {/* Ghatal CHF Insurance Validation Callout */}
-        <div className="p-5 rounded-2xl bg-white border border-emerald-300 shadow-sm flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+        <div className="p-5 rounded-2xl bg-white border border-blue-200 shadow-sm flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
           <div className="space-y-1">
             <div className="flex items-center gap-2">
-              <span className="px-2.5 py-0.5 rounded-full bg-emerald-100 text-emerald-900 text-[10px] font-bold uppercase tracking-wider">
+              <span className="px-2.5 py-0.5 rounded-full bg-blue-100 text-blue-900 text-[10px] font-bold uppercase tracking-wider">
                 Ghatal Block PMFBY Registry
               </span>
               <span className="text-xs text-slate-500 font-mono">10-Season Benchmark</span>
@@ -134,7 +134,7 @@ export default function FarmerInsurancePage() {
           <div className="flex items-center gap-2 shrink-0">
             <Link
               href="/farmer/insurance-validation"
-              className="px-4 py-2 rounded-xl bg-emerald-800 hover:bg-emerald-900 text-white font-bold text-xs transition-colors flex items-center space-x-1.5"
+              className="px-4 py-2 rounded-xl bg-blue-700 hover:bg-blue-800 text-white font-bold text-xs transition-colors flex items-center space-x-1.5"
             >
               <FileText className="w-4 h-4" />
               <span>Open Validation Hub</span>
@@ -156,7 +156,7 @@ export default function FarmerInsurancePage() {
           <button
             onClick={() => setFilter('ACTIVE')}
             className={`px-3.5 py-1.5 rounded-xl font-bold transition-colors whitespace-nowrap ${
-              filter === 'ACTIVE' ? 'bg-emerald-600 text-white' : 'bg-white text-slate-600 border border-slate-200 hover:bg-slate-50'
+              filter === 'ACTIVE' ? 'bg-blue-600 text-white' : 'bg-white text-slate-600 border border-slate-200 hover:bg-slate-50'
             }`}
           >
             🟢 Active ({policies.filter(p => p.status === 'ACTIVE').length})
@@ -188,7 +188,7 @@ export default function FarmerInsurancePage() {
               <p className="text-xs text-slate-500">Apply for a new policy or change your filter selection.</p>
               <Link
                 href="/farmer/insurance/apply"
-                className="inline-flex items-center px-4 py-2 rounded-xl bg-[#10B981] text-white text-xs font-bold"
+                className="inline-flex items-center px-4 py-2 rounded-xl bg-blue-600 text-white text-xs font-bold"
               >
                 Apply Now ➡️
               </Link>
@@ -206,7 +206,7 @@ export default function FarmerInsurancePage() {
                   glowColor={isActive ? 'rgba(16, 185, 129, 0.3)' : (isPending ? 'rgba(245, 158, 11, 0.3)' : 'rgba(239, 68, 68, 0.2)')}
                   className={`p-6 sm:p-8 rounded-3xl shadow-xl space-y-6 ${
                     isActive 
-                      ? 'bg-[#071511] text-white border border-[#10B981]/40' 
+                      ? 'bg-[#0F172A] text-white border border-slate-700' 
                       : (isPending 
                           ? 'bg-[#15130A] text-white border border-amber-500/40' 
                           : 'bg-[#180A0A] text-white border border-red-500/40')
@@ -215,7 +215,7 @@ export default function FarmerInsurancePage() {
                   <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-white/10 pb-5">
                     <div>
                       <div className="flex items-center space-x-2">
-                        <span className="text-[10px] font-mono text-[#34D399] uppercase tracking-wider font-bold">
+                        <span className="text-[10px] font-mono text-blue-400 uppercase tracking-wider font-bold">
                           {policy.crop} &bull; {policy.farmPlot}
                         </span>
                         <span className="text-[10px] font-mono text-slate-400">IU: {policy.insuranceUnitCode}</span>
@@ -230,7 +230,7 @@ export default function FarmerInsurancePage() {
 
                     <div>
                       {isActive && (
-                        <span className="px-3.5 py-1.5 rounded-full bg-emerald-500/20 text-[#34D399] border border-emerald-500/40 text-xs font-black font-mono inline-flex items-center gap-1.5">
+                        <span className="px-3.5 py-1.5 rounded-full bg-blue-500/20 text-blue-400 border border-blue-500/40 text-xs font-black font-mono inline-flex items-center gap-1.5">
                           <CheckCircle2 className="w-4 h-4" />
                           <span>{t('ins.status_approved')}</span>
                         </span>
@@ -254,7 +254,7 @@ export default function FarmerInsurancePage() {
                   <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 sm:gap-4 text-xs font-mono">
                     <div className="p-3.5 sm:p-4 rounded-2xl bg-black/40 border border-white/10">
                       <span className="text-slate-400 block text-[10px] uppercase font-bold">{t('ins.sum_insured')}</span>
-                      <strong className="text-lg sm:text-xl text-emerald-400 font-black mt-1 block">
+                      <strong className="text-lg sm:text-xl text-blue-400 font-black mt-1 block">
                         ₹{policy.sumInsured.toLocaleString()}
                       </strong>
                     </div>
@@ -266,7 +266,7 @@ export default function FarmerInsurancePage() {
                     </div>
                     <div className="p-3.5 sm:p-4 rounded-2xl bg-black/40 border border-white/10">
                       <span className="text-slate-400 block text-[10px] uppercase font-bold">PMFBY Subsidy (80%)</span>
-                      <strong className="text-lg sm:text-xl text-emerald-300 font-black mt-1 block">
+                      <strong className="text-lg sm:text-xl text-blue-300 font-black mt-1 block">
                         ₹{policy.subsidyAmount.toLocaleString()}
                       </strong>
                     </div>
@@ -306,11 +306,11 @@ export default function FarmerInsurancePage() {
 
                   {/* Active Policy Status & Payout Trigger */}
                   {isActive && (
-                    <div className="p-4 rounded-2xl bg-emerald-950/60 border border-emerald-500/40 text-xs text-emerald-200 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+                    <div className="p-4 rounded-2xl bg-slate-800/80 border border-blue-500/40 text-xs text-blue-200 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
                       <div>
                         <strong>Autonomous Parametric Index Protection Active:</strong> Monitored via Sentinel-2 & AWS weather telemetry. Direct RBI NEFT payout to linked PNB account upon CHF drop.
                       </div>
-                      <span className="px-3 py-1 rounded-xl bg-emerald-500/20 text-[#34D399] font-bold shrink-0 font-mono text-[11px]">
+                      <span className="px-3 py-1 rounded-xl bg-blue-500/20 text-blue-400 font-bold shrink-0 font-mono text-[11px]">
                         🟢 {t('ins.zero_breaches')}
                       </span>
                     </div>
@@ -329,7 +329,7 @@ export default function FarmerInsurancePage() {
           </div>
           <Link
             href="/farmer/insurance/apply"
-            className="px-6 py-3 rounded-2xl bg-emerald-700 hover:bg-emerald-800 text-white font-black text-xs shadow-lg shadow-emerald-950/20 transition-all flex items-center justify-center space-x-2 shrink-0"
+            className="px-6 py-3 rounded-2xl bg-blue-700 hover:bg-blue-800 text-white font-black text-xs shadow-lg shadow-emerald-950/20 transition-all flex items-center justify-center space-x-2 shrink-0"
           >
             <span>👉 {t('ins.apply_new')}</span>
           </Link>

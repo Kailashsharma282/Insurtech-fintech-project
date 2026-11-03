@@ -14,7 +14,7 @@ export const FloatingGuidanceBar: React.FC<{ onOpenLanguageModal?: () => void }>
 
   return (
     <div className="fixed bottom-3 left-1/2 -translate-x-1/2 z-40 w-[95%] max-w-3xl animate-in slide-in-from-bottom-5 duration-300">
-      <div className="bg-[#071511]/95 backdrop-blur-2xl border-2 border-[#10B981] rounded-2xl p-3 sm:p-3.5 text-white shadow-2xl flex flex-col sm:flex-row items-center justify-between gap-3">
+      <div className="bg-[#0F172A]/95 backdrop-blur-2xl border-2 border-[#10B981] rounded-2xl p-3 sm:p-3.5 text-white shadow-2xl flex flex-col sm:flex-row items-center justify-between gap-3">
         
         {/* Left: Indicator & Guide prompt */}
         <div className="flex items-center space-x-2.5 w-full sm:w-auto">

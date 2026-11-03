@@ -119,7 +119,7 @@ export default function FarmerAlertsPage() {
 
                 <Link
                   href={a.actionLink || '/farmer/dashboard'}
-                  className="inline-flex items-center font-semibold text-[#059669] hover:text-emerald-800"
+                  className="inline-flex items-center font-semibold text-blue-600 hover:text-emerald-800"
                 >
                   <span>{a.actionText || 'Take Action'}</span>
                   <ArrowRight className="w-3.5 h-3.5 ml-1" />

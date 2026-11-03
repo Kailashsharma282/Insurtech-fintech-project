@@ -152,7 +152,7 @@ export default function FarmerInsuranceApplyPage() {
             className={`px-4 py-2.5 rounded-2xl text-xs font-bold transition-all flex items-center space-x-2 shadow-md shrink-0 ${
               isSpeaking
                 ? 'bg-amber-500 text-slate-950 animate-pulse shadow-amber-500/50'
-                : 'bg-[#10B981] hover:bg-emerald-600 text-white shadow-emerald-950/20'
+                : 'bg-blue-600 hover:bg-blue-700 text-white shadow-slate-900/10'
             }`}
           >
             <Volume2 className="w-4 h-4" />
@@ -228,7 +228,7 @@ export default function FarmerInsuranceApplyPage() {
             <Card3D depth={4} glowOnHover={false} className="bg-white p-5 sm:p-7 rounded-3xl border border-[#E2E8F0] shadow-sm space-y-4">
               <div className="flex items-center justify-between border-b border-slate-100 pb-3">
                 <div className="flex items-center space-x-2">
-                  <span className="w-7 h-7 rounded-xl bg-[#10B981] text-white flex items-center justify-center font-bold text-xs">
+                  <span className="w-7 h-7 rounded-xl bg-blue-600 text-white flex items-center justify-center font-bold text-xs">
                     1
                   </span>
                   <h3 className="font-black text-base sm:text-lg text-[#0F172A]">
@@ -247,7 +247,7 @@ export default function FarmerInsuranceApplyPage() {
                       onClick={() => setSelectedPlotId(plot.id)}
                       className={`p-4 rounded-2xl border-2 transition-all cursor-pointer relative ${
                         isSelected
-                          ? 'bg-emerald-50/80 border-[#10B981] shadow-md shadow-emerald-950/10'
+                          ? 'bg-emerald-50/80 border-blue-500 shadow-md shadow-slate-900/10'
                           : 'bg-white border-slate-200 hover:border-slate-300 hover:bg-slate-50/50'
                       }`}
                     >
@@ -309,7 +309,7 @@ export default function FarmerInsuranceApplyPage() {
                   onClick={() => setCoverageTier('COMPREHENSIVE')}
                   className={`p-5 rounded-2xl border-2 transition-all cursor-pointer space-y-3 ${
                     coverageTier === 'COMPREHENSIVE'
-                      ? 'bg-emerald-50/80 border-[#10B981] shadow-md shadow-emerald-950/10'
+                      ? 'bg-emerald-50/80 border-blue-500 shadow-md shadow-slate-900/10'
                       : 'bg-white border-slate-200 hover:border-slate-300'
                   }`}
                 >

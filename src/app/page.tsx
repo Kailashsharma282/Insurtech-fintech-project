@@ -44,11 +44,11 @@ export default function HomePage() {
     <div className="min-h-screen bg-[#F8FAFC] text-[#0F172A]">
       
       {/* Clean Hero Header - Simple Solid Styling (No Gradients, No Animations) */}
-      <section className="bg-white border-b border-slate-200 py-12 sm:py-16">
+      <section className="bg-white border-b border-slate-200 py-10 sm:py-16">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="max-w-3xl space-y-4">
             
-            <div className="inline-flex items-center space-x-2 px-3 py-1 rounded bg-emerald-50 border border-emerald-200 text-emerald-800 text-xs font-bold">
+            <div className="inline-flex items-center space-x-2 px-3 py-1 rounded bg-blue-50 border border-blue-200 text-blue-800 text-xs font-bold">
               <span>Ghatal Pilot Hub</span>
               <span>&bull;</span>
               <span>Kharif 2025 Closed-Loop System</span>
@@ -66,26 +66,26 @@ export default function HomePage() {
             <div className="flex flex-wrap items-center gap-3 pt-3">
               <Link
                 href="/farmer/dashboard"
-                className="px-6 py-3 rounded-lg bg-emerald-700 hover:bg-emerald-800 text-white font-bold text-sm shadow-sm transition-colors flex items-center space-x-2"
+                className="px-6 py-3 rounded-lg bg-blue-600 hover:bg-blue-700 text-white font-bold text-sm shadow-sm transition-colors flex items-center space-x-2"
               >
                 <span>Enter Farmer Portal</span>
                 <ArrowRight className="w-4 h-4" />
               </Link>
 
               <Link
-                href="/technology/chf"
-                className="px-6 py-3 rounded-lg bg-slate-100 hover:bg-slate-200 text-slate-900 font-bold text-sm border border-slate-300 transition-colors flex items-center space-x-2"
+                href="/farmer/insurance-validation"
+                className="px-5 py-3 rounded-lg bg-slate-900 hover:bg-slate-800 text-white font-bold text-sm border border-slate-800 transition-colors flex items-center space-x-2"
               >
-                <Cpu className="w-4 h-4 text-emerald-700" />
-                <span>CHF Algorithm (Ghatal 2025)</span>
+                <FileText className="w-4 h-4 text-blue-400" />
+                <span>Insurance Validation (CHF)</span>
               </Link>
 
               <Link
-                href="/insurer/dashboard"
-                className="px-6 py-3 rounded-lg bg-white hover:bg-slate-50 text-slate-700 font-bold text-sm border border-slate-300 transition-colors flex items-center space-x-2"
+                href="/technology/chf"
+                className="px-5 py-3 rounded-lg bg-slate-100 hover:bg-slate-200 text-slate-900 font-bold text-sm border border-slate-300 transition-colors flex items-center space-x-2"
               >
-                <ShieldCheck className="w-4 h-4 text-slate-600" />
-                <span>Insurer Desk</span>
+                <Cpu className="w-4 h-4 text-blue-600" />
+                <span>CHF Algorithm (Ghatal 2025)</span>
               </Link>
 
               <a
@@ -116,7 +116,7 @@ export default function HomePage() {
             >
               <div className="flex items-baseline space-x-1">
                 <span className="text-2xl sm:text-3xl font-black text-slate-900 font-mono">{kpi.value}</span>
-                <span className="text-xs font-bold text-emerald-700 uppercase">{kpi.unit}</span>
+                <span className="text-xs font-bold text-blue-600 uppercase">{kpi.unit}</span>
               </div>
               <div className="font-bold text-xs text-slate-800">{kpi.label}</div>
               <p className="text-[11px] text-slate-500 leading-snug">{kpi.desc}</p>
@@ -128,7 +128,7 @@ export default function HomePage() {
       {/* 6-Stage Workflow Framework - Clear & Plain */}
       <section className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8 border-t border-slate-200">
         <div className="mb-6 space-y-1">
-          <span className="text-xs font-bold uppercase text-emerald-800 font-mono tracking-wider">
+          <span className="text-xs font-bold uppercase text-blue-700 font-mono tracking-wider">
             Operational Protocol
           </span>
           <h2 className="text-xl sm:text-2xl font-black text-slate-900">
@@ -148,7 +148,7 @@ export default function HomePage() {
                 className="p-5 rounded-xl bg-white border border-slate-200 shadow-sm space-y-3"
               >
                 <div className="flex items-center justify-between">
-                  <span className="text-xs font-mono font-bold text-emerald-800 px-2 py-0.5 rounded bg-emerald-50 border border-emerald-200">
+                  <span className="text-xs font-mono font-bold text-blue-700 px-2 py-0.5 rounded bg-blue-50 border border-blue-200">
                     STAGE {s.step}
                   </span>
                   <div className="w-8 h-8 rounded-lg bg-slate-100 flex items-center justify-center text-slate-700">
@@ -168,7 +168,7 @@ export default function HomePage() {
         <div className="p-6 rounded-xl bg-white border border-slate-300 shadow-sm space-y-4">
           <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-slate-200 pb-3">
             <div>
-              <span className="text-xs font-mono font-bold text-emerald-700 uppercase">Live Pilot Unit</span>
+              <span className="text-xs font-mono font-bold text-blue-600 uppercase">Live Pilot Unit</span>
               <h3 className="text-lg font-bold text-slate-900">Plot #204 &bull; Ghatal Block, Paschim Medinipur</h3>
             </div>
             <span className="text-xs font-mono font-bold px-2.5 py-1 rounded bg-slate-100 text-slate-700 self-start sm:self-auto">
@@ -179,7 +179,7 @@ export default function HomePage() {
           <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 text-xs font-mono">
             <div className="p-3 rounded-lg bg-slate-50 border border-slate-200">
               <span className="text-slate-500 block text-[10px]">Crop Health (CHF)</span>
-              <strong className="text-sm text-emerald-800">0.712 (Good)</strong>
+              <strong className="text-sm text-blue-700">0.712 (Good)</strong>
             </div>
             <div className="p-3 rounded-lg bg-slate-50 border border-slate-200">
               <span className="text-slate-500 block text-[10px]">Soil Moisture (Probe)</span>
@@ -197,11 +197,11 @@ export default function HomePage() {
 
           <div className="flex flex-wrap items-center justify-between pt-2 gap-3 text-xs">
             <span className="text-slate-500">
-              Logged in under pilot account: Subhash Biswas (+91 98321 44820)
+              Demo Pilot Profile: Subhash Biswas (Plot #204)
             </span>
             <Link
               href="/farmer/dashboard"
-              className="font-bold text-emerald-700 hover:text-emerald-800 flex items-center space-x-1"
+              className="font-bold text-blue-600 hover:text-blue-700 flex items-center space-x-1"
             >
               <span>Open Plot #204 Dashboard</span>
               <ArrowRight className="w-3.5 h-3.5" />

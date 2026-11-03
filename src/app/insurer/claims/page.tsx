@@ -45,7 +45,7 @@ export default function ClaimsDeskPage() {
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-slate-200 pb-5">
           <div>
             <div className="flex items-center space-x-2">
-              <span className="text-xs font-mono uppercase tracking-wider text-[#059669] font-bold">
+              <span className="text-xs font-mono uppercase tracking-wider text-blue-600 font-bold">
                 Automated Claims Adjudication Desk
               </span>
             </div>
@@ -67,7 +67,7 @@ export default function ClaimsDeskPage() {
         {/* Filter Controls (Section 19: status, crop, district, date, risk) */}
         <div className="bg-white p-6 rounded-3xl border border-[#E2E8F0] shadow-sm space-y-4">
           <div className="flex items-center space-x-2 text-xs font-bold text-slate-700">
-            <Filter className="w-4 h-4 text-[#059669]" />
+            <Filter className="w-4 h-4 text-blue-600" />
             <span>Search & Underwriting Filter</span>
           </div>
 
@@ -80,7 +80,7 @@ export default function ClaimsDeskPage() {
                 placeholder="Search claim #, farmer, IU..."
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                className="w-full pl-9 pr-3 py-2.5 rounded-xl border border-slate-300 focus:outline-none focus:ring-1 focus:ring-[#10B981]"
+                className="w-full pl-9 pr-3 py-2.5 rounded-xl border border-slate-300 focus:outline-none focus:ring-1 focus:ring-blue-500"
               />
             </div>
 
@@ -178,7 +178,7 @@ export default function ClaimsDeskPage() {
                     <td className="px-6 py-4 text-right">
                       <Link
                         href={`/insurer/claims/${claim.id}`}
-                        className="inline-flex items-center text-[#059669] font-bold hover:underline"
+                        className="inline-flex items-center text-blue-600 font-bold hover:underline"
                       >
                         <span>Package</span>
                         <ArrowRight className="w-3.5 h-3.5 ml-1" />

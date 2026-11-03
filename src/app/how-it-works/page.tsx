@@ -138,17 +138,17 @@ export default function HowItWorksPage() {
                 onClick={() => setActiveStage(st.number)}
                 className={`p-4 rounded-2xl border text-left transition-all relative overflow-hidden ${
                   isSelected 
-                    ? 'bg-[#071511] text-white border-[#10B981] shadow-xl shadow-emerald-950/20 scale-[1.02]' 
+                    ? 'bg-[#0F172A] text-white border-blue-500 shadow-xl shadow-slate-900/10 scale-[1.02]' 
                     : 'bg-white text-slate-700 border-slate-200 hover:border-emerald-400 hover:bg-slate-50'
                 }`}
               >
                 <div className="flex items-center justify-between mb-2">
                   <span className={`text-xs font-mono font-bold px-2 py-0.5 rounded ${
-                    isSelected ? 'bg-[#10B981] text-white' : 'bg-slate-100 text-slate-600'
+                    isSelected ? 'bg-blue-600 text-white' : 'bg-slate-100 text-slate-600'
                   }`}>
                     {st.number}
                   </span>
-                  <Icon className={`w-5 h-5 ${isSelected ? 'text-[#34D399]' : 'text-slate-400'}`} />
+                  <Icon className={`w-5 h-5 ${isSelected ? 'text-blue-400' : 'text-slate-400'}`} />
                 </div>
                 <div className="font-extrabold text-sm">{st.name}</div>
                 <div className={`text-[11px] truncate mt-0.5 ${isSelected ? 'text-slate-300' : 'text-slate-500'}`}>
@@ -165,7 +165,7 @@ export default function HowItWorksPage() {
           <div className="flex flex-col sm:flex-row sm:items-center justify-between border-b border-slate-100 pb-6 gap-4">
             <div>
               <div className="flex items-center space-x-3">
-                <span className="text-sm font-mono font-bold px-3 py-1 rounded-lg bg-[#071511] text-[#34D399]">
+                <span className="text-sm font-mono font-bold px-3 py-1 rounded-lg bg-blue-600 text-white">
                   STAGE {currentStageData.number}
                 </span>
                 <h2 className="text-2xl sm:text-3xl font-extrabold text-[#0F172A]">
@@ -180,7 +180,7 @@ export default function HowItWorksPage() {
             <div className="flex items-center space-x-2 shrink-0">
               <Link
                 href="/farmer/dashboard"
-                className="px-4 py-2 rounded-xl bg-emerald-50 hover:bg-emerald-100 text-[#059669] text-xs font-semibold border border-emerald-200 transition-colors"
+                className="px-4 py-2 rounded-xl bg-emerald-50 hover:bg-emerald-100 text-blue-600 text-xs font-semibold border border-emerald-200 transition-colors"
               >
                 View Live Pilot Farm &rarr;
               </Link>
@@ -192,7 +192,7 @@ export default function HowItWorksPage() {
             {/* Agronomic Principle */}
             <div className="p-6 rounded-2xl bg-[#F8FAFC] border border-slate-200 space-y-3">
               <div className="flex items-center space-x-2 text-slate-900 font-bold text-sm">
-                <Activity className="w-4 h-4 text-[#059669]" />
+                <Activity className="w-4 h-4 text-blue-600" />
                 <span>Agronomic & Biophysical Foundation</span>
               </div>
               <p className="text-slate-600 text-xs sm:text-sm leading-relaxed">
@@ -201,8 +201,8 @@ export default function HowItWorksPage() {
             </div>
 
             {/* Technical Pipeline */}
-            <div className="p-6 rounded-2xl bg-[#071511] text-white border border-[#10B981]/30 space-y-3">
-              <div className="flex items-center space-x-2 text-[#34D399] font-bold text-sm">
+            <div className="p-6 rounded-2xl bg-[#0F172A] text-white border border-slate-700 space-y-3">
+              <div className="flex items-center space-x-2 text-blue-400 font-bold text-sm">
                 <Cpu className="w-4 h-4" />
                 <span>Technical Stack & Algorithms</span>
               </div>
@@ -249,7 +249,7 @@ export default function HowItWorksPage() {
                   const next = (parseInt(activeStage) + 1).toString().padStart(2, '0');
                   setActiveStage(next);
                 }}
-                className="px-4 py-2 rounded-xl bg-[#10B981] hover:bg-emerald-600 text-white text-xs font-semibold disabled:opacity-40"
+                className="px-4 py-2 rounded-xl bg-blue-600 hover:bg-blue-700 text-white text-xs font-semibold disabled:opacity-40"
               >
                 Next Stage &rarr;
               </button>

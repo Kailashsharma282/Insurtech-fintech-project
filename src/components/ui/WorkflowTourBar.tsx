@@ -111,10 +111,10 @@ export const WorkflowTourBar: React.FC = () => {
 
   return (
     <div className="fixed bottom-4 left-1/2 -translate-x-1/2 z-40 w-[95%] max-w-5xl transition-all duration-300">
-      <div className="bg-[#071511]/95 backdrop-blur-xl border border-emerald-500/40 rounded-2xl shadow-2xl text-white overflow-hidden">
+      <div className="bg-[#0F172A]/95 backdrop-blur-xl border border-emerald-500/40 rounded-2xl shadow-2xl text-white overflow-hidden">
         
         {/* Toggle Bar */}
-        <div className="px-4 py-2.5 flex items-center justify-between border-b border-emerald-950/60 bg-gradient-to-r from-emerald-950/50 via-[#071511] to-emerald-950/50">
+        <div className="px-4 py-2.5 flex items-center justify-between border-b border-emerald-950/60 bg-gradient-to-r from-emerald-950/50 via-[#0F172A] to-emerald-950/50">
           <div className="flex items-center space-x-2.5">
             <span className="flex h-2 w-2 relative">
               <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
@@ -152,7 +152,7 @@ export const WorkflowTourBar: React.FC = () => {
 
         {/* Expandable Stages Grid */}
         {!collapsed && (
-          <div className="p-3 sm:p-4 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-2 bg-[#0B2119]/90 max-h-[55vh] overflow-y-auto">
+          <div className="p-3 sm:p-4 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-2 bg-[#1E293B]/90 max-h-[55vh] overflow-y-auto">
             {stages.map((stage) => {
               const active = stage.isActive;
               return (

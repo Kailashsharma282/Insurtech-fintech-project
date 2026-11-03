@@ -38,7 +38,7 @@ export default function AuditTrailPage() {
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-slate-200 pb-5">
           <div>
             <div className="flex items-center space-x-2">
-              <span className="text-xs font-mono uppercase tracking-wider text-[#059669] font-bold">
+              <span className="text-xs font-mono uppercase tracking-wider text-blue-600 font-bold">
                 Cryptographic Evidence Ledger
               </span>
             </div>
@@ -67,7 +67,7 @@ export default function AuditTrailPage() {
               placeholder="Search entity ID, action, actor..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              className="w-full pl-9 pr-3 py-2 rounded-xl border border-slate-300 focus:outline-none focus:ring-1 focus:ring-[#10B981]"
+              className="w-full pl-9 pr-3 py-2 rounded-xl border border-slate-300 focus:outline-none focus:ring-1 focus:ring-blue-500"
             />
           </div>
 
@@ -89,11 +89,11 @@ export default function AuditTrailPage() {
           {filtered.map((item, idx) => (
             <div
               key={item.id}
-              className="p-6 rounded-3xl bg-white border border-[#E2E8F0] shadow-sm hover:border-[#10B981] transition-all space-y-4"
+              className="p-6 rounded-3xl bg-white border border-[#E2E8F0] shadow-sm hover:border-blue-500 transition-all space-y-4"
             >
               <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-slate-100 pb-3 font-mono text-xs">
                 <div className="flex items-center space-x-2">
-                  <span className="w-2 h-2 rounded-full bg-[#10B981]"></span>
+                  <span className="w-2 h-2 rounded-full bg-blue-600"></span>
                   <strong className="text-slate-900">{item.action}</strong>
                   <span className="text-slate-400">&bull;</span>
                   <span className="text-emerald-700 font-bold">{item.entityId}</span>

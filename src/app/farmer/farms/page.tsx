@@ -67,7 +67,7 @@ export default function FarmsListPage() {
               <button
                 onClick={() => setViewMode('grid')}
                 className={`p-2 rounded-lg text-xs font-semibold flex items-center space-x-1.5 transition-colors ${
-                  viewMode === 'grid' ? 'bg-[#071511] text-[#34D399]' : 'text-slate-600 hover:text-slate-900'
+                  viewMode === 'grid' ? 'bg-blue-600 text-white' : 'text-slate-600 hover:text-slate-900'
                 }`}
               >
                 <LayoutGrid className="w-4 h-4" />
@@ -76,7 +76,7 @@ export default function FarmsListPage() {
               <button
                 onClick={() => setViewMode('table')}
                 className={`p-2 rounded-lg text-xs font-semibold flex items-center space-x-1.5 transition-colors ${
-                  viewMode === 'table' ? 'bg-[#071511] text-[#34D399]' : 'text-slate-600 hover:text-slate-900'
+                  viewMode === 'table' ? 'bg-blue-600 text-white' : 'text-slate-600 hover:text-slate-900'
                 }`}
               >
                 <TableIcon className="w-4 h-4" />
@@ -90,7 +90,7 @@ export default function FarmsListPage() {
         <div className="bg-white p-4 sm:p-5 rounded-3xl border border-[#E2E8F0] shadow-sm space-y-3">
           <div className="flex items-center justify-between">
             <div className="flex items-center space-x-2 text-xs font-bold text-slate-800">
-              <MapPin className="w-4 h-4 text-[#059669]" />
+              <MapPin className="w-4 h-4 text-blue-600" />
               <span>Interactive Geographic Preview</span>
             </div>
             <span className="text-[11px] text-slate-500">
@@ -112,7 +112,7 @@ export default function FarmsListPage() {
         {/* Filters Row */}
         <div className="bg-white p-6 rounded-3xl border border-[#E2E8F0] shadow-sm space-y-4">
           <div className="flex items-center space-x-2 text-xs font-bold text-slate-700">
-            <SlidersHorizontal className="w-4 h-4 text-[#059669]" />
+            <SlidersHorizontal className="w-4 h-4 text-blue-600" />
             <span>Search & Multi-Criteria Filtering</span>
           </div>
 
@@ -126,7 +126,7 @@ export default function FarmsListPage() {
                 placeholder="Search plot #, farmer, village..."
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                className="w-full pl-9 pr-3 py-2.5 rounded-xl border border-slate-300 focus:outline-none focus:ring-1 focus:ring-[#10B981]"
+                className="w-full pl-9 pr-3 py-2.5 rounded-xl border border-slate-300 focus:outline-none focus:ring-1 focus:ring-blue-500"
               />
             </div>
 
@@ -134,7 +134,7 @@ export default function FarmsListPage() {
             <select
               value={districtFilter}
               onChange={(e) => setDistrictFilter(e.target.value)}
-              className="w-full py-2.5 px-3 rounded-xl border border-slate-300 bg-white focus:outline-none focus:ring-1 focus:ring-[#10B981]"
+              className="w-full py-2.5 px-3 rounded-xl border border-slate-300 bg-white focus:outline-none focus:ring-1 focus:ring-blue-500"
             >
               <option value="ALL">All Districts (West Bengal)</option>
               <option value="Nadia">Nadia District</option>
@@ -147,7 +147,7 @@ export default function FarmsListPage() {
             <select
               value={cropFilter}
               onChange={(e) => setCropFilter(e.target.value)}
-              className="w-full py-2.5 px-3 rounded-xl border border-slate-300 bg-white focus:outline-none focus:ring-1 focus:ring-[#10B981]"
+              className="w-full py-2.5 px-3 rounded-xl border border-slate-300 bg-white focus:outline-none focus:ring-1 focus:ring-blue-500"
             >
               <option value="ALL">All Crops</option>
               <option value="Aman Paddy">Aman Paddy</option>
@@ -159,7 +159,7 @@ export default function FarmsListPage() {
             <select
               value={riskFilter}
               onChange={(e) => setRiskFilter(e.target.value)}
-              className="w-full py-2.5 px-3 rounded-xl border border-slate-300 bg-white focus:outline-none focus:ring-1 focus:ring-[#10B981]"
+              className="w-full py-2.5 px-3 rounded-xl border border-slate-300 bg-white focus:outline-none focus:ring-1 focus:ring-blue-500"
             >
               <option value="ALL">All Risk Categories</option>
               <option value="NORMAL">Normal / Optimal</option>
@@ -182,7 +182,7 @@ export default function FarmsListPage() {
                   key={farm.id}
                   className={`p-6 rounded-3xl bg-white border transition-all space-y-4 ${
                     isPrimary 
-                      ? 'border-[#10B981] shadow-lg shadow-emerald-950/5 ring-1 ring-[#10B981]/30' 
+                      ? 'border-blue-500 shadow-lg shadow-slate-900/5 ring-1 ring-blue-500/30' 
                       : 'border-[#E2E8F0] shadow-sm hover:shadow-md'
                   }`}
                 >
@@ -233,7 +233,7 @@ export default function FarmsListPage() {
                     <span className="text-slate-400 font-mono text-[11px]">{farm.district} District</span>
                     <Link
                       href={`/farmer/farms/${farm.id}`}
-                      className="inline-flex items-center font-semibold text-[#059669] hover:text-emerald-800 transition-colors"
+                      className="inline-flex items-center font-semibold text-blue-600 hover:text-emerald-800 transition-colors"
                     >
                       <span>Farm Details</span>
                       <ArrowRight className="w-3.5 h-3.5 ml-1" />
@@ -294,11 +294,11 @@ export default function FarmsListPage() {
                           {farm.riskLevel.replace('_', ' ')}
                         </span>
                       </td>
-                      <td className="px-6 py-4 text-[#059669] font-medium">Covered</td>
+                      <td className="px-6 py-4 text-blue-600 font-medium">Covered</td>
                       <td className="px-6 py-4 text-right">
                         <Link
                           href={`/farmer/farms/${farm.id}`}
-                          className="text-[#059669] font-bold hover:underline"
+                          className="text-blue-600 font-bold hover:underline"
                         >
                           View &rarr;
                         </Link>

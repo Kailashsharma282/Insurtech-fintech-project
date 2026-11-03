@@ -5,13 +5,9 @@ import {
   Camera, 
   UploadCloud, 
   Droplets, 
-  AlertTriangle, 
-  CheckCircle2, 
   Leaf, 
   RefreshCw, 
   Beaker, 
-  Check, 
-  XCircle,
   FileImage,
   ArrowRight
 } from 'lucide-react';
@@ -105,11 +101,10 @@ export function CropPhotoAnalyzer({ compact = false }: { compact?: boolean }) {
   const [analyzing, setAnalyzing] = useState<boolean>(false);
   const [data, setData] = useState<PhotoAnalysisData | null>(null);
   const [previewImage, setPreviewImage] = useState<string | null>(null);
-  const [selectedSampleId, setSelectedSampleId] = useState<number>(1); // Default to Brown Spot (Water Required: YES)
+  const [selectedSampleId, setSelectedSampleId] = useState<number>(1);
   const fileInputRef = useRef<HTMLInputElement>(null);
   const cameraInputRef = useRef<HTMLInputElement>(null);
 
-  // Trigger inference
   const runAnalysis = async (sampleId?: number, file?: File) => {
     setAnalyzing(true);
     try {
@@ -139,7 +134,6 @@ export function CropPhotoAnalyzer({ compact = false }: { compact?: boolean }) {
     }
   };
 
-  // Initial load
   React.useEffect(() => {
     runAnalysis(1);
   }, []);
@@ -161,46 +155,46 @@ export function CropPhotoAnalyzer({ compact = false }: { compact?: boolean }) {
   };
 
   return (
-    <div className="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden">
+    <div className="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden w-full max-w-full">
       
-      {/* Section Header */}
-      <div className="bg-emerald-900 text-white p-5 sm:p-6 border-b border-emerald-950">
+      {/* Section Header (Slate Navy & Royal Blue) */}
+      <div className="bg-[#0F172A] text-white p-4 sm:p-6 border-b border-slate-800">
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
           <div>
-            <div className="inline-flex items-center space-x-2 text-xs font-semibold uppercase tracking-wider text-emerald-300">
+            <div className="inline-flex items-center space-x-1.5 text-xs font-semibold uppercase tracking-wider text-blue-400">
               <Camera className="w-4 h-4" />
               <span>Smart Crop Diagnostic Camera</span>
             </div>
-            <h2 className="text-xl sm:text-2xl font-bold mt-1">
+            <h2 className="text-xl sm:text-2xl font-bold mt-1 text-white">
               Crop Photo Analysis — NPK & Water Requirement
             </h2>
-            <p className="text-xs sm:text-sm text-emerald-100/90 mt-1">
-              Upload or snap a photo of your crop leaf. The system instantly detects <strong>NPK nutrient status</strong>, tells you whether <strong>water is required</strong>, and diagnoses disease threats.
+            <p className="text-xs sm:text-sm text-slate-300 mt-1 max-w-2xl leading-relaxed">
+              Upload or snap a photo of your crop leaf. The system immediately analyzes <strong>NPK nutrient status</strong>, reports whether <strong>water is required</strong>, and diagnoses foliar pathology.
             </p>
           </div>
           
-          <div className="flex items-center gap-2">
-            <span className="text-xs bg-emerald-800 text-emerald-200 px-3 py-1 rounded-full font-mono font-medium">
+          <div className="flex items-center gap-2 shrink-0">
+            <span className="text-xs bg-slate-800 text-blue-300 px-3 py-1.5 rounded-lg border border-slate-700 font-mono font-medium">
               Ghatal Block AI Hub
             </span>
           </div>
         </div>
       </div>
 
-      <div className="p-5 sm:p-6 space-y-6">
+      <div className="p-4 sm:p-6 space-y-6 w-full max-w-full">
 
         {/* 1. Photo Upload / Camera Controls */}
-        <div className="grid grid-cols-1 md:grid-cols-12 gap-6 items-start">
+        <div className="grid grid-cols-1 md:grid-cols-12 gap-6 items-start w-full">
           
           {/* Upload Dropzone */}
-          <div className="md:col-span-5 space-y-3">
+          <div className="md:col-span-5 space-y-3 w-full">
             <label className="block text-xs font-bold uppercase tracking-wider text-slate-700">
               1. Upload or Take Photo
             </label>
 
-            <div className="border-2 border-dashed border-slate-300 rounded-xl p-5 text-center bg-slate-50 hover:bg-slate-100 transition-colors">
+            <div className="border-2 border-dashed border-slate-300 rounded-xl p-4 sm:p-5 text-center bg-slate-50 hover:bg-slate-100 transition-colors w-full">
               {previewImage ? (
-                <div className="space-y-3">
+                <div className="space-y-3 w-full">
                   <div className="relative w-full h-40 bg-slate-200 rounded-lg overflow-hidden border border-slate-300 flex items-center justify-center">
                     {/* eslint-disable-next-line @next/next/no-img-element */}
                     <img 
@@ -209,15 +203,15 @@ export function CropPhotoAnalyzer({ compact = false }: { compact?: boolean }) {
                       className="w-full h-full object-cover"
                     />
                   </div>
-                  <p className="text-xs text-slate-600 font-medium">Leaf Photo Uploaded</p>
+                  <p className="text-xs text-slate-700 font-medium">Leaf Photo Uploaded</p>
                 </div>
               ) : (
                 <div className="space-y-2">
-                  <div className="w-12 h-12 mx-auto rounded-full bg-emerald-100 text-emerald-800 flex items-center justify-center">
+                  <div className="w-12 h-12 mx-auto rounded-full bg-blue-100 text-blue-700 flex items-center justify-center">
                     <UploadCloud className="w-6 h-6" />
                   </div>
                   <div className="text-xs font-semibold text-slate-800">
-                    Snap with mobile camera or upload from gallery
+                    Snap with mobile camera or upload from device
                   </div>
                   <p className="text-[11px] text-slate-500">
                     JPG, PNG, WebP supported (Paddy, Potato, Jute, Mustard)
@@ -225,11 +219,11 @@ export function CropPhotoAnalyzer({ compact = false }: { compact?: boolean }) {
                 </div>
               )}
 
-              <div className="flex items-center justify-center gap-2 mt-4">
+              <div className="flex items-center justify-center gap-2 mt-4 flex-wrap">
                 <button
                   type="button"
                   onClick={() => fileInputRef.current?.click()}
-                  className="px-3.5 py-2 bg-emerald-700 hover:bg-emerald-800 text-white rounded-lg text-xs font-semibold flex items-center gap-1.5 transition-colors"
+                  className="px-3.5 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg text-xs font-bold flex items-center gap-1.5 transition-colors shadow-xs"
                 >
                   <FileImage className="w-4 h-4" />
                   <span>Choose Photo</span>
@@ -245,7 +239,7 @@ export function CropPhotoAnalyzer({ compact = false }: { compact?: boolean }) {
                 <button
                   type="button"
                   onClick={() => cameraInputRef.current?.click()}
-                  className="px-3.5 py-2 bg-slate-800 hover:bg-slate-900 text-white rounded-lg text-xs font-semibold flex items-center gap-1.5 transition-colors"
+                  className="px-3.5 py-2 bg-slate-800 hover:bg-slate-900 text-white rounded-lg text-xs font-bold flex items-center gap-1.5 transition-colors shadow-xs"
                 >
                   <Camera className="w-4 h-4" />
                   <span>Camera</span>
@@ -262,18 +256,18 @@ export function CropPhotoAnalyzer({ compact = false }: { compact?: boolean }) {
             </div>
 
             {/* Quick Sample Selector */}
-            <div className="space-y-1.5 pt-1">
+            <div className="space-y-1.5 pt-1 w-full">
               <span className="text-[11px] font-bold uppercase tracking-wider text-slate-500">
                 Or pick a verified field photo:
               </span>
-              <div className="grid grid-cols-1 gap-1.5">
+              <div className="grid grid-cols-1 gap-1.5 w-full">
                 {SAMPLE_OPTIONS.map((sample) => (
                   <button
                     key={sample.id}
                     onClick={() => selectSample(sample)}
                     className={`w-full text-left px-3 py-2 rounded-lg text-xs border transition-all flex items-center justify-between ${
                       selectedSampleId === sample.id && !previewImage
-                        ? 'border-emerald-700 bg-emerald-50 text-emerald-950 font-bold'
+                        ? 'border-blue-600 bg-blue-50 text-blue-950 font-bold'
                         : 'border-slate-200 bg-white hover:bg-slate-50 text-slate-700'
                     }`}
                   >
@@ -292,10 +286,10 @@ export function CropPhotoAnalyzer({ compact = false }: { compact?: boolean }) {
           </div>
 
           {/* Right Column: Loading or Live Diagnostic Results */}
-          <div className="md:col-span-7 space-y-4">
+          <div className="md:col-span-7 space-y-4 w-full">
             {analyzing && (
-              <div className="border border-slate-200 rounded-xl p-12 text-center bg-slate-50 flex flex-col items-center justify-center space-y-3 min-h-[300px]">
-                <RefreshCw className="w-8 h-8 text-emerald-700 animate-spin" />
+              <div className="border border-slate-200 rounded-xl p-10 text-center bg-slate-50 flex flex-col items-center justify-center space-y-3 min-h-[280px]">
+                <RefreshCw className="w-8 h-8 text-blue-600 animate-spin" />
                 <div className="text-sm font-bold text-slate-800">
                   Analyzing leaf morphology & cellular chlorophyll...
                 </div>
@@ -306,34 +300,34 @@ export function CropPhotoAnalyzer({ compact = false }: { compact?: boolean }) {
             )}
 
             {!analyzing && data && (
-              <div className="space-y-5">
+              <div className="space-y-4 w-full">
                 
                 {/* 2. WATER REQUIREMENT (HIGH-VISIBILITY CALLOUT) */}
-                <div className={`p-5 rounded-xl border-2 text-left ${
+                <div className={`p-4 sm:p-5 rounded-xl border-2 text-left w-full ${
                   data.waterRequirement.required
                     ? 'bg-red-50 border-red-500 text-red-950'
                     : data.waterRequirement.urgency === 'EXCESS_DRAINAGE_NEEDED'
                     ? 'bg-amber-50 border-amber-500 text-amber-950'
-                    : 'bg-emerald-50 border-emerald-600 text-emerald-950'
+                    : 'bg-blue-50 border-blue-600 text-blue-950'
                 }`}>
                   <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b pb-3 border-current/20">
                     <div className="flex items-center space-x-2">
-                      <Droplets className={`w-6 h-6 ${
-                        data.waterRequirement.required ? 'text-red-600' : 'text-emerald-700'
+                      <Droplets className={`w-6 h-6 shrink-0 ${
+                        data.waterRequirement.required ? 'text-red-600' : 'text-blue-700'
                       }`} />
                       <div>
                         <span className="text-[10px] font-mono uppercase tracking-widest font-bold opacity-80">
                           Irrigation Requirement Status
                         </span>
                         <div className={`text-xl sm:text-2xl font-black ${
-                          data.waterRequirement.required ? 'text-red-700' : 'text-emerald-800'
+                          data.waterRequirement.required ? 'text-red-700' : 'text-blue-900'
                         }`}>
                           {data.waterRequirement.statusBadge}
                         </div>
                       </div>
                     </div>
 
-                    <div className="text-left sm:text-right">
+                    <div className="text-left sm:text-right shrink-0">
                       <div className="text-lg font-bold font-mono">
                         {data.waterRequirement.estimatedSoilMoisturePct}% Moisture
                       </div>
@@ -344,7 +338,7 @@ export function CropPhotoAnalyzer({ compact = false }: { compact?: boolean }) {
                   </div>
 
                   {/* Water Action & Leaf Turgidity */}
-                  <div className="pt-3 space-y-2 text-xs">
+                  <div className="pt-3 space-y-1.5 text-xs">
                     <div>
                       <strong className="font-bold">Required Irrigation Action: </strong>
                       <span>{data.waterRequirement.irrigationAction}</span>
@@ -360,21 +354,21 @@ export function CropPhotoAnalyzer({ compact = false }: { compact?: boolean }) {
                 </div>
 
                 {/* 3. NPK NUTRIENT CONDITION */}
-                <div className="p-5 rounded-xl border border-slate-200 bg-white space-y-4">
+                <div className="p-4 sm:p-5 rounded-xl border border-slate-200 bg-white space-y-4 w-full">
                   <div className="flex items-center justify-between border-b border-slate-100 pb-2">
                     <div className="flex items-center space-x-2">
-                      <Beaker className="w-4 h-4 text-emerald-800" />
+                      <Beaker className="w-4 h-4 text-blue-700" />
                       <h3 className="text-sm font-bold text-slate-900">
                         NPK Nutrient Condition & Chemical Dosages
                       </h3>
                     </div>
                     <div className="text-xs font-semibold text-slate-600">
-                      Balance Score: <strong className="text-emerald-800">{data.npkCondition.overallBalanceScore}/100</strong>
+                      Balance Score: <strong className="text-blue-700">{data.npkCondition.overallBalanceScore}/100</strong>
                     </div>
                   </div>
 
                   {/* 3 NPK Columns */}
-                  <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                  <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 w-full">
                     
                     {/* Nitrogen (N) */}
                     <div className={`p-3.5 rounded-lg border text-xs space-y-2 ${
@@ -382,7 +376,7 @@ export function CropPhotoAnalyzer({ compact = false }: { compact?: boolean }) {
                         ? 'bg-amber-50/50 border-amber-300'
                         : data.npkCondition.nitrogen.status === 'EXCESS'
                         ? 'bg-purple-50/50 border-purple-300'
-                        : 'bg-emerald-50/50 border-emerald-300'
+                        : 'bg-blue-50/50 border-blue-300'
                     }`}>
                       <div className="flex items-center justify-between">
                         <span className="font-extrabold text-sm text-slate-900">Nitrogen (N)</span>
@@ -391,7 +385,7 @@ export function CropPhotoAnalyzer({ compact = false }: { compact?: boolean }) {
                             ? 'bg-amber-200 text-amber-900'
                             : data.npkCondition.nitrogen.status === 'EXCESS'
                             ? 'bg-purple-200 text-purple-900'
-                            : 'bg-emerald-200 text-emerald-900'
+                            : 'bg-blue-200 text-blue-900'
                         }`}>
                           {data.npkCondition.nitrogen.status}
                         </span>
@@ -406,7 +400,7 @@ export function CropPhotoAnalyzer({ compact = false }: { compact?: boolean }) {
                           <div 
                             className={`h-full ${
                               data.npkCondition.nitrogen.status === 'DEFICIENT' ? 'bg-amber-500' :
-                              data.npkCondition.nitrogen.status === 'EXCESS' ? 'bg-purple-600' : 'bg-emerald-600'
+                              data.npkCondition.nitrogen.status === 'EXCESS' ? 'bg-purple-600' : 'bg-blue-600'
                             }`}
                             style={{ width: `${Math.min(100, data.npkCondition.nitrogen.percentageOfTarget)}%` }}
                           />
@@ -424,7 +418,7 @@ export function CropPhotoAnalyzer({ compact = false }: { compact?: boolean }) {
                         ? 'bg-amber-50/50 border-amber-300'
                         : data.npkCondition.phosphorus.status === 'EXCESS'
                         ? 'bg-purple-50/50 border-purple-300'
-                        : 'bg-emerald-50/50 border-emerald-300'
+                        : 'bg-blue-50/50 border-blue-300'
                     }`}>
                       <div className="flex items-center justify-between">
                         <span className="font-extrabold text-sm text-slate-900">Phosphorus (P)</span>
@@ -433,7 +427,7 @@ export function CropPhotoAnalyzer({ compact = false }: { compact?: boolean }) {
                             ? 'bg-amber-200 text-amber-900'
                             : data.npkCondition.phosphorus.status === 'EXCESS'
                             ? 'bg-purple-200 text-purple-900'
-                            : 'bg-emerald-200 text-emerald-900'
+                            : 'bg-blue-200 text-blue-900'
                         }`}>
                           {data.npkCondition.phosphorus.status}
                         </span>
@@ -448,7 +442,7 @@ export function CropPhotoAnalyzer({ compact = false }: { compact?: boolean }) {
                           <div 
                             className={`h-full ${
                               data.npkCondition.phosphorus.status === 'DEFICIENT' ? 'bg-amber-500' :
-                              data.npkCondition.phosphorus.status === 'EXCESS' ? 'bg-purple-600' : 'bg-emerald-600'
+                              data.npkCondition.phosphorus.status === 'EXCESS' ? 'bg-purple-600' : 'bg-blue-600'
                             }`}
                             style={{ width: `${Math.min(100, data.npkCondition.phosphorus.percentageOfTarget)}%` }}
                           />
@@ -466,7 +460,7 @@ export function CropPhotoAnalyzer({ compact = false }: { compact?: boolean }) {
                         ? 'bg-amber-50/50 border-amber-300'
                         : data.npkCondition.potassium.status === 'EXCESS'
                         ? 'bg-purple-50/50 border-purple-300'
-                        : 'bg-emerald-50/50 border-emerald-300'
+                        : 'bg-blue-50/50 border-blue-300'
                     }`}>
                       <div className="flex items-center justify-between">
                         <span className="font-extrabold text-sm text-slate-900">Potassium (K)</span>
@@ -475,7 +469,7 @@ export function CropPhotoAnalyzer({ compact = false }: { compact?: boolean }) {
                             ? 'bg-amber-200 text-amber-900'
                             : data.npkCondition.potassium.status === 'EXCESS'
                             ? 'bg-purple-200 text-purple-900'
-                            : 'bg-emerald-200 text-emerald-900'
+                            : 'bg-blue-200 text-blue-900'
                         }`}>
                           {data.npkCondition.potassium.status}
                         </span>
@@ -490,7 +484,7 @@ export function CropPhotoAnalyzer({ compact = false }: { compact?: boolean }) {
                           <div 
                             className={`h-full ${
                               data.npkCondition.potassium.status === 'DEFICIENT' ? 'bg-amber-500' :
-                              data.npkCondition.potassium.status === 'EXCESS' ? 'bg-purple-600' : 'bg-emerald-600'
+                              data.npkCondition.potassium.status === 'EXCESS' ? 'bg-purple-600' : 'bg-blue-600'
                             }`}
                             style={{ width: `${Math.min(100, data.npkCondition.potassium.percentageOfTarget)}%` }}
                           />
@@ -512,10 +506,10 @@ export function CropPhotoAnalyzer({ compact = false }: { compact?: boolean }) {
                 </div>
 
                 {/* 4. DISEASE & FOLIAR PATHOLOGY */}
-                <div className="p-5 rounded-xl border border-slate-200 bg-white space-y-3">
+                <div className="p-4 sm:p-5 rounded-xl border border-slate-200 bg-white space-y-3 w-full">
                   <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-slate-100 pb-2">
                     <div>
-                      <span className="text-[10px] uppercase font-mono tracking-widest text-emerald-800 font-bold">
+                      <span className="text-[10px] uppercase font-mono tracking-widest text-blue-700 font-bold">
                         Pathogen & Health Classification
                       </span>
                       <h4 className="text-base font-extrabold text-slate-900">
@@ -525,20 +519,20 @@ export function CropPhotoAnalyzer({ compact = false }: { compact?: boolean }) {
                         Crop: <strong>{data.crop}</strong> &bull; Severity: <strong className={
                           data.severity === 'SEVERE' ? 'text-red-600' :
                           data.severity === 'HIGH' ? 'text-orange-600' :
-                          data.severity === 'MODERATE' ? 'text-amber-600' : 'text-emerald-700'
+                          data.severity === 'MODERATE' ? 'text-amber-600' : 'text-blue-700'
                         }>{data.severity}</strong> &bull; Vigor Score: <strong>{data.cropVigorScore}/100</strong>
                       </p>
                     </div>
 
-                    <div className="text-left sm:text-right">
-                      <div className="text-xl font-bold font-mono text-emerald-800">
+                    <div className="text-left sm:text-right shrink-0">
+                      <div className="text-xl font-bold font-mono text-blue-700">
                         {(data.confidence * 100).toFixed(1)}%
                       </div>
                       <span className="text-[10px] text-slate-400 font-medium">Confidence Match</span>
                     </div>
                   </div>
 
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs pt-1">
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs pt-1 w-full">
                     <div className="p-3 rounded-lg bg-slate-50 border border-slate-200">
                       <span className="text-[10px] font-bold uppercase text-slate-500 block mb-1">
                         Chemical Prescription
@@ -566,4 +560,3 @@ export function CropPhotoAnalyzer({ compact = false }: { compact?: boolean }) {
     </div>
   );
 }
-

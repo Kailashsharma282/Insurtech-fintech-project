@@ -150,7 +150,7 @@ export default function ClaimDetailsPage() {
               <button
                 onClick={handleApprove}
                 disabled={actionLoading}
-                className="px-4 py-2.5 rounded-xl bg-[#10B981] hover:bg-emerald-600 text-white font-semibold text-xs transition-colors flex items-center space-x-1.5 shadow-md shadow-emerald-950/10"
+                className="px-4 py-2.5 rounded-xl bg-blue-600 hover:bg-blue-700 text-white font-semibold text-xs transition-colors flex items-center space-x-1.5 shadow-md shadow-slate-900/10"
               >
                 <ShieldCheck className="w-4 h-4" />
                 <span>Approve Claim for ₹{claim.claimAmount.toLocaleString()}</span>
@@ -161,7 +161,7 @@ export default function ClaimDetailsPage() {
               <button
                 onClick={handlePayout}
                 disabled={actionLoading}
-                className="px-5 py-2.5 rounded-xl bg-slate-900 hover:bg-slate-800 text-[#34D399] font-mono font-bold text-xs transition-colors flex items-center space-x-2 shadow-lg shadow-slate-950/20"
+                className="px-5 py-2.5 rounded-xl bg-slate-900 hover:bg-slate-800 text-blue-400 font-mono font-bold text-xs transition-colors flex items-center space-x-2 shadow-lg shadow-slate-950/20"
               >
                 <DollarSign className="w-4 h-4" />
                 <span>Execute Electronic Bank Settlement (NEFT)</span>
@@ -186,9 +186,9 @@ export default function ClaimDetailsPage() {
         )}
 
         {/* Visual Timeline Required by Section 20: event -> detection -> verification -> calculation -> approval -> payout */}
-        <div className="bg-[#071511] p-6 rounded-3xl text-white border border-[#10B981]/30 shadow-xl space-y-4">
+        <div className="bg-[#0F172A] p-6 rounded-3xl text-white border border-slate-700 shadow-xl space-y-4">
           <div className="flex items-center justify-between border-b border-emerald-900/60 pb-3">
-            <span className="text-[10px] font-mono uppercase tracking-widest text-[#34D399]">
+            <span className="text-[10px] font-mono uppercase tracking-widest text-blue-400">
               Visual Parametric Lifecycle Timeline
             </span>
             <span className="text-xs font-mono text-slate-400">Total Turnaround: 4 Days</span>
@@ -197,31 +197,31 @@ export default function ClaimDetailsPage() {
           <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3 text-xs font-mono">
             
             <div className="p-3 rounded-2xl bg-[#102820] border border-emerald-800/40 space-y-1">
-              <span className="text-[#34D399] block font-bold text-[11px]">1. Weather Event</span>
+              <span className="text-blue-400 block font-bold text-[11px]">1. Weather Event</span>
               <div className="text-white font-semibold text-xs">142mm Cloudburst</div>
               <span className="text-[9px] text-slate-400">08 Sep 14:00 IST</span>
             </div>
 
             <div className="p-3 rounded-2xl bg-[#102820] border border-emerald-800/40 space-y-1">
-              <span className="text-[#34D399] block font-bold text-[11px]">2. Detection</span>
+              <span className="text-blue-400 block font-bold text-[11px]">2. Detection</span>
               <div className="text-white font-semibold text-xs">IoT 88.5% VWC</div>
               <span className="text-[9px] text-slate-400">08 Sep 14:32 UTC</span>
             </div>
 
             <div className="p-3 rounded-2xl bg-[#102820] border border-emerald-800/40 space-y-1">
-              <span className="text-[#34D399] block font-bold text-[11px]">3. Verification</span>
+              <span className="text-blue-400 block font-bold text-[11px]">3. Verification</span>
               <div className="text-white font-semibold text-xs">Sentinel-2 Pass</div>
               <span className="text-[9px] text-slate-400">09 Sep 04:46 UTC</span>
             </div>
 
             <div className="p-3 rounded-2xl bg-[#102820] border border-emerald-800/40 space-y-1">
-              <span className="text-[#34D399] block font-bold text-[11px]">4. Calculation</span>
+              <span className="text-blue-400 block font-bold text-[11px]">4. Calculation</span>
               <div className="text-white font-semibold text-xs">CHF 0.49 &le; 0.55</div>
               <span className="text-[9px] text-slate-400">10 Sep 11:20 UTC</span>
             </div>
 
             <div className="p-3 rounded-2xl bg-[#102820] border border-emerald-800/40 space-y-1">
-              <span className={`${claim.status === 'APPROVED' || claim.status === 'DISBURSED' ? 'text-[#34D399]' : 'text-slate-500'} block font-bold text-[11px]`}>
+              <span className={`${claim.status === 'APPROVED' || claim.status === 'DISBURSED' ? 'text-blue-400' : 'text-slate-500'} block font-bold text-[11px]`}>
                 5. Approval
               </span>
               <div className="text-white font-semibold text-xs">Chief Actuary Sign</div>
@@ -229,7 +229,7 @@ export default function ClaimDetailsPage() {
             </div>
 
             <div className="p-3 rounded-2xl bg-[#102820] border border-emerald-800/40 space-y-1">
-              <span className={`${claim.status === 'DISBURSED' ? 'text-[#34D399]' : 'text-slate-500'} block font-bold text-[11px]`}>
+              <span className={`${claim.status === 'DISBURSED' ? 'text-blue-400' : 'text-slate-500'} block font-bold text-[11px]`}>
                 6. Payout
               </span>
               <div className="text-white font-semibold text-xs">NEFT Cleared</div>
@@ -245,7 +245,7 @@ export default function ClaimDetailsPage() {
           {/* Section 1: Policy */}
           <div className="bg-white p-6 sm:p-7 rounded-3xl border border-[#E2E8F0] shadow-sm space-y-3">
             <h3 className="font-bold text-base text-[#0F172A] flex items-center space-x-2 border-b border-slate-100 pb-3">
-              <FileText className="w-4 h-4 text-[#059669]" />
+              <FileText className="w-4 h-4 text-blue-600" />
               <span>Section 1: Policy Agreement & Coverage Scope</span>
             </h3>
             <div className="space-y-2 text-xs">
@@ -289,7 +289,7 @@ export default function ClaimDetailsPage() {
           {/* Section 4: IoT Evidence */}
           <div className="bg-white p-6 sm:p-7 rounded-3xl border border-[#E2E8F0] shadow-sm space-y-3">
             <h3 className="font-bold text-base text-[#0F172A] flex items-center space-x-2 border-b border-slate-100 pb-3">
-              <Radio className="w-4 h-4 text-[#059669]" />
+              <Radio className="w-4 h-4 text-blue-600" />
               <span>Section 4: Field IoT Hardware Log Evidence</span>
             </h3>
             <div className="space-y-2 text-xs">
@@ -319,7 +319,7 @@ export default function ClaimDetailsPage() {
           {/* Section 6: CHF Calculation */}
           <div className="bg-white p-6 sm:p-7 rounded-3xl border border-[#E2E8F0] shadow-sm space-y-3">
             <h3 className="font-bold text-base text-[#0F172A] flex items-center space-x-2 border-b border-slate-100 pb-3">
-              <Calculator className="w-4 h-4 text-[#059669]" />
+              <Calculator className="w-4 h-4 text-blue-600" />
               <span>Section 6: Shannon Entropy Weighted CHF Output</span>
             </h3>
             <div className="space-y-2 text-xs font-mono">
@@ -332,7 +332,7 @@ export default function ClaimDetailsPage() {
           {/* Section 7: Baseline Comparison */}
           <div className="bg-white p-6 sm:p-7 rounded-3xl border border-[#E2E8F0] shadow-sm space-y-3">
             <h3 className="font-bold text-base text-[#0F172A] flex items-center space-x-2 border-b border-slate-100 pb-3">
-              <Calendar className="w-4 h-4 text-[#059669]" />
+              <Calendar className="w-4 h-4 text-blue-600" />
               <span>Section 7: 4-Year Localized Baseline Comparison</span>
             </h3>
             <div className="space-y-2 text-xs">
@@ -386,13 +386,13 @@ export default function ClaimDetailsPage() {
           </div>
 
           {/* Section 11: Payout Instruction */}
-          <div className="md:col-span-2 bg-[#071511] p-6 sm:p-7 rounded-3xl text-white border border-[#10B981]/40 shadow-xl space-y-4">
+          <div className="md:col-span-2 bg-[#0F172A] p-6 sm:p-7 rounded-3xl text-white border border-slate-700 shadow-xl space-y-4">
             <div className="flex items-center justify-between border-b border-emerald-900/60 pb-3">
-              <div className="flex items-center space-x-2 text-[#34D399] font-bold text-base">
+              <div className="flex items-center space-x-2 text-blue-400 font-bold text-base">
                 <DollarSign className="w-5 h-5" />
                 <span>Section 11: Electronic Direct Benefit Payout Order</span>
               </div>
-              <span className="font-mono text-xs px-3 py-1 rounded bg-emerald-500/20 text-[#34D399]">
+              <span className="font-mono text-xs px-3 py-1 rounded bg-emerald-500/20 text-blue-400">
                 RBI NEFT GATEWAY READY
               </span>
             </div>
@@ -400,7 +400,7 @@ export default function ClaimDetailsPage() {
             <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 text-xs font-mono">
               <div className="p-3.5 rounded-2xl bg-[#102820] border border-emerald-900/40">
                 <span className="text-slate-400 block text-[10px]">Net Payout Amount</span>
-                <strong className="text-2xl text-[#34D399] font-black mt-0.5 block">₹{ev.payout.amountInr.toLocaleString()}</strong>
+                <strong className="text-2xl text-blue-400 font-black mt-0.5 block">₹{ev.payout.amountInr.toLocaleString()}</strong>
               </div>
               <div className="p-3.5 rounded-2xl bg-[#102820] border border-emerald-900/40">
                 <span className="text-slate-400 block text-[10px]">Beneficiary Account</span>
