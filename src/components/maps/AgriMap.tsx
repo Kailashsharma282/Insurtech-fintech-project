@@ -49,10 +49,17 @@ export const AgriMap: React.FC<AgriMapProps> = ({
           attributionControl: false
         });
 
-        // CartoDB Dark Matter / Voyager tile layer for geospatial fintech aesthetic
-        L.tileLayer('https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png', {
+        // Basemap tile provider:
+        // Default to OpenStreetMap (100% free, public, zero-key, no watermark)
+        // If a CARTO API key is provided, use CARTO Voyager
+        const cartoKey = process.env.NEXT_PUBLIC_CARTO_API_KEY;
+        const tileUrl = cartoKey 
+          ? `https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png?api_key=${cartoKey}`
+          : 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png';
+
+        L.tileLayer(tileUrl, {
           maxZoom: 19,
-          subdomains: 'abcd',
+          subdomains: cartoKey ? 'abcd' : 'abc',
         }).addTo(map);
 
         leafletMapRef.current = map;
