@@ -90,7 +90,7 @@ export default function InsurerDashboardPage() {
                 <Sparkles className="w-3.5 h-3.5" />
                 <span>Parametric Underwriting Desk</span>
               </div>
-              <h1 className="text-2xl sm:text-3xl font-black text-[#0F172A] tracking-tight">
+              <h1 className="text-xl sm:text-3xl font-black text-[#0F172A] tracking-tight break-words">
                 Underwriting Portfolio & Exposure
               </h1>
               <p className="text-xs sm:text-sm text-slate-500 mt-1">

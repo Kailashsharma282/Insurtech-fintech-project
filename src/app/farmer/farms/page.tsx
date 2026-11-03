@@ -54,7 +54,7 @@ export default function FarmsListPage() {
         {/* Header & View Switcher */}
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
           <div>
-            <h1 className="text-2xl sm:text-3xl font-black text-[#0F172A] tracking-tight">
+            <h1 className="text-xl sm:text-3xl font-black text-[#0F172A] tracking-tight break-words">
               Registered Farm Holdings
             </h1>
             <p className="text-slate-500 text-xs sm:text-sm mt-1">
@@ -88,7 +88,7 @@ export default function FarmsListPage() {
 
         {/* Map Preview of Filtered Farms */}
         <div className="bg-white p-4 sm:p-5 rounded-3xl border border-[#E2E8F0] shadow-sm space-y-3">
-          <div className="flex items-center justify-between">
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-1.5">
             <div className="flex items-center space-x-2 text-xs font-bold text-slate-800">
               <MapPin className="w-4 h-4 text-blue-600" />
               <span>Interactive Geographic Preview</span>
@@ -186,7 +186,7 @@ export default function FarmsListPage() {
                       : 'border-[#E2E8F0] shadow-sm hover:shadow-md'
                   }`}
                 >
-                  <div className="flex items-center justify-between">
+                  <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-1.5">
                     <div>
                       <div className="flex items-center space-x-2">
                         <span className="font-extrabold text-base text-[#0F172A]">{farm.plotNumber}</span>

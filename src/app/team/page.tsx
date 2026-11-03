@@ -51,7 +51,7 @@ export default function TeamPage() {
             <Layers className="w-3.5 h-3.5" />
             <span>Platform Governance & Access Architecture</span>
           </div>
-          <h1 className="text-2xl sm:text-4xl font-extrabold text-[#0F172A] tracking-tight">
+          <h1 className="text-xl sm:text-4xl font-extrabold text-[#0F172A] tracking-tight break-words">
             System Architecture & Demo Directory
           </h1>
           <p className="text-slate-600 text-xs sm:text-base leading-relaxed">

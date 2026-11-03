@@ -124,17 +124,17 @@ export default function FarmerInsurancePage() {
               </span>
               <span className="text-xs text-slate-500 font-mono">10-Season Benchmark</span>
             </div>
-            <h3 className="text-base font-extrabold text-slate-900">
+            <h3 className="text-base font-extrabold text-slate-900 break-words">
               Validate Insurance Claims with Multi-Satellite CHF
             </h3>
             <p className="text-xs text-slate-600">
               Inspect official village yield benchmarks (2017-18 to 2026-27), candidate farmer registry, and test live indemnity determination with calculated CHF.
             </p>
           </div>
-          <div className="flex items-center gap-2 shrink-0">
+          <div className="flex items-center gap-2 shrink-0 w-full sm:w-auto">
             <Link
               href="/farmer/insurance-validation"
-              className="px-4 py-2 rounded-xl bg-blue-700 hover:bg-blue-800 text-white font-bold text-xs transition-colors flex items-center space-x-1.5"
+              className="w-full sm:w-auto justify-center px-4 py-2 rounded-xl bg-blue-700 hover:bg-blue-800 text-white font-bold text-xs transition-colors flex items-center space-x-1.5"
             >
               <FileText className="w-4 h-4" />
               <span>Open Validation Hub</span>

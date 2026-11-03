@@ -85,7 +85,7 @@ export default function InsuranceValidationPage() {
               Ghatal Block &bull; Paschim Medinipur &bull; Kharif 2025
             </span>
           </div>
-          <h1 className="text-2xl sm:text-3xl font-extrabold text-slate-900">
+          <h1 className="text-xl sm:text-3xl font-extrabold text-slate-900 break-words">
             Satellite CHF to Insurance Indemnity Calculator & Registry
           </h1>
           <p className="text-xs sm:text-sm text-slate-600 max-w-4xl leading-relaxed">
@@ -102,11 +102,11 @@ export default function InsuranceValidationPage() {
                 <span className="text-xs font-mono uppercase tracking-widest text-blue-400 font-bold">
                   Parametric Determination Engine
                 </span>
-                <h2 className="text-xl sm:text-2xl font-bold mt-0.5 text-white">
+                <h2 className="text-lg sm:text-2xl font-bold mt-0.5 text-white break-words">
                   Validate Insurance Amount via Calculated CHF
                 </h2>
               </div>
-              <div className="flex items-center gap-2">
+              <div className="flex items-center gap-2 shrink-0">
                 <span className="text-xs bg-slate-800 text-blue-300 px-3 py-1.5 rounded-lg border border-slate-700 font-mono">
                   Live Satellite CHF: <strong>0.421</strong> (Triggered)
                 </span>

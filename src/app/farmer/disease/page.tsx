@@ -16,7 +16,7 @@ export default function DiseaseScannerPage() {
       <div className="max-w-7xl mx-auto space-y-6 w-full max-w-full">
         
         {/* Navigation Breadcrumb */}
-        <div className="flex items-center justify-between gap-3">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2.5">
           <Link
             href="/farmer/dashboard"
             className="inline-flex items-center gap-1.5 text-xs sm:text-sm font-semibold text-blue-700 hover:text-blue-900 transition-colors"
@@ -27,7 +27,7 @@ export default function DiseaseScannerPage() {
 
           <Link
             href="/farmer/insurance-validation"
-            className="inline-flex items-center gap-1.5 text-xs font-semibold px-3 py-1.5 bg-white border border-blue-200 rounded-lg text-blue-700 hover:bg-blue-50 transition-colors"
+            className="inline-flex items-center justify-center gap-1.5 text-xs font-semibold px-3 py-1.5 bg-white border border-blue-200 rounded-lg text-blue-700 hover:bg-blue-50 transition-colors w-full sm:w-auto"
           >
             <FileText className="w-3.5 h-3.5" />
             <span>Insurance Validation Hub</span>
@@ -35,12 +35,12 @@ export default function DiseaseScannerPage() {
         </div>
 
         {/* Page Header */}
-        <div className="bg-white p-5 sm:p-7 rounded-2xl border border-slate-200 shadow-sm space-y-2 w-full">
+        <div className="bg-white p-4 sm:p-7 rounded-2xl border border-slate-200 shadow-sm space-y-2 w-full">
           <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-blue-100 text-blue-900 text-xs font-bold border border-blue-200">
             <Cpu className="w-3.5 h-3.5" />
             <span>Computer Vision & Agronomic Rule Engine</span>
           </div>
-          <h1 className="text-2xl sm:text-3xl font-extrabold text-slate-900">
+          <h1 className="text-xl sm:text-3xl font-extrabold text-slate-900 break-words">
             Crop Photo Diagnostic & Health Analyzer
           </h1>
           <p className="text-xs sm:text-sm text-slate-600 max-w-3xl leading-relaxed">

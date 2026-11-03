@@ -73,7 +73,7 @@ export default function PayoutsEnginePage() {
                 Ghatal Pilot Mode (Payments Paused)
               </span>
             </div>
-            <h1 className="text-2xl sm:text-3xl font-black text-[#0F172A] tracking-tight">
+            <h1 className="text-xl sm:text-3xl font-black text-[#0F172A] tracking-tight break-words">
               Parametric Payout & Disbursement Engine
             </h1>
             <p className="text-xs sm:text-sm text-slate-500 mt-1">
@@ -139,15 +139,15 @@ export default function PayoutsEnginePage() {
 
         {/* Selected Settlement Timeline Box (Section 21) */}
         {selectedPayout && (
-          <div className="p-8 rounded-3xl bg-[#0F172A] text-white border border-slate-700 shadow-2xl space-y-6">
-            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-emerald-900/60 pb-5">
+          <div className="p-4 sm:p-8 rounded-2xl sm:rounded-3xl bg-[#0F172A] text-white border border-slate-700 shadow-2xl space-y-6">
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-slate-700 pb-5">
               <div>
                 <div className="flex items-center space-x-2">
                   <span className="text-xs font-mono text-blue-400 uppercase font-bold">
                     Order Ref: {selectedPayout.payoutRef}
                   </span>
                   <span className={`text-[10px] font-mono px-2 py-0.5 rounded font-bold ${
-                    selectedPayout.status === 'SUCCESSFUL' ? 'bg-emerald-500/20 text-blue-400' :
+                    selectedPayout.status === 'SUCCESSFUL' ? 'bg-blue-500/20 text-blue-400' :
                     selectedPayout.status === 'PROCESSING' ? 'bg-blue-500/20 text-blue-300' :
                     selectedPayout.status === 'FAILED' ? 'bg-red-500/20 text-red-300' :
                     'bg-amber-500/20 text-amber-300'
@@ -155,16 +155,16 @@ export default function PayoutsEnginePage() {
                     {selectedPayout.status}
                   </span>
                 </div>
-                <h2 className="text-2xl font-black text-white mt-1">
+                <h2 className="text-xl sm:text-2xl font-black text-white mt-1 break-words">
                   Beneficiary: {selectedPayout.farmerName}
                 </h2>
-                <div className="text-xs text-slate-400 font-mono">
+                <div className="text-xs text-slate-400 font-mono break-words">
                   Claim: <strong className="text-white">{selectedPayout.claimNumber}</strong> &bull; Bank Ref: <strong className="text-amber-300">{selectedPayout.bankRefId}</strong> &bull; Account: {selectedPayout.beneficiaryMask} ({selectedPayout.ifscCode})
                 </div>
               </div>
 
-              <div className="text-right">
-                <div className="text-3xl font-black text-blue-400 font-mono">
+              <div className="sm:text-right">
+                <div className="text-2xl sm:text-3xl font-black text-blue-400 font-mono">
                   ₹{selectedPayout.amount.toLocaleString()}
                 </div>
                 {selectedPayout.status !== 'SUCCESSFUL' && (
@@ -182,42 +182,42 @@ export default function PayoutsEnginePage() {
 
             {/* 7-Step Claim Settlement Timeline Required by Section 21 */}
             <div className="space-y-2">
-              <div className="text-xs font-mono text-emerald-400 uppercase tracking-wider font-semibold">
+              <div className="text-xs font-mono text-blue-400 uppercase tracking-wider font-semibold">
                 Claim Settlement Timeline
               </div>
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-7 gap-2 text-xs font-mono">
                 
-                <div className="p-3 rounded-2xl bg-[#102820] border border-emerald-800/40">
+                <div className="p-3 rounded-2xl bg-slate-800/90 border border-slate-700">
                   <span className="text-slate-400 block text-[10px]">1. Weather Event</span>
                   <strong className="text-slate-200 text-xs mt-1 block">{selectedPayout.timeline.weatherEvent}</strong>
                 </div>
 
-                <div className="p-3 rounded-2xl bg-[#102820] border border-emerald-800/40">
+                <div className="p-3 rounded-2xl bg-slate-800/90 border border-slate-700">
                   <span className="text-slate-400 block text-[10px]">2. Satellite Pass</span>
                   <strong className="text-slate-200 text-xs mt-1 block">{selectedPayout.timeline.satelliteVerification}</strong>
                 </div>
 
-                <div className="p-3 rounded-2xl bg-[#102820] border border-emerald-800/40">
+                <div className="p-3 rounded-2xl bg-slate-800/90 border border-slate-700">
                   <span className="text-slate-400 block text-[10px]">3. CHF Calculation</span>
                   <strong className="text-slate-200 text-xs mt-1 block">{selectedPayout.timeline.chfCalculation}</strong>
                 </div>
 
-                <div className="p-3 rounded-2xl bg-[#102820] border border-emerald-800/40">
+                <div className="p-3 rounded-2xl bg-slate-800/90 border border-slate-700">
                   <span className="text-slate-400 block text-[10px]">4. Threshold Test</span>
                   <strong className="text-slate-200 text-xs mt-1 block">{selectedPayout.timeline.thresholdTest}</strong>
                 </div>
 
-                <div className="p-3 rounded-2xl bg-[#102820] border border-emerald-800/40">
+                <div className="p-3 rounded-2xl bg-slate-800/90 border border-slate-700">
                   <span className="text-slate-400 block text-[10px]">5. Qualification</span>
                   <strong className="text-slate-200 text-xs mt-1 block">{selectedPayout.timeline.claimQualification}</strong>
                 </div>
 
-                <div className="p-3 rounded-2xl bg-[#102820] border border-emerald-800/40">
+                <div className="p-3 rounded-2xl bg-slate-800/90 border border-slate-700">
                   <span className="text-slate-400 block text-[10px]">6. Payout Initiation</span>
                   <strong className="text-slate-200 text-xs mt-1 block">{selectedPayout.timeline.payoutInitiation}</strong>
                 </div>
 
-                <div className="p-3 rounded-2xl bg-[#102820] border border-emerald-800/40">
+                <div className="p-3 rounded-2xl bg-slate-800/90 border border-slate-700">
                   <span className="text-slate-400 block text-[10px]">7. Bank Confirmation</span>
                   <strong className="text-amber-400 text-xs mt-1 block">Held (Pilot Mandate Verification)</strong>
                 </div>

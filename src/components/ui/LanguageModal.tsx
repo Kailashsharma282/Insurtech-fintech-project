@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect } from 'react';
 import { useLanguage, SUPPORTED_LANGUAGES, LanguageCode } from '@/context/LanguageContext';
-import { Volume2, CheckCircle2, Sparkles, X, Globe, ArrowRight } from 'lucide-react';
+import { Volume2, CheckCircle2, Globe, X } from 'lucide-react';
 
 interface LanguageModalProps {
   isOpen?: boolean;
@@ -15,12 +15,10 @@ export const LanguageModal: React.FC<LanguageModalProps> = ({ isOpen: controlled
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const [selectedCode, setSelectedCode] = useState<LanguageCode>(language);
 
+  // In demo mode: only open when explicitly commanded, do not block first-time visitors
   useEffect(() => {
-    if (typeof window !== 'undefined') {
-      const hasChosen = localStorage.getItem('agrisure_language_selected');
-      if (!hasChosen || forceOpen) {
-        setIsOpen(true);
-      }
+    if (forceOpen) {
+      setIsOpen(true);
     }
   }, [forceOpen]);
 
@@ -40,7 +38,6 @@ export const LanguageModal: React.FC<LanguageModalProps> = ({ isOpen: controlled
       localStorage.setItem('agrisure_language_selected', 'true');
       localStorage.setItem('agrisure_language', code);
       
-      // Set google translate cookie to translate entire DOM
       if (code === 'en') {
         document.cookie = 'googtrans=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;';
         document.cookie = 'googtrans=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/; domain=' + window.location.hostname + ';';
@@ -50,7 +47,6 @@ export const LanguageModal: React.FC<LanguageModalProps> = ({ isOpen: controlled
       }
     }
 
-    // When switching to any regional language, start low-literacy guidance & audio
     if (code !== 'en') {
       setShowVisualGuide(true);
       setTimeout(() => {
@@ -61,11 +57,9 @@ export const LanguageModal: React.FC<LanguageModalProps> = ({ isOpen: controlled
     setIsOpen(false);
     if (onClose) onClose();
 
-    // Trigger full-page DOM translation event
     if (typeof window !== 'undefined') {
       window.dispatchEvent(new CustomEvent('agrisure-language-changed', { detail: { language: code } }));
       
-      // Trigger Google Translate combo if present
       const selectElem = document.querySelector('.goog-te-combo') as HTMLSelectElement;
       if (selectElem) {
         selectElem.value = code;
@@ -75,49 +69,39 @@ export const LanguageModal: React.FC<LanguageModalProps> = ({ isOpen: controlled
   };
 
   return (
-    <div className="fixed inset-0 z-[100] flex items-center justify-center bg-black/80 backdrop-blur-md p-4 animate-in fade-in duration-200">
-      <div className="bg-gradient-to-b bg-[#0F172A] border-2 border-blue-500/50 rounded-3xl max-w-2xl w-full p-6 sm:p-8 text-white shadow-2xl relative overflow-hidden">
+    <div className="fixed inset-0 z-[100] flex items-center justify-center bg-black/75 p-3 sm:p-4">
+      <div className="bg-[#0F172A] border border-slate-700 rounded-2xl w-full max-w-lg p-5 sm:p-6 text-white shadow-2xl relative overflow-hidden">
         
-        {/* Ambient glow */}
-        <div className="absolute -right-24 -top-24 w-60 h-60 bg-blue-600/20 rounded-full blur-3xl pointer-events-none" />
-        <div className="absolute -left-24 -bottom-24 w-60 h-60 bg-emerald-600/20 rounded-full blur-3xl pointer-events-none" />
-
-        {/* Close button if user already had a language */}
+        {/* Close button */}
         <button
           onClick={() => {
             setIsOpen(false);
             if (onClose) onClose();
           }}
-          className="absolute top-5 right-5 w-8 h-8 rounded-full bg-white/10 hover:bg-white/20 text-slate-300 hover:text-white flex items-center justify-center transition-colors text-sm"
+          className="absolute top-4 right-4 w-7 h-7 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 hover:text-white flex items-center justify-center transition-colors text-xs"
           title="Dismiss"
         >
-          ✕
+          <X className="w-4 h-4" />
         </button>
 
         {/* Modal Header */}
-        <div className="text-center space-y-2 mb-6">
-          <div className="inline-flex items-center space-x-2 px-3.5 py-1 rounded-full bg-emerald-500/20 border border-emerald-500/40 text-emerald-300 text-xs font-bold font-mono uppercase tracking-wider">
-            <Globe className="w-3.5 h-3.5" />
-            <span>Select Your Language • ভাষা নির্বাচন করুন</span>
+        <div className="text-center space-y-1.5 mb-5 pr-6 sm:pr-0">
+          <div className="inline-flex items-center space-x-1.5 px-3 py-1 rounded-full bg-blue-950 border border-blue-800 text-blue-300 text-[11px] font-bold font-mono uppercase tracking-wider">
+            <Globe className="w-3.5 h-3.5 text-blue-400" />
+            <span>Select Language &bull; ভাষা নির্বাচন</span>
           </div>
 
-          <h2 className="text-2xl sm:text-3xl font-black tracking-tight text-white">
-            Welcome to AgriSure Intelligence
+          <h2 className="text-xl sm:text-2xl font-black tracking-tight text-white">
+            Choose Preferred Language
           </h2>
 
-          <p className="text-xs sm:text-sm text-slate-300 max-w-md mx-auto">
-            Choose your language for full-page translation, voice advisories, and step-by-step visual guidance.
+          <p className="text-xs text-slate-400 max-w-sm mx-auto">
+            Full UI translation, voice assistance, and visual crop advisories.
           </p>
-
-          <div className="flex items-center justify-center gap-2 pt-1 text-[11px] text-amber-300 font-semibold">
-            <span>🎙️ Regional Voice Assistance Available</span>
-            <span>&bull;</span>
-            <span>🧭 Visual Picture Guidance</span>
-          </div>
         </div>
 
-        {/* Language Grid (7 Languages) */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 max-h-[50vh] overflow-y-auto pr-1">
+        {/* Language Grid */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5 max-h-[55vh] overflow-y-auto pr-1">
           {SUPPORTED_LANGUAGES.map((lang) => {
             const isSelected = selectedCode === lang.code;
             return (
@@ -125,48 +109,47 @@ export const LanguageModal: React.FC<LanguageModalProps> = ({ isOpen: controlled
                 key={lang.code}
                 type="button"
                 onClick={() => handleSelectLanguage(lang.code)}
-                className={`p-4 rounded-2xl border-2 transition-all flex items-center justify-between group text-left ${
+                className={`p-3 rounded-xl border transition-all flex items-center justify-between text-left ${
                   isSelected
-                    ? 'bg-emerald-950/80 border-blue-500 shadow-lg shadow-slate-900/50 scale-[1.02]'
-                    : 'bg-[#102820]/70 border-emerald-900/60 hover:border-emerald-500/50 hover:bg-[#102820]'
+                    ? 'bg-blue-600 text-white border-blue-500 shadow-sm'
+                    : 'bg-slate-800/80 hover:bg-slate-800 text-slate-200 border-slate-700'
                 }`}
               >
-                <div className="flex items-center space-x-3.5">
-                  <span className="text-2xl sm:text-3xl shrink-0 drop-shadow">{lang.flag}</span>
-                  <div>
-                    <div className="font-black text-base sm:text-lg text-white group-hover:text-blue-400 transition-colors">
-                      {lang.native}
-                    </div>
-                    <div className="text-xs text-slate-400 font-medium">
-                      {lang.label} {lang.code !== 'en' ? '• Voice Active 🔊' : '• Global'}
+                <div className="flex items-center space-x-2.5 min-w-0">
+                  <div className={`w-7 h-7 rounded-lg flex items-center justify-center font-bold text-xs shrink-0 ${
+                    isSelected ? 'bg-white/20 text-white' : 'bg-slate-700 text-blue-300'
+                  }`}>
+                    {lang.flag}
+                  </div>
+                  <div className="truncate">
+                    <div className="font-bold text-sm leading-tight truncate">{lang.native}</div>
+                    <div className={`text-[11px] leading-tight truncate ${isSelected ? 'text-blue-100' : 'text-slate-400'}`}>
+                      {lang.label}
                     </div>
                   </div>
                 </div>
 
-                <div className="shrink-0 flex items-center space-x-1">
-                  {isSelected ? (
-                    <CheckCircle2 className="w-5 h-5 text-blue-400" />
-                  ) : (
-                    <ArrowRight className="w-4 h-4 text-slate-500 group-hover:text-emerald-400 group-hover:translate-x-1 transition-all" />
-                  )}
+                <div className="flex items-center space-x-1.5 shrink-0 ml-2">
+                  <Volume2 className={`w-3.5 h-3.5 ${isSelected ? 'text-blue-200' : 'text-slate-400'}`} />
+                  {isSelected && <CheckCircle2 className="w-4 h-4 text-white" />}
                 </div>
               </button>
             );
           })}
         </div>
 
-        {/* Informative Footer */}
-        <div className="mt-6 pt-4 border-t border-emerald-900/50 flex flex-col sm:flex-row items-center justify-between gap-3 text-xs text-slate-400">
-          <span className="flex items-center gap-1.5 text-slate-300">
-            <span>ℹ️</span>
-            <span>You can change language anytime from the top navigation bar.</span>
-          </span>
+        {/* Footer info */}
+        <div className="mt-4 pt-3 border-t border-slate-800 flex items-center justify-between text-xs text-slate-400">
+          <span>Language can be changed anytime from the top bar.</span>
           <button
             type="button"
-            onClick={() => handleSelectLanguage('en')}
-            className="text-xs text-emerald-400 hover:text-emerald-300 font-bold underline"
+            onClick={() => {
+              setIsOpen(false);
+              if (onClose) onClose();
+            }}
+            className="text-blue-400 hover:text-blue-300 font-bold ml-2 shrink-0"
           >
-            Continue in English
+            Continue &rarr;
           </button>
         </div>
 

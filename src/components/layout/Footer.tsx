@@ -86,12 +86,20 @@ export const Footer: React.FC = () => {
 
         </div>
 
-        <div className="border-t border-slate-800 pt-6 flex flex-col sm:flex-row items-center justify-between text-[11px] text-slate-500">
-          <div>
+        <div className="border-t border-slate-800 pt-6 flex flex-col sm:flex-row items-center justify-between text-[11px] text-slate-500 gap-2">
+          <div className="text-center sm:text-left">
             © 2026 AgriSure Intelligence. West Bengal Parametric Pilot.
           </div>
-          <div className="flex items-center space-x-4 mt-2 sm:mt-0 font-mono">
-            <span>OBSERVE &rarr; DIAGNOSE &rarr; PRESCRIBE &rarr; VERIFY &rarr; INSURE</span>
+          <div className="flex flex-wrap items-center justify-center gap-1 sm:space-x-2 font-mono text-[10px] text-slate-400">
+            <span>OBSERVE</span>
+            <span>&rarr;</span>
+            <span>DIAGNOSE</span>
+            <span>&rarr;</span>
+            <span>PRESCRIBE</span>
+            <span>&rarr;</span>
+            <span>VERIFY</span>
+            <span>&rarr;</span>
+            <span>INSURE</span>
           </div>
         </div>
       </div>

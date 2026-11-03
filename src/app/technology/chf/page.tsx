@@ -126,14 +126,14 @@ export default function ChfEnginePage() {
             <a
               href="/reports/Ghatal_Block_Crop_Health_Indicators_2025_Report.pdf"
               download
-              className="inline-flex items-center px-4 py-2 rounded-lg bg-blue-600 hover:bg-blue-700 text-white font-bold text-xs shadow-sm transition-colors space-x-1.5"
+              className="w-full sm:w-auto inline-flex items-center justify-center px-4 py-2 rounded-lg bg-blue-600 hover:bg-blue-700 text-white font-bold text-xs shadow-sm transition-colors space-x-1.5"
             >
               <Download className="w-4 h-4" />
               <span>Download Report PDF</span>
             </a>
             <Link
               href="/farmer/insurance-validation"
-              className="inline-flex items-center px-4 py-2 rounded-lg bg-slate-900 hover:bg-slate-800 text-white font-bold text-xs shadow-sm transition-colors space-x-1.5"
+              className="w-full sm:w-auto inline-flex items-center justify-center px-4 py-2 rounded-lg bg-slate-900 hover:bg-slate-800 text-white font-bold text-xs shadow-sm transition-colors space-x-1.5"
             >
               <Layers className="w-4 h-4 text-blue-400" />
               <span>Validation Registry</span>
@@ -142,18 +142,18 @@ export default function ChfEnginePage() {
         </div>
 
         {/* Live Calculation Banner - Simple Solid Design */}
-        <div className="p-6 rounded-xl bg-white border border-slate-300 shadow-sm space-y-6">
+        <div className="p-4 sm:p-6 rounded-xl bg-white border border-slate-300 shadow-sm space-y-5">
           <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-slate-200 pb-4">
             <div>
               <span className="text-xs font-mono uppercase text-slate-500 font-bold block">
                 Composite Crop Health Factor (CHF)
               </span>
-              <div className="flex items-baseline space-x-3 mt-1">
-                <span className="text-4xl sm:text-5xl font-black text-slate-900 font-mono">
+              <div className="flex flex-wrap items-baseline gap-2 mt-1">
+                <span className="text-3xl sm:text-5xl font-black text-slate-900 font-mono">
                   {result.chfScore.toFixed(3)}
                 </span>
                 <span 
-                  className="px-3 py-1 rounded-md text-xs font-bold text-white uppercase"
+                  className="px-2.5 py-1 rounded-md text-xs font-bold text-white uppercase"
                   style={{ backgroundColor: result.chfClass.color }}
                 >
                   Class {result.chfClass.code}: {result.chfClass.label}
@@ -174,22 +174,22 @@ export default function ChfEnginePage() {
 
           {/* Quick Scenario Buttons */}
           <div className="flex flex-wrap items-center gap-2 pt-1">
-            <span className="text-xs font-bold text-slate-600 mr-2">Preset Field Conditions:</span>
+            <span className="text-xs font-bold text-slate-600 mr-2 w-full sm:w-auto">Preset Field Conditions:</span>
             <button
               onClick={setScenarioNormal}
-              className="px-3 py-1.5 rounded-md text-xs font-bold bg-slate-100 hover:bg-slate-200 text-slate-800 border border-slate-300"
+              className="w-full sm:w-auto px-3 py-1.5 rounded-md text-xs font-bold bg-slate-100 hover:bg-slate-200 text-slate-800 border border-slate-300"
             >
               🌱 Normal Baseline (CHF ~ 0.71)
             </button>
             <button
               onClick={setScenarioFloodShock}
-              className="px-3 py-1.5 rounded-md text-xs font-bold bg-red-50 hover:bg-red-100 text-red-800 border border-red-300"
+              className="w-full sm:w-auto px-3 py-1.5 rounded-md text-xs font-bold bg-red-50 hover:bg-red-100 text-red-800 border border-red-300"
             >
               🌊 Flood / Waterlogging Shock (CHF &lt; 0.40)
             </button>
             <button
               onClick={setScenarioOptimal}
-              className="px-3 py-1.5 rounded-md text-xs font-bold bg-blue-50 hover:bg-blue-100 text-blue-800 border border-blue-300"
+              className="w-full sm:w-auto px-3 py-1.5 rounded-md text-xs font-bold bg-blue-50 hover:bg-blue-100 text-blue-800 border border-blue-300"
             >
               ⭐ Optimal Peak Canopy (CHF ~ 0.83)
             </button>
@@ -198,8 +198,8 @@ export default function ChfEnginePage() {
 
         {/* 6 Core Input Indicators - Clean Simple Cards */}
         <div className="space-y-4">
-          <div className="flex items-center justify-between">
-            <h2 className="text-lg font-bold text-slate-900">
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-1">
+            <h2 className="text-base sm:text-lg font-bold text-slate-900 break-words">
               The 6 Core Input Indicators (Shannon Entropy Weighted)
             </h2>
             <span className="text-xs text-slate-500 font-mono">Target Grid: 10 m Resolution</span>

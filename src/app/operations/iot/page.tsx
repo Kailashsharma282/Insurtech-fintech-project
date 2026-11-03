@@ -140,7 +140,7 @@ export default function IotCommandCenterPage() {
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-slate-200 pb-5">
           <div>
             <div className="flex items-center space-x-2">
-              <h1 className="text-2xl sm:text-3xl font-black text-[#0F172A] tracking-tight">
+              <h1 className="text-xl sm:text-3xl font-black text-[#0F172A] tracking-tight break-words">
                 IoT Telemetry & Command Center
               </h1>
               <span className={`w-2.5 h-2.5 rounded-full ${liveStreamActive ? 'bg-blue-600 pulse-indicator' : 'bg-slate-400'}`}></span>
@@ -218,7 +218,7 @@ export default function IotCommandCenterPage() {
             {/* 8 Sensor Metrics Required by Section 13 */}
             <div className="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-8 gap-3 font-mono text-center">
               
-              <div className="p-3 rounded-2xl bg-[#102820] border border-slate-700">
+              <div className="p-3 rounded-2xl bg-slate-800/90 border border-slate-700">
                 <span className="text-[10px] text-slate-400 block uppercase">Soil Moisture</span>
                 <strong className="text-xl text-blue-400 font-black mt-1 block">
                   {selectedDevice.currentReading.soilMoisturePct}%
@@ -226,7 +226,7 @@ export default function IotCommandCenterPage() {
                 <span className="text-[9px] text-slate-400">VWC Probe</span>
               </div>
 
-              <div className="p-3 rounded-2xl bg-[#102820] border border-slate-700">
+              <div className="p-3 rounded-2xl bg-slate-800/90 border border-slate-700">
                 <span className="text-[10px] text-slate-400 block uppercase">Temperature</span>
                 <strong className="text-xl text-amber-300 font-black mt-1 block">
                   {selectedDevice.currentReading.temperatureC}&deg;C
@@ -234,7 +234,7 @@ export default function IotCommandCenterPage() {
                 <span className="text-[9px] text-slate-400">DHT22 Ambient</span>
               </div>
 
-              <div className="p-3 rounded-2xl bg-[#102820] border border-slate-700">
+              <div className="p-3 rounded-2xl bg-slate-800/90 border border-slate-700">
                 <span className="text-[10px] text-slate-400 block uppercase">Humidity</span>
                 <strong className="text-xl text-cyan-300 font-black mt-1 block">
                   {selectedDevice.currentReading.humidityPct}%
@@ -242,7 +242,7 @@ export default function IotCommandCenterPage() {
                 <span className="text-[9px] text-slate-400">RH Level</span>
               </div>
 
-              <div className="p-3 rounded-2xl bg-[#102820] border border-slate-700">
+              <div className="p-3 rounded-2xl bg-slate-800/90 border border-slate-700">
                 <span className="text-[10px] text-slate-400 block uppercase">Rainfall</span>
                 <strong className="text-xl text-blue-300 font-black mt-1 block">
                   {selectedDevice.currentReading.rainfallMm} mm
@@ -250,31 +250,31 @@ export default function IotCommandCenterPage() {
                 <span className="text-[9px] text-slate-400">Tipping Bucket</span>
               </div>
 
-              <div className="p-3 rounded-2xl bg-[#102820] border border-slate-700">
+              <div className="p-3 rounded-2xl bg-slate-800/90 border border-slate-700">
                 <span className="text-[10px] text-slate-400 block uppercase">Soil Resistance</span>
-                <strong className="text-xl text-emerald-300 font-black mt-1 block">
+                <strong className="text-xl text-blue-300 font-black mt-1 block">
                   {selectedDevice.currentReading.soilResistanceOhm} &Omega;
                 </strong>
                 <span className="text-[9px] text-slate-400">Salinity / Cond.</span>
               </div>
 
-              <div className="p-3 rounded-2xl bg-[#102820] border border-slate-700">
+              <div className="p-3 rounded-2xl bg-slate-800/90 border border-slate-700">
                 <span className="text-[10px] text-slate-400 block uppercase">Pump Relay</span>
-                <strong className={`text-xl font-black mt-1 block ${selectedDevice.pumpStatus === 'ACTIVE' ? 'text-emerald-400' : 'text-slate-400'}`}>
+                <strong className={`text-xl font-black mt-1 block ${selectedDevice.pumpStatus === 'ACTIVE' ? 'text-blue-400' : 'text-slate-400'}`}>
                   {selectedDevice.pumpStatus || 'IDLE'}
                 </strong>
                 <span className="text-[9px] text-slate-400">Relay State</span>
               </div>
 
-              <div className="p-3 rounded-2xl bg-[#102820] border border-slate-700">
+              <div className="p-3 rounded-2xl bg-slate-800/90 border border-slate-700">
                 <span className="text-[10px] text-slate-400 block uppercase">Battery</span>
-                <strong className="text-xl text-emerald-400 font-black mt-1 block">
+                <strong className="text-xl text-blue-300 font-black mt-1 block">
                   {selectedDevice.batteryPct}%
                 </strong>
                 <span className="text-[9px] text-slate-400">Solar LiFePO4</span>
               </div>
 
-              <div className="p-3 rounded-2xl bg-[#102820] border border-slate-700">
+              <div className="p-3 rounded-2xl bg-slate-800/90 border border-slate-700">
                 <span className="text-[10px] text-slate-400 block uppercase">GSM Signal</span>
                 <strong className="text-xl text-slate-300 font-black mt-1 block">
                   {selectedDevice.signalDbm} dBm

@@ -29,7 +29,7 @@ export default function AdminOverviewPage() {
                 Platform Administration & Telemetry Operations
               </span>
             </div>
-            <h1 className="text-2xl sm:text-3xl font-black text-[#0F172A] tracking-tight">
+            <h1 className="text-xl sm:text-3xl font-black text-[#0F172A] tracking-tight break-words">
               System Health & Infrastructure Overview
             </h1>
             <p className="text-xs sm:text-sm text-slate-500 mt-1">

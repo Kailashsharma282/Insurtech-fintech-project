@@ -60,43 +60,43 @@ export default function OptimizationPage() {
         
         {/* Header */}
         <div className="max-w-3xl mx-auto text-center space-y-3">
-          <div className="inline-flex items-center space-x-2 px-3 py-1 rounded-full bg-emerald-50 border border-emerald-200 text-emerald-700 text-xs font-semibold">
+          <div className="inline-flex items-center space-x-2 px-3 py-1 rounded-full bg-blue-50 border border-blue-200 text-blue-700 text-xs font-semibold">
             <Cpu className="w-3.5 h-3.5" />
             <span>Bio-Inspired Hybrid Artificial Intelligence</span>
           </div>
-          <h1 className="text-3xl sm:text-4xl font-extrabold text-[#0F172A] tracking-tight">
+          <h1 className="text-2xl sm:text-4xl font-extrabold text-[#0F172A] tracking-tight break-words">
             GA-PSO Nutrient & Water Optimization Engine
           </h1>
-          <p className="text-slate-600 text-sm sm:text-base leading-relaxed">
+          <p className="text-slate-600 text-xs sm:text-base leading-relaxed">
             Fusing Genetic Algorithm (GA) crossover exploration with Particle Swarm Optimization (PSO) swarm velocity to calibrate exact micro-dosed N-P-K and irrigation requirements.
           </p>
         </div>
 
         {/* Algorithm Visualization Pipeline (Section 12) */}
-        <div className="p-6 rounded-3xl bg-[#0F172A] text-white border border-slate-700 shadow-xl">
+        <div className="p-4 sm:p-6 rounded-2xl sm:rounded-3xl bg-[#0F172A] text-white border border-slate-700 shadow-xl">
           <div className="text-center mb-4">
             <span className="text-[10px] font-mono uppercase tracking-widest text-blue-400">
               Algorithm Convergence Architecture
             </span>
           </div>
           <div className="grid grid-cols-1 sm:grid-cols-5 gap-3 text-center text-xs font-mono">
-            <div className="p-3 rounded-xl bg-[#102820] border border-emerald-900/40">
+            <div className="p-3 rounded-xl bg-slate-800/90 border border-slate-700">
               <span className="text-blue-400 block font-bold">1. Candidate Solutions</span>
               <span className="text-[10px] text-slate-400">Random Initial Population</span>
             </div>
-            <div className="p-3 rounded-xl bg-[#102820] border border-emerald-900/40">
+            <div className="p-3 rounded-xl bg-slate-800/90 border border-slate-700">
               <span className="text-blue-400 block font-bold">2. Genetic Algorithm</span>
               <span className="text-[10px] text-slate-400">Crossover & Mutation</span>
             </div>
-            <div className="p-3 rounded-xl bg-[#102820] border border-emerald-900/40">
+            <div className="p-3 rounded-xl bg-slate-800/90 border border-slate-700">
               <span className="text-blue-400 block font-bold">3. Particle Swarm</span>
               <span className="text-[10px] text-slate-400">Velocity p_best & g_best</span>
             </div>
-            <div className="p-3 rounded-xl bg-[#102820] border border-emerald-900/40">
+            <div className="p-3 rounded-xl bg-slate-800/90 border border-slate-700">
               <span className="text-blue-400 block font-bold">4. Fast Convergence</span>
               <span className="text-[10px] text-slate-400">Pareto Fitness Frontier</span>
             </div>
-            <div className="p-3 rounded-xl bg-[#102820] border border-emerald-900/40">
+            <div className="p-3 rounded-xl bg-slate-800/90 border border-slate-700">
               <span className="text-blue-400 block font-bold">5. Optimized Plan</span>
               <span className="text-[10px] text-slate-400">Micro-Dosed Prescription</span>
             </div>

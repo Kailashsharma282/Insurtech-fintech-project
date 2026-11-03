@@ -65,22 +65,22 @@ export const Navbar: React.FC = () => {
 
   return (
     <>
-      <header className="sticky top-0 z-50 bg-[#0F172A] border-b border-slate-800 text-white shadow-md">
-        <div className="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8">
-          <div className="flex items-center justify-between h-16 gap-2 lg:gap-4">
+      <header className="sticky top-0 z-50 bg-[#0F172A] border-b border-slate-800 text-white shadow-md w-full">
+        <div className="max-w-7xl mx-auto px-2.5 sm:px-6 lg:px-8">
+          <div className="flex items-center justify-between h-14 sm:h-16 gap-1.5 sm:gap-4">
             
             {/* 1. Left: Brand Logo */}
             <div className="flex items-center shrink-0">
-              <Link href="/farmer/dashboard" className="flex items-center space-x-2.5 group">
-                <div className="w-8 h-8 sm:w-9 sm:h-9 rounded-lg bg-blue-600 flex items-center justify-center text-white shrink-0 shadow-sm">
-                  <Satellite className="w-4 h-4 sm:w-4.5 sm:h-4.5 text-white" />
+              <Link href="/farmer/dashboard" className="flex items-center space-x-1.5 sm:space-x-2.5 group">
+                <div className="w-7 h-7 sm:w-9 sm:h-9 rounded-lg bg-blue-600 flex items-center justify-center text-white shrink-0 shadow-sm">
+                  <Satellite className="w-3.5 h-3.5 sm:w-4.5 sm:h-4.5 text-white" />
                 </div>
                 <div className="flex flex-col">
-                  <div className="flex items-center space-x-1.5 leading-none">
-                    <span className="font-extrabold text-sm sm:text-base tracking-tight text-white">
+                  <div className="flex items-center space-x-1 sm:space-x-1.5 leading-none">
+                    <span className="font-extrabold text-xs sm:text-base tracking-tight text-white">
                       AgriSure
                     </span>
-                    <span className="text-[9px] uppercase font-mono font-bold px-1.5 py-0.5 rounded bg-blue-500/20 text-blue-300 border border-blue-500/30">
+                    <span className="text-[8px] sm:text-[9px] uppercase font-mono font-bold px-1 sm:px-1.5 py-0.5 rounded bg-blue-500/20 text-blue-300 border border-blue-500/30">
                       DEMO
                     </span>
                   </div>
@@ -174,15 +174,15 @@ export const Navbar: React.FC = () => {
             {/* 3. Right: Demo Persona Pill & Quick Controls (NO LOGIN/SIGNUP) */}
             <div className="flex items-center space-x-1.5 sm:space-x-2 shrink-0">
               
-              {/* Simulate Weather Shock */}
+              {/* Simulate Weather Shock - Hidden on mobile header, accessible inside mobile drawer */}
               <button
                 type="button"
                 onClick={() => setSimulationModalOpen(true)}
-                className="h-8 sm:h-9 px-2 sm:px-2.5 rounded-lg bg-slate-800 hover:bg-slate-700 border border-slate-700 text-blue-300 text-xs font-bold transition-all flex items-center space-x-1 shrink-0"
+                className="hidden sm:flex h-9 px-2.5 rounded-lg bg-slate-800 hover:bg-slate-700 border border-slate-700 text-blue-300 text-xs font-bold transition-all items-center justify-center space-x-1 shrink-0"
                 title="Inject Satellite / Weather Event Simulation"
               >
-                <Zap className="w-3.5 h-3.5 text-amber-400" />
-                <span className="hidden sm:inline text-[11px]">Simulate Shock</span>
+                <Zap className="w-3.5 h-3.5 text-amber-400 shrink-0" />
+                <span className="text-[11px]">Simulate Shock</span>
               </button>
 
               {/* Instant Role Switcher (1-Click Demo) */}
@@ -190,21 +190,21 @@ export const Navbar: React.FC = () => {
                 <select
                   value={role}
                   onChange={(e) => handleRoleChange(e.target.value as Role)}
-                  className="h-8 sm:h-9 appearance-none bg-slate-800 hover:bg-slate-700 border border-slate-700 text-white text-xs font-bold pl-2.5 pr-6 rounded-lg focus:outline-none cursor-pointer transition-colors shrink-0"
+                  className="h-8 sm:h-9 appearance-none bg-slate-800 hover:bg-slate-700 border border-slate-700 text-white text-[11px] sm:text-xs font-bold pl-1.5 pr-5 sm:pl-2.5 sm:pr-6 rounded-lg focus:outline-none cursor-pointer transition-colors max-w-[86px] sm:max-w-none shrink-0"
                   title="Switch Demo Role"
                 >
-                  <option value="FARMER">🧑‍🌾 Farmer Demo</option>
-                  <option value="INSURER">🏛️ Insurer Desk</option>
-                  <option value="ADMIN">⚙️ Systems Admin</option>
-                  <option value="FIELD_AGENT">🔍 Field Agent</option>
+                  <option value="FARMER">🧑‍🌾 Farmer</option>
+                  <option value="INSURER">🏛️ Insurer</option>
+                  <option value="ADMIN">⚙️ Admin</option>
+                  <option value="FIELD_AGENT">🔍 Agent</option>
                 </select>
-                <ChevronDown className="w-3 h-3 text-slate-400 absolute right-1.5 top-1/2 -translate-y-1/2 pointer-events-none" />
+                <ChevronDown className="w-3 h-3 text-slate-400 absolute right-1 sm:right-1.5 top-1/2 -translate-y-1/2 pointer-events-none" />
               </div>
 
               {/* Mobile Drawer Trigger */}
               <button
                 onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-                className="lg:hidden h-8 w-8 sm:h-9 sm:w-9 rounded-lg bg-slate-800 border border-slate-700 text-slate-200 hover:text-white flex items-center justify-center transition-colors"
+                className="lg:hidden h-8 w-8 sm:h-9 sm:w-9 rounded-lg bg-slate-800 border border-slate-700 text-slate-200 hover:text-white flex items-center justify-center transition-colors shrink-0"
                 aria-label="Toggle navigation drawer"
               >
                 {mobileMenuOpen ? <X className="w-4 h-4" /> : <Menu className="w-4 h-4" />}

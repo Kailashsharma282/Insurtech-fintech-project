@@ -54,19 +54,19 @@ export default function HomePage() {
               <span>Kharif 2025 Closed-Loop System</span>
             </div>
 
-            <h1 className="text-3xl sm:text-5xl font-black text-slate-900 tracking-tight leading-tight">
+            <h1 className="text-2xl sm:text-5xl font-black text-slate-900 tracking-tight leading-tight">
               Simple, Automated Crop Health & Parametric Insurance for Farmers
             </h1>
 
-            <p className="text-base sm:text-lg text-slate-600 leading-relaxed">
+            <p className="text-sm sm:text-lg text-slate-600 leading-relaxed">
               AgriSure monitors your field using European Space Agency satellites (Sentinel-2 optical & Sentinel-1 radar) and local ground sensors. When flood, drought, or disease strikes, your insurance payout is triggered automatically—zero paperwork needed.
             </p>
 
             {/* Clear, High-Contrast Action Buttons */}
-            <div className="flex flex-wrap items-center gap-3 pt-3">
+            <div className="flex flex-wrap items-center gap-2.5 sm:gap-3 pt-3">
               <Link
                 href="/farmer/dashboard"
-                className="px-6 py-3 rounded-lg bg-blue-600 hover:bg-blue-700 text-white font-bold text-sm shadow-sm transition-colors flex items-center space-x-2"
+                className="w-full sm:w-auto px-6 py-3 rounded-lg bg-blue-600 hover:bg-blue-700 text-white font-bold text-sm shadow-sm transition-colors flex items-center justify-center space-x-2"
               >
                 <span>Enter Farmer Portal</span>
                 <ArrowRight className="w-4 h-4" />
@@ -74,7 +74,7 @@ export default function HomePage() {
 
               <Link
                 href="/farmer/insurance-validation"
-                className="px-5 py-3 rounded-lg bg-slate-900 hover:bg-slate-800 text-white font-bold text-sm border border-slate-800 transition-colors flex items-center space-x-2"
+                className="w-full sm:w-auto px-5 py-3 rounded-lg bg-slate-900 hover:bg-slate-800 text-white font-bold text-sm border border-slate-800 transition-colors flex items-center justify-center space-x-2"
               >
                 <FileText className="w-4 h-4 text-blue-400" />
                 <span>Insurance Validation (CHF)</span>
@@ -82,7 +82,7 @@ export default function HomePage() {
 
               <Link
                 href="/technology/chf"
-                className="px-5 py-3 rounded-lg bg-slate-100 hover:bg-slate-200 text-slate-900 font-bold text-sm border border-slate-300 transition-colors flex items-center space-x-2"
+                className="w-full sm:w-auto px-5 py-3 rounded-lg bg-slate-100 hover:bg-slate-200 text-slate-900 font-bold text-sm border border-slate-300 transition-colors flex items-center justify-center space-x-2"
               >
                 <Cpu className="w-4 h-4 text-blue-600" />
                 <span>CHF Algorithm (Ghatal 2025)</span>
@@ -91,7 +91,7 @@ export default function HomePage() {
               <a
                 href="/reports/Ghatal_Block_Crop_Health_Indicators_2025_Report.pdf"
                 download
-                className="px-4 py-3 rounded-lg bg-amber-50 hover:bg-amber-100 text-amber-900 font-bold text-sm border border-amber-300 transition-colors flex items-center space-x-1.5"
+                className="w-full sm:w-auto px-4 py-3 rounded-lg bg-amber-50 hover:bg-amber-100 text-amber-900 font-bold text-sm border border-amber-300 transition-colors flex items-center justify-center space-x-1.5"
               >
                 <Download className="w-4 h-4 text-amber-800" />
                 <span>Download Report PDF</span>

@@ -34,7 +34,7 @@ export default function RootLayout({
             <FullPageTranslator />
             <LanguageModal />
             <Navbar />
-            <main className="flex-1 w-full max-w-full overflow-x-hidden">
+            <main className="flex-1 w-full max-w-full overflow-x-hidden pb-24 md:pb-6">
               {children}
             </main>
             <FarmerBottomNav />

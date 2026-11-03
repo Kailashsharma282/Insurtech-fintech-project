@@ -77,7 +77,7 @@ export default function WeatherRiskPage() {
                 Agro-Meteorological Intel
               </span>
             </div>
-            <h1 className="text-2xl sm:text-3xl font-black text-[#0F172A] tracking-tight">
+            <h1 className="text-xl sm:text-3xl font-black text-[#0F172A] tracking-tight break-words">
               Weather Risk & Meteorological Simulation
             </h1>
             <p className="text-xs sm:text-sm text-slate-500 mt-1">
