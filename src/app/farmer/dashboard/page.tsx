@@ -96,7 +96,7 @@ export default function FarmerDashboard() {
                 <span className="text-xl sm:text-2xl md:text-3xl font-black text-[#0F172A] tracking-tight">
                   {t('farmer.greeting')}
                 </span>
-                <span className="w-2.5 h-2.5 rounded-full bg-[#10B981] pulse-indicator" title="Connected to Ghatal IoT gateway"></span>
+                <span className="w-2.5 h-2.5 rounded-full bg-emerald-600 inline-block" title="Connected to Ghatal IoT gateway"></span>
               </div>
               <p className="text-xs sm:text-sm text-slate-500 mt-1">
                 Field Hub: <strong className="text-slate-800">Ghatal Central, Paschim Medinipur, West Bengal</strong>
@@ -147,7 +147,7 @@ export default function FarmerDashboard() {
               <div className="flex items-center justify-between text-xs text-slate-500">
                 <span className="font-bold flex items-center gap-1">💧 {t('farmer.soil_moisture')}</span>
                 <span className="text-blue-600 font-bold text-[10px] flex items-center space-x-1 font-mono">
-                  <span className="w-1.5 h-1.5 rounded-full bg-blue-500 animate-pulse"></span>
+                  <span className="w-1.5 h-1.5 rounded-full bg-blue-500"></span>
                   <span>LIVE IOT</span>
                 </span>
               </div>
@@ -269,7 +269,7 @@ export default function FarmerDashboard() {
             
             {/* Visual Directional Indicator for Step 3 Pump (Low-Literacy Aid) */}
             {language !== 'en' && (
-              <div className="p-3 rounded-2xl bg-amber-500/15 border-2 border-amber-500/50 text-amber-900 font-black text-xs flex items-center justify-between shadow-sm animate-pulse">
+              <div className="p-3 rounded-xl bg-amber-50 border border-amber-300 text-amber-900 font-bold text-xs flex items-center justify-between shadow-sm">
                 <span>👉 {t('guide.step3')}</span>
                 <span className="text-base">⬇️</span>
               </div>
@@ -285,7 +285,7 @@ export default function FarmerDashboard() {
                   </div>
                   <span className={`text-[10px] font-mono px-2.5 py-1 rounded-full font-bold transition-all ${
                     pumpActive 
-                      ? 'bg-red-500 text-white animate-pulse shadow-lg shadow-red-500/50' 
+                      ? 'bg-red-600 text-white' 
                       : 'bg-slate-800 text-slate-300'
                   }`}>
                     {pumpActive ? t('farmer.pump_running') : t('farmer.pump_idle')}

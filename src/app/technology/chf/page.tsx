@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useState, useMemo } from 'react';
+import Link from 'next/link';
 import { 
   Calculator, 
   ChevronDown, 
@@ -10,448 +11,359 @@ import {
   AlertTriangle, 
   Layers, 
   Sparkles,
-  RefreshCw
+  RefreshCw,
+  FileText,
+  Download,
+  ArrowRight
 } from 'lucide-react';
-import { computeChf, ChfRawInputs } from '@/lib/algorithms/chf';
+import { computeGhatalChf2025, GhatalRawObservations, GHATAL_2025_BOUNDS } from '@/lib/algorithms/ghatal-chf';
 
 export default function ChfEnginePage() {
-  // Interactive inputs with realistic default baseline values for Plot #204 Nadia
-  const [inputs, setInputs] = useState<ChfRawInputs>({
-    ndvi: 0.68,
-    lswi: 0.38,
-    vhBackscatterDb: -16.4,
-    integratedVh: 0.74,
-    fapar: 0.63,
-    rainfallMm: 95.0,
-    rainyDays: 6,
-    cropVariability: 0.12,
+  // Interactive observations calibrated for Ghatal Block, West Bengal (2025 Kharif season)
+  const [obs, setObs] = useState<GhatalRawObservations>({
+    nir: 0.44,
+    red: 0.08,
+    blue: 0.04,
+    swir1: 0.18,
+    ndviMax: 0.72,
+    lswiMax: 0.38,
+    saviMax: 0.54,
+    eviMax: 0.58,
+    vhDb: -15.4,
+    vhMax: -15.4,
+    vhIntegrated: 0.68,
+    seasonalRainfallMm: 1280.0,
+    rainyDaysCount: 62,
+    growingDegreeDays: 3180.0,
   });
 
-  const [baselineScore, setBaselineScore] = useState<number>(0.76);
-  const [expandedFormula, setExpandedFormula] = useState<string | null>('entropy');
+  const [baselineThreshold, setBaselineThreshold] = useState<number>(0.55);
+  const [activeTab, setActiveTab] = useState<'overview' | 'formulas' | 'weights' | 'gee'>('overview');
 
-  // Compute live transparent results
+  // Compute live transparent results using exact Ghatal 2025 engine
   const result = useMemo(() => {
-    return computeChf(inputs, baselineScore);
-  }, [inputs, baselineScore]);
+    return computeGhatalChf2025(obs, baselineThreshold);
+  }, [obs, baselineThreshold]);
 
-  const updateInput = (key: keyof ChfRawInputs, val: number) => {
-    setInputs(prev => ({ ...prev, [key]: val }));
+  const setScenarioOptimal = () => {
+    setObs({
+      nir: 0.48,
+      red: 0.06,
+      blue: 0.03,
+      swir1: 0.14,
+      ndviMax: 0.78,
+      lswiMax: 0.44,
+      saviMax: 0.62,
+      eviMax: 0.65,
+      vhDb: -13.2,
+      vhMax: -13.2,
+      vhIntegrated: 0.82,
+      seasonalRainfallMm: 1420.0,
+      rainyDaysCount: 68,
+      growingDegreeDays: 3250.0,
+    });
   };
 
-  const resetToBaseline = () => {
-    setInputs({
-      ndvi: 0.68,
-      lswi: 0.38,
-      vhBackscatterDb: -16.4,
-      integratedVh: 0.74,
-      fapar: 0.63,
-      rainfallMm: 95.0,
-      rainyDays: 6,
-      cropVariability: 0.12,
+  const setScenarioNormal = () => {
+    setObs({
+      nir: 0.44,
+      red: 0.08,
+      blue: 0.04,
+      swir1: 0.18,
+      ndviMax: 0.72,
+      lswiMax: 0.38,
+      saviMax: 0.54,
+      eviMax: 0.58,
+      vhDb: -15.4,
+      vhMax: -15.4,
+      vhIntegrated: 0.68,
+      seasonalRainfallMm: 1280.0,
+      rainyDaysCount: 62,
+      growingDegreeDays: 3180.0,
     });
-    setBaselineScore(0.76);
   };
 
-  const setToShock = () => {
-    setInputs({
-      ndvi: 0.44,
-      lswi: 0.16,
-      vhBackscatterDb: -22.8,
-      integratedVh: 0.42,
-      fapar: 0.35,
-      rainfallMm: 18.0,
-      rainyDays: 1,
-      cropVariability: 0.28,
+  const setScenarioFloodShock = () => {
+    // Shilabati basin flood shock in Ghatal Block
+    setObs({
+      nir: 0.22,
+      red: 0.14,
+      blue: 0.06,
+      swir1: 0.28,
+      ndviMax: 0.42,
+      lswiMax: 0.12,
+      saviMax: 0.28,
+      eviMax: 0.31,
+      vhDb: -23.5,
+      vhMax: -23.5,
+      vhIntegrated: 0.34,
+      seasonalRainfallMm: 1780.0, // Waterlogging shock
+      rainyDaysCount: 76,
+      growingDegreeDays: 2890.0,
     });
-    setBaselineScore(0.76);
   };
 
   return (
-    <div className="min-h-screen bg-[#F8FAFC] py-12">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-10">
+    <div className="min-h-screen bg-[#F8FAFC] py-8 text-[#0F172A]">
+      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 space-y-8">
         
-        {/* Header */}
-        <div className="max-w-3xl mx-auto text-center space-y-3">
-          <div className="inline-flex items-center space-x-2 px-3 py-1 rounded-full bg-emerald-50 border border-emerald-200 text-emerald-700 text-xs font-semibold">
-            <Calculator className="w-3.5 h-3.5" />
-            <span>Mathematical Auditability</span>
+        {/* Simple, Clean Header */}
+        <div className="border-b border-slate-200 pb-6 flex flex-col md:flex-row md:items-center justify-between gap-4">
+          <div>
+            <div className="inline-flex items-center space-x-2 px-3 py-1 rounded-md bg-emerald-100 text-emerald-800 text-xs font-bold mb-2">
+              <span>Ghatal Block (2025 Kharif) Algorithm</span>
+              <span className="font-mono">&bull; FAPAR Excluded</span>
+            </div>
+            <h1 className="text-2xl sm:text-3xl font-black text-slate-900 tracking-tight">
+              Crop Health Indicators & Parametric Engine
+            </h1>
+            <p className="text-sm text-slate-600 mt-1 max-w-2xl">
+              10 m resolution multi-satellite pipeline combining Sentinel-2 MSI, Sentinel-1 SAR, CHIRPS rainfall, and ERA5-Land thermal dynamics with pixel-based Shannon entropy weighting.
+            </p>
           </div>
-          <h1 className="text-3xl sm:text-4xl font-extrabold text-[#0F172A] tracking-tight">
-            Transparent Crop Health Factor (CHF) Engine
-          </h1>
-          <p className="text-slate-600 text-sm sm:text-base leading-relaxed">
-            Zero black boxes. The Crop Health Factor is an objective, entropy-weighted multi-spectral composite index that underwrites parametric risk with complete mathematical transparency.
-          </p>
+
+          <div className="flex flex-wrap items-center gap-2">
+            <a
+              href="/reports/Ghatal_Block_Crop_Health_Indicators_2025_Report.pdf"
+              download
+              className="inline-flex items-center px-4 py-2 rounded-lg bg-emerald-700 hover:bg-emerald-800 text-white font-bold text-xs shadow-sm transition-colors space-x-1.5"
+            >
+              <Download className="w-4 h-4" />
+              <span>Download Report PDF</span>
+            </a>
+          </div>
         </div>
 
-        {/* Top Result Banner */}
-        <div className="p-8 rounded-3xl bg-[#071511] text-white border border-[#10B981]/40 shadow-2xl">
-          <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-6 border-b border-emerald-900/60 pb-6">
+        {/* Live Calculation Banner - Simple Solid Design */}
+        <div className="p-6 rounded-xl bg-white border border-slate-300 shadow-sm space-y-6">
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-slate-200 pb-4">
             <div>
-              <div className="text-xs font-mono text-[#34D399] uppercase tracking-widest">
-                Computed Composite Score
-              </div>
+              <span className="text-xs font-mono uppercase text-slate-500 font-bold block">
+                Composite Crop Health Factor (CHF)
+              </span>
               <div className="flex items-baseline space-x-3 mt-1">
-                <span className="text-5xl sm:text-6xl font-black tracking-tight text-white">
+                <span className="text-4xl sm:text-5xl font-black text-slate-900 font-mono">
                   {result.chfScore.toFixed(3)}
                 </span>
-                <span className={`text-sm font-bold px-3 py-1 rounded-full border ${
-                  result.chfScore >= 0.70 
-                    ? 'bg-emerald-500/20 text-[#34D399] border-emerald-500/30' 
-                    : result.chfScore >= 0.55 
-                    ? 'bg-amber-500/20 text-amber-300 border-amber-500/30' 
-                    : 'bg-red-500/20 text-red-300 border-red-500/30'
-                }`}>
-                  {result.status.replace('_', ' ')}
+                <span 
+                  className="px-3 py-1 rounded-md text-xs font-bold text-white uppercase"
+                  style={{ backgroundColor: result.chfClass.color }}
+                >
+                  Class {result.chfClass.code}: {result.chfClass.label}
                 </span>
               </div>
-              <p className="text-xs text-slate-300 mt-2">
-                Underwriting Trigger Threshold: <strong className="text-amber-400">CHF &le; 0.550</strong>. 
-                {result.chfScore < 0.55 ? ' ⚠️ Breached: Parametric Claim Qualified.' : ' Safe: Above parametric trigger line.'}
-              </p>
             </div>
 
-            <div className="grid grid-cols-3 gap-4 text-xs font-mono">
-              <div className="p-3 rounded-xl bg-[#102820] border border-emerald-800/40">
-                <div className="text-slate-400 text-[11px]">4-Yr Baseline</div>
-                <div className="font-bold text-white text-base mt-0.5">{result.baselineScore.toFixed(3)}</div>
+            <div className="sm:text-right">
+              <span className="text-xs font-mono text-slate-500 font-bold block">Parametric Trigger Threshold</span>
+              <div className="text-sm font-bold text-slate-800 mt-1">
+                Trigger at CHF &le; {baselineThreshold} ({result.triggerAnalysis.isTriggerBreached ? 'BREACHED' : 'SAFE'})
               </div>
-              <div className="p-3 rounded-xl bg-[#102820] border border-emerald-800/40">
-                <div className="text-slate-400 text-[11px]">Deviation &Delta;</div>
-                <div className={`font-bold text-base mt-0.5 ${result.deviation < 0 ? 'text-red-400' : 'text-emerald-400'}`}>
-                  {result.deviation > 0 ? `+${result.deviation.toFixed(3)}` : result.deviation.toFixed(3)} ({result.deviationPercentage}%)
-                </div>
-              </div>
-              <div className="p-3 rounded-xl bg-[#102820] border border-emerald-800/40">
-                <div className="text-slate-400 text-[11px]">Statistical Confidence</div>
-                <div className="font-bold text-[#34D399] text-base mt-0.5">{(result.confidence * 100).toFixed(1)}%</div>
+              <div className="text-xs text-slate-600 mt-0.5">
+                {result.chfClass.parametricAction}
               </div>
             </div>
           </div>
 
-          <div className="pt-4 flex flex-wrap items-center justify-between gap-3 text-xs">
-            <span className="text-slate-400">
-              Pipeline: <strong className="text-white">MIN-MAX NORMALIZATION &rarr; SHANNON ENTROPY WEIGHTS &rarr; WEIGHTED COMPOSITE &rarr; CHF</strong>
-            </span>
-            <div className="flex items-center space-x-2">
-              <button
-                onClick={resetToBaseline}
-                className="px-3 py-1.5 rounded-lg bg-emerald-900/50 hover:bg-emerald-800/60 border border-emerald-700/40 text-emerald-200 text-xs transition-colors"
-              >
-                Reset Baseline (Plot #204)
-              </button>
-              <button
-                onClick={setToShock}
-                className="px-3 py-1.5 rounded-lg bg-red-900/40 hover:bg-red-800/60 border border-red-700/40 text-red-200 text-xs transition-colors"
-              >
-                Simulate Drought Shock (&lt;0.55)
-              </button>
+          {/* Quick Scenario Buttons */}
+          <div className="flex flex-wrap items-center gap-2 pt-1">
+            <span className="text-xs font-bold text-slate-600 mr-2">Preset Field Conditions:</span>
+            <button
+              onClick={setScenarioNormal}
+              className="px-3 py-1.5 rounded-md text-xs font-bold bg-slate-100 hover:bg-slate-200 text-slate-800 border border-slate-300"
+            >
+              🌱 Normal Baseline (CHF ~ 0.71)
+            </button>
+            <button
+              onClick={setScenarioFloodShock}
+              className="px-3 py-1.5 rounded-md text-xs font-bold bg-red-50 hover:bg-red-100 text-red-800 border border-red-300"
+            >
+              🌊 Flood / Waterlogging Shock (CHF &lt; 0.40)
+            </button>
+            <button
+              onClick={setScenarioOptimal}
+              className="px-3 py-1.5 rounded-md text-xs font-bold bg-emerald-50 hover:bg-emerald-100 text-emerald-800 border border-emerald-300"
+            >
+              ⭐ Optimal Peak Canopy (CHF ~ 0.83)
+            </button>
+          </div>
+        </div>
+
+        {/* 6 Core Input Indicators - Clean Simple Cards */}
+        <div className="space-y-4">
+          <div className="flex items-center justify-between">
+            <h2 className="text-lg font-bold text-slate-900">
+              The 6 Core Input Indicators (Shannon Entropy Weighted)
+            </h2>
+            <span className="text-xs text-slate-500 font-mono">Target Grid: 10 m Resolution</span>
+          </div>
+
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+            {result.entropyDetails.map((item) => (
+              <div key={item.indicator} className="p-4 rounded-xl bg-white border border-slate-200 shadow-sm space-y-2">
+                <div className="flex items-center justify-between">
+                  <span className="font-bold text-sm text-slate-900 font-mono">{item.indicator}</span>
+                  <span className="text-xs font-bold px-2 py-0.5 rounded bg-slate-100 text-slate-700 font-mono">
+                    Weight: {(item.weight * 100).toFixed(1)}%
+                  </span>
+                </div>
+
+                <div className="grid grid-cols-2 gap-2 text-xs font-mono pt-1">
+                  <div className="p-2 rounded bg-slate-50 border border-slate-100">
+                    <span className="text-slate-500 block text-[10px]">Sample Observation</span>
+                    <strong className="text-sm text-slate-900">{item.rawSampleValue}</strong>
+                  </div>
+                  <div className="p-2 rounded bg-slate-50 border border-slate-100">
+                    <span className="text-slate-500 block text-[10px]">Min-Max Normalized</span>
+                    <strong className="text-sm text-emerald-800">{item.normalizedValue.toFixed(3)}</strong>
+                  </div>
+                </div>
+
+                <div className="flex items-center justify-between text-[11px] text-slate-500 pt-1 border-t border-slate-100 font-mono">
+                  <span>Entropy E: {item.entropy.toFixed(3)}</span>
+                  <span>Diversity d: {item.diversity.toFixed(3)}</span>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        {/* Additional Sentinel & Radar Indices Breakdown */}
+        <div className="p-6 rounded-xl bg-white border border-slate-200 shadow-sm space-y-4">
+          <h3 className="font-bold text-base text-slate-900">
+            Complete Derived Spectral & Radar Metrics (Ghatal 2025)
+          </h3>
+
+          <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 text-xs font-mono">
+            <div className="p-3 rounded-lg bg-slate-50 border border-slate-200">
+              <span className="text-slate-500 block text-[10px]">NDVI (B8, B4)</span>
+              <strong className="text-sm text-slate-900">{result.indicators.ndvi}</strong>
+            </div>
+            <div className="p-3 rounded-lg bg-slate-50 border border-slate-200">
+              <span className="text-slate-500 block text-[10px]">LSWI (B8, B12)</span>
+              <strong className="text-sm text-slate-900">{result.indicators.lswi}</strong>
+            </div>
+            <div className="p-3 rounded-lg bg-slate-50 border border-slate-200">
+              <span className="text-slate-500 block text-[10px]">SAVI (L=0.5)</span>
+              <strong className="text-sm text-slate-900">{result.indicators.savi}</strong>
+            </div>
+            <div className="p-3 rounded-lg bg-slate-50 border border-slate-200">
+              <span className="text-slate-500 block text-[10px]">EVI (B8, B4, B2)</span>
+              <strong className="text-sm text-slate-900">{result.indicators.evi}</strong>
+            </div>
+            <div className="p-3 rounded-lg bg-slate-50 border border-slate-200">
+              <span className="text-slate-500 block text-[10px]">Vegetation Stack (VIS)</span>
+              <strong className="text-sm text-emerald-800">{result.indicators.vegetationIndexStack}</strong>
+            </div>
+            <div className="p-3 rounded-lg bg-slate-50 border border-slate-200">
+              <span className="text-slate-500 block text-[10px]">Sentinel-1 VH Max</span>
+              <strong className="text-sm text-slate-900">{result.indicators.vhMax} dB</strong>
+            </div>
+            <div className="p-3 rounded-lg bg-slate-50 border border-slate-200">
+              <span className="text-slate-500 block text-[10px]">VH Integrated (Linear)</span>
+              <strong className="text-sm text-slate-900">{result.indicators.vhIntegrated}</strong>
+            </div>
+            <div className="p-3 rounded-lg bg-slate-50 border border-slate-200">
+              <span className="text-slate-500 block text-[10px]">Spatial CV (Max)</span>
+              <strong className="text-sm text-amber-800">{result.spatialCv.cropConditionVariability}</strong>
             </div>
           </div>
         </div>
 
-        {/* Interactive Sliders Sandbox */}
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-          
-          {/* Sliders Column */}
-          <div className="lg:col-span-2 bg-white p-6 sm:p-8 rounded-3xl border border-[#E2E8F0] shadow-sm space-y-6">
-            <div className="flex items-center justify-between border-b border-slate-100 pb-4">
-              <h3 className="font-bold text-lg text-[#0F172A]">Input Indices (Multi-Spectral & Weather)</h3>
-              <span className="text-xs text-slate-500">Live Interactive Sliders</span>
-            </div>
-
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
-              
-              {/* NDVI */}
-              <div className="space-y-1.5">
-                <div className="flex justify-between text-xs font-semibold">
-                  <span className="text-slate-700">NDVI (Vegetation Vigour)</span>
-                  <span className="font-mono text-emerald-600">{inputs.ndvi.toFixed(2)}</span>
-                </div>
-                <input
-                  type="range"
-                  min="0.15"
-                  max="0.85"
-                  step="0.01"
-                  value={inputs.ndvi}
-                  onChange={(e) => updateInput('ndvi', parseFloat(e.target.value))}
-                  className="w-full accent-[#10B981]"
-                />
-                <div className="flex justify-between text-[10px] text-slate-400 font-mono">
-                  <span>0.15 (Barren)</span>
-                  <span>0.85 (Lush Dense)</span>
-                </div>
-              </div>
-
-              {/* LSWI */}
-              <div className="space-y-1.5">
-                <div className="flex justify-between text-xs font-semibold">
-                  <span className="text-slate-700">LSWI (Canopy Water Index)</span>
-                  <span className="font-mono text-blue-600">{inputs.lswi.toFixed(2)}</span>
-                </div>
-                <input
-                  type="range"
-                  min="-0.10"
-                  max="0.55"
-                  step="0.01"
-                  value={inputs.lswi}
-                  onChange={(e) => updateInput('lswi', parseFloat(e.target.value))}
-                  className="w-full accent-blue-600"
-                />
-                <div className="flex justify-between text-[10px] text-slate-400 font-mono">
-                  <span>-0.10 (Severe Desiccation)</span>
-                  <span>0.55 (Hydrated)</span>
-                </div>
-              </div>
-
-              {/* Sentinel-1 VH Backscatter */}
-              <div className="space-y-1.5">
-                <div className="flex justify-between text-xs font-semibold">
-                  <span className="text-slate-700">Sentinel-1 VH Backscatter</span>
-                  <span className="font-mono text-purple-600">{inputs.vhBackscatterDb.toFixed(1)} dB</span>
-                </div>
-                <input
-                  type="range"
-                  min="-24.0"
-                  max="-11.0"
-                  step="0.1"
-                  value={inputs.vhBackscatterDb}
-                  onChange={(e) => updateInput('vhBackscatterDb', parseFloat(e.target.value))}
-                  className="w-full accent-purple-600"
-                />
-                <div className="flex justify-between text-[10px] text-slate-400 font-mono">
-                  <span>-24.0 dB (Collapsed)</span>
-                  <span>-11.0 dB (Full Canopy)</span>
-                </div>
-              </div>
-
-              {/* Integrated VH */}
-              <div className="space-y-1.5">
-                <div className="flex justify-between text-xs font-semibold">
-                  <span className="text-slate-700">Integrated VH Multi-temporal</span>
-                  <span className="font-mono text-purple-600">{inputs.integratedVh.toFixed(2)}</span>
-                </div>
-                <input
-                  type="range"
-                  min="0.20"
-                  max="0.95"
-                  step="0.01"
-                  value={inputs.integratedVh}
-                  onChange={(e) => updateInput('integratedVh', parseFloat(e.target.value))}
-                  className="w-full accent-purple-600"
-                />
-                <div className="flex justify-between text-[10px] text-slate-400 font-mono">
-                  <span>0.20 (Low Stability)</span>
-                  <span>0.95 (Consistent)</span>
-                </div>
-              </div>
-
-              {/* FAPAR */}
-              <div className="space-y-1.5">
-                <div className="flex justify-between text-xs font-semibold">
-                  <span className="text-slate-700">FAPAR (Photosynthetic Absorption)</span>
-                  <span className="font-mono text-emerald-600">{inputs.fapar.toFixed(2)}</span>
-                </div>
-                <input
-                  type="range"
-                  min="0.15"
-                  max="0.90"
-                  step="0.01"
-                  value={inputs.fapar}
-                  onChange={(e) => updateInput('fapar', parseFloat(e.target.value))}
-                  className="w-full accent-[#10B981]"
-                />
-                <div className="flex justify-between text-[10px] text-slate-400 font-mono">
-                  <span>0.15</span>
-                  <span>0.90</span>
-                </div>
-              </div>
-
-              {/* Rainfall */}
-              <div className="space-y-1.5">
-                <div className="flex justify-between text-xs font-semibold">
-                  <span className="text-slate-700">14-Day Rainfall</span>
-                  <span className="font-mono text-cyan-600">{inputs.rainfallMm.toFixed(0)} mm</span>
-                </div>
-                <input
-                  type="range"
-                  min="20"
-                  max="220"
-                  step="1"
-                  value={inputs.rainfallMm}
-                  onChange={(e) => updateInput('rainfallMm', parseFloat(e.target.value))}
-                  className="w-full accent-cyan-600"
-                />
-                <div className="flex justify-between text-[10px] text-slate-400 font-mono">
-                  <span>20 mm (Deficit)</span>
-                  <span>220 mm (Abundant)</span>
-                </div>
-              </div>
-
-              {/* Rainy Days */}
-              <div className="space-y-1.5">
-                <div className="flex justify-between text-xs font-semibold">
-                  <span className="text-slate-700">Rainy Days in Window</span>
-                  <span className="font-mono text-cyan-600">{inputs.rainyDays} days</span>
-                </div>
-                <input
-                  type="range"
-                  min="1"
-                  max="10"
-                  step="1"
-                  value={inputs.rainyDays}
-                  onChange={(e) => updateInput('rainyDays', parseInt(e.target.value))}
-                  className="w-full accent-cyan-600"
-                />
-                <div className="flex justify-between text-[10px] text-slate-400 font-mono">
-                  <span>1 day</span>
-                  <span>10 days</span>
-                </div>
-              </div>
-
-              {/* Crop Variability (lower is better) */}
-              <div className="space-y-1.5">
-                <div className="flex justify-between text-xs font-semibold">
-                  <span className="text-slate-700">Intra-Plot Crop Variability (CV)</span>
-                  <span className="font-mono text-slate-700">{inputs.cropVariability.toFixed(2)}</span>
-                </div>
-                <input
-                  type="range"
-                  min="0.05"
-                  max="0.30"
-                  step="0.01"
-                  value={inputs.cropVariability}
-                  onChange={(e) => updateInput('cropVariability', parseFloat(e.target.value))}
-                  className="w-full accent-slate-700"
-                />
-                <div className="flex justify-between text-[10px] text-slate-400 font-mono">
-                  <span>0.05 (Uniform / Healthy)</span>
-                  <span>0.30 (Patchy / Stunted)</span>
-                </div>
-              </div>
-
-            </div>
+        {/* 5-Class Categorization Table */}
+        <div className="p-6 rounded-xl bg-white border border-slate-200 shadow-sm space-y-4">
+          <h3 className="font-bold text-base text-slate-900">
+            Provisional 5-Class Crop Health Intervals & Parametric Payout Schedule
+          </h3>
+          <div className="overflow-x-auto">
+            <table className="w-full text-left text-xs border-collapse font-sans">
+              <thead>
+                <tr className="border-b border-slate-200 bg-slate-50">
+                  <th className="py-2.5 px-3 font-bold text-slate-700">Class</th>
+                  <th className="py-2.5 px-3 font-bold text-slate-700">CHF Interval</th>
+                  <th className="py-2.5 px-3 font-bold text-slate-700">Canopy Health State</th>
+                  <th className="py-2.5 px-3 font-bold text-slate-700">Parametric Insurance Action</th>
+                  <th className="py-2.5 px-3 font-bold text-slate-700">Indemnity Disbursed</th>
+                </tr>
+              </thead>
+              <tbody className="divide-y divide-slate-100">
+                <tr className={result.chfClass.code === 0 ? 'bg-red-50 font-bold' : ''}>
+                  <td className="py-2.5 px-3 font-mono">Class 0</td>
+                  <td className="py-2.5 px-3 font-mono">[0.0 &ndash; 0.2)</td>
+                  <td className="py-2.5 px-3 text-red-700">Severe Crop Stress / Total Loss</td>
+                  <td className="py-2.5 px-3">Catastrophic flood or crop failure confirmed</td>
+                  <td className="py-2.5 px-3 font-mono text-red-700">100% of Sum Insured</td>
+                </tr>
+                <tr className={result.chfClass.code === 1 ? 'bg-orange-50 font-bold' : ''}>
+                  <td className="py-2.5 px-3 font-mono">Class 1</td>
+                  <td className="py-2.5 px-3 font-mono">[0.2 &ndash; 0.4)</td>
+                  <td className="py-2.5 px-3 text-orange-700">High Stress / Severe Damage</td>
+                  <td className="py-2.5 px-3">Substantial canopy loss or prolonged inundation</td>
+                  <td className="py-2.5 px-3 font-mono text-orange-700">75% of Sum Insured</td>
+                </tr>
+                <tr className={result.chfClass.code === 2 ? 'bg-amber-50 font-bold' : ''}>
+                  <td className="py-2.5 px-3 font-mono">Class 2</td>
+                  <td className="py-2.5 px-3 font-mono">[0.4 &ndash; 0.6)</td>
+                  <td className="py-2.5 px-3 text-amber-700">Moderate Stress / Trigger Boundary</td>
+                  <td className="py-2.5 px-3">Parametric threshold boundary (Trigger &le; 0.55)</td>
+                  <td className="py-2.5 px-3 font-mono text-amber-700">40% of Sum Insured</td>
+                </tr>
+                <tr className={result.chfClass.code === 3 ? 'bg-emerald-50 font-bold' : ''}>
+                  <td className="py-2.5 px-3 font-mono">Class 3</td>
+                  <td className="py-2.5 px-3 font-mono">[0.6 &ndash; 0.8)</td>
+                  <td className="py-2.5 px-3 text-emerald-800">Good / Normal Vigor</td>
+                  <td className="py-2.5 px-3">Normal Aman Paddy development</td>
+                  <td className="py-2.5 px-3 font-mono text-emerald-800">0% (Safe)</td>
+                </tr>
+                <tr className={result.chfClass.code === 4 ? 'bg-green-50 font-bold' : ''}>
+                  <td className="py-2.5 px-3 font-mono">Class 4</td>
+                  <td className="py-2.5 px-3 font-mono">[0.8 &ndash; 1.0]</td>
+                  <td className="py-2.5 px-3 text-emerald-900">Optimal Canopy Vigor</td>
+                  <td className="py-2.5 px-3">High biomass and full grain development</td>
+                  <td className="py-2.5 px-3 font-mono text-emerald-900">0% (Safe)</td>
+                </tr>
+              </tbody>
+            </table>
           </div>
-
-          {/* Shannon Entropy Weight Matrix */}
-          <div className="bg-white p-6 sm:p-8 rounded-3xl border border-[#E2E8F0] shadow-sm space-y-5">
-            <div className="border-b border-slate-100 pb-3">
-              <h3 className="font-bold text-lg text-[#0F172A]">Shannon Entropy Weights (w_j)</h3>
-              <p className="text-xs text-slate-500 mt-0.5">Objective information dispersion</p>
-            </div>
-
-            <div className="space-y-3">
-              {Object.entries(result.shannonWeights).map(([key, weight]) => {
-                const normVal = result.normalizedInputs[key] || 0;
-                return (
-                  <div key={key} className="text-xs space-y-1">
-                    <div className="flex justify-between font-mono">
-                      <span className="uppercase text-slate-600 font-semibold">{key}</span>
-                      <span className="text-[#059669] font-bold">{(weight * 100).toFixed(1)}%</span>
-                    </div>
-                    <div className="w-full h-2 bg-slate-100 rounded-full overflow-hidden flex">
-                      <div 
-                        className="bg-[#10B981] h-full" 
-                        style={{ width: `${weight * 100 * 4}%` }} 
-                      />
-                    </div>
-                    <div className="flex justify-between text-[10px] text-slate-400 font-mono">
-                      <span>r_ij = {normVal.toFixed(3)}</span>
-                      <span>Dispersion d_j = {result.dispersionFactors[key] || 0.12}</span>
-                    </div>
-                  </div>
-                );
-              })}
-            </div>
-
-            <div className="p-4 rounded-xl bg-slate-50 border border-slate-200 text-xs text-slate-600">
-              Weights sum to exactly <strong>1.000 (100%)</strong>. Features exhibiting higher variance/dispersion across historical baselines carry proportionally greater information entropy weight.
-            </div>
-          </div>
-
         </div>
 
-        {/* Expandable Mathematical Formulas Section */}
-        <div className="bg-white p-6 sm:p-8 rounded-3xl border border-[#E2E8F0] shadow-sm space-y-4">
-          <div className="border-b border-slate-100 pb-3 flex items-center justify-between">
-            <h3 className="font-bold text-lg text-[#0F172A]">Expandable Mathematical Formulation</h3>
-            <span className="text-xs font-mono text-emerald-600 bg-emerald-50 px-2.5 py-1 rounded-full border border-emerald-200">
-              Shannon Entropy Pipeline
-            </span>
-          </div>
+        {/* Exact Mathematical Formulas Reference */}
+        <div className="p-6 rounded-xl bg-white border border-slate-200 shadow-sm space-y-4">
+          <h3 className="font-bold text-base text-slate-900">
+            Mathematical Equations (As Specified for Ghatal Block 2025)
+          </h3>
 
-          <div className="space-y-3">
-            
-            {/* Step 1: Normalization */}
-            <div className="border border-slate-200 rounded-2xl overflow-hidden">
-              <button
-                onClick={() => setExpandedFormula(expandedFormula === 'norm' ? null : 'norm')}
-                className="w-full flex items-center justify-between p-4 bg-slate-50 hover:bg-slate-100 text-left font-semibold text-sm text-slate-800"
-              >
-                <span>1. Dimensionless Min-Max Normalization (r_ij)</span>
-                {expandedFormula === 'norm' ? <ChevronUp className="w-4 h-4" /> : <ChevronDown className="w-4 h-4" />}
-              </button>
-              {expandedFormula === 'norm' && (
-                <div className="p-5 font-mono text-xs text-slate-700 bg-white border-t border-slate-200 space-y-2">
-                  <div className="bg-slate-900 text-emerald-400 p-3 rounded-lg text-sm">
-                    {result.formulas.normalization}
-                  </div>
-                  <p className="text-slate-600 text-xs font-sans">
-                    Where x_ij represents the observed raw value for feature j in plot i, and [min_j, max_j] are the biological tolerance bounds calibrated for West Bengal agro-ecological zones.
-                  </p>
-                </div>
-              )}
+          <div className="space-y-3 text-xs font-mono bg-slate-50 p-4 rounded-lg border border-slate-200">
+            <div>
+              <span className="text-slate-500 font-bold">1. Sentinel-2 Normalized Indices:</span>
+              <div className="text-slate-900 pl-4 mt-0.5">&bull; NDVI = (NIR - Red) / (NIR + Red)</div>
+              <div className="text-slate-900 pl-4">&bull; LSWI = (NIR - SWIR1) / (NIR + SWIR1)</div>
+              <div className="text-slate-900 pl-4">&bull; SAVI = 1.5 * (NIR - Red) / (NIR + Red + 0.5)  [L = 0.5]</div>
+              <div className="text-slate-900 pl-4">&bull; EVI = 2.5 * (NIR - Red) / (NIR + 6*Red - 7.5*Blue + 1)</div>
+              <div className="text-slate-900 pl-4">&bull; VIS = (SAVI_norm + EVI_norm) / 2, where X_norm = clamp((X + 1)/2, 0, 1)</div>
             </div>
 
-            {/* Step 2: Information Entropy */}
-            <div className="border border-slate-200 rounded-2xl overflow-hidden">
-              <button
-                onClick={() => setExpandedFormula(expandedFormula === 'entropy' ? null : 'entropy')}
-                className="w-full flex items-center justify-between p-4 bg-slate-50 hover:bg-slate-100 text-left font-semibold text-sm text-slate-800"
-              >
-                <span>2. Information Entropy (e_j) & Information Utility Degree (d_j)</span>
-                {expandedFormula === 'entropy' ? <ChevronUp className="w-4 h-4" /> : <ChevronDown className="w-4 h-4" />}
-              </button>
-              {expandedFormula === 'entropy' && (
-                <div className="p-5 font-mono text-xs text-slate-700 bg-white border-t border-slate-200 space-y-2">
-                  <div className="bg-slate-900 text-emerald-400 p-3 rounded-lg text-sm">
-                    {result.formulas.entropy}
-                  </div>
-                  <div className="bg-slate-900 text-emerald-400 p-3 rounded-lg text-sm">
-                    {result.formulas.dispersion}
-                  </div>
-                  <p className="text-slate-600 text-xs font-sans">
-                    k = 1 / ln(m). If the value of feature j exhibits high dispersion, its entropy e_j decreases and degree of divergence d_j increases, signifying a feature that carries richer discriminatory underwriting information.
-                  </p>
-                </div>
-              )}
+            <div className="pt-2 border-t border-slate-200">
+              <span className="text-slate-500 font-bold">2. Sentinel-1 Radar Backscatter:</span>
+              <div className="text-slate-900 pl-4 mt-0.5">&bull; VHmax = max(VH_dB), where VH &ge; -30 dB</div>
+              <div className="text-slate-900 pl-4">&bull; VH_integrated = sum(10^(VH_dB,t / 10), t=1..n)</div>
             </div>
 
-            {/* Step 3: Weighted Composite Score */}
-            <div className="border border-slate-200 rounded-2xl overflow-hidden">
-              <button
-                onClick={() => setExpandedFormula(expandedFormula === 'composite' ? null : 'composite')}
-                className="w-full flex items-center justify-between p-4 bg-slate-50 hover:bg-slate-100 text-left font-semibold text-sm text-slate-800"
-              >
-                <span>3. Objective Shannon Weights (w_j) & Composite CHF</span>
-                {expandedFormula === 'composite' ? <ChevronUp className="w-4 h-4" /> : <ChevronDown className="w-4 h-4" />}
-              </button>
-              {expandedFormula === 'composite' && (
-                <div className="p-5 font-mono text-xs text-slate-700 bg-white border-t border-slate-200 space-y-2">
-                  <div className="bg-slate-900 text-emerald-400 p-3 rounded-lg text-sm">
-                    {result.formulas.weights}
-                  </div>
-                  <div className="bg-slate-900 text-emerald-400 p-3 rounded-lg text-sm">
-                    {result.formulas.chfComposite}
-                  </div>
-                  <p className="text-slate-600 text-xs font-sans">
-                    The resulting CHF score strictly resides within [0.00, 1.00]. When CHF falls below 0.550 for the seasonal trigger duration, a claim is automatically registered.
-                  </p>
-                </div>
-              )}
+            <div className="pt-2 border-t border-slate-200">
+              <span className="text-slate-500 font-bold">3. Hydro-meteorological Aggregations:</span>
+              <div className="text-slate-900 pl-4 mt-0.5">&bull; Rainfall = sum(P_t, t=1..n) [CHIRPS 0.05&deg; resampled to 10m]</div>
+              <div className="text-slate-900 pl-4">&bull; RainyDays = sum(I(P_t &ge; 2.5 mm), t=1..n)</div>
+              <div className="text-slate-900 pl-4">&bull; GDD = sum(max((Tmax_t + Tmin_t)/2 - 10, 0)) [ERA5-Land Tbase=10&deg;C]</div>
             </div>
 
+            <div className="pt-2 border-t border-slate-200">
+              <span className="text-slate-500 font-bold">4. Spatial Variation & Shannon Entropy Weighting:</span>
+              <div className="text-slate-900 pl-4 mt-0.5">&bull; CV = stdDev / |mean|; CropConditionVariability = max(CV_NDVI, CV_LSWI, CV_VH)</div>
+              <div className="text-slate-900 pl-4">&bull; X_norm = clamp((X - X_min) / (X_max - X_min), 0, 1)</div>
+              <div className="text-slate-900 pl-4">&bull; p_i = x_i / sum(x_i); E_j = -sum(p_i * ln(p_i)) / ln(n)</div>
+              <div className="text-slate-900 pl-4">&bull; d_j = 1 - E_j; w_j = d_j / sum(d_k)</div>
+              <div className="text-slate-900 pl-4 font-bold text-emerald-800">&bull; Composite CHF = sum(w_j * X_norm_j)</div>
+            </div>
           </div>
         </div>
 

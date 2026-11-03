@@ -162,7 +162,7 @@ export default function FarmerInsuranceApplyPage() {
 
         {/* Success Screen if already submitted */}
         {submittedPolicy ? (
-          <Card3D depth={8} glowColor="rgba(16, 185, 129, 0.3)" className="bg-white p-6 sm:p-8 rounded-3xl border border-emerald-300 shadow-xl text-center space-y-6 animate-in zoom-in-95 duration-200">
+          <Card3D className="bg-white p-6 sm:p-8 rounded-2xl border border-emerald-300 shadow-sm text-center space-y-6">
             <div className="w-16 h-16 rounded-full bg-emerald-100 text-emerald-600 flex items-center justify-center mx-auto shadow-inner">
               <CheckCircle2 className="w-10 h-10" />
             </div>

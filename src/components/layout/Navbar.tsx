@@ -76,12 +76,12 @@ export const Navbar: React.FC = () => {
             {/* 1. Left: Brand Logo */}
             <div className="flex items-center shrink-0">
               <Link href="/" className="flex items-center space-x-2.5 group">
-                <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-[#10B981] to-[#059669] flex items-center justify-center shadow-md shadow-[#10B981]/25 group-hover:scale-105 transition-transform shrink-0">
+                <div className="w-9 h-9 rounded-lg bg-emerald-700 flex items-center justify-center text-white shrink-0">
                   <Satellite className="w-4.5 h-4.5 text-white" />
                 </div>
                 <div className="flex flex-col">
                   <div className="flex items-center space-x-1.5 leading-none">
-                    <span className="font-black text-base sm:text-lg tracking-tight bg-gradient-to-r from-white via-emerald-100 to-[#34D399] bg-clip-text text-transparent">
+                    <span className="font-black text-base sm:text-lg tracking-tight text-white">
                       AgriSure
                     </span>
                     <span className="text-[9px] uppercase font-mono font-bold px-1 py-0.5 rounded bg-emerald-500/20 text-[#34D399] border border-emerald-500/30">
@@ -123,6 +123,12 @@ export const Navbar: React.FC = () => {
                   >
                     {t('nav.insurance')}
                   </Link>
+                  <Link 
+                    href="/technology/chf" 
+                    className="px-2.5 py-1.5 rounded-lg transition-all text-emerald-300 hover:text-white hover:bg-emerald-900/40 whitespace-nowrap shrink-0 font-bold border border-emerald-600/40"
+                  >
+                    Ghatal CHF
+                  </Link>
                 </>
               ) : role === 'FARMER' ? (
                 <>
@@ -143,6 +149,12 @@ export const Navbar: React.FC = () => {
                     className={`px-2.5 py-1.5 rounded-lg transition-all whitespace-nowrap shrink-0 ${pathname === '/farmer/insurance' ? 'bg-emerald-500/20 text-[#34D399] border border-emerald-500/40' : 'text-slate-300 hover:text-white hover:bg-white/5'}`}
                   >
                     {t('nav.insurance')}
+                  </Link>
+                  <Link 
+                    href="/technology/chf" 
+                    className="px-2.5 py-1.5 rounded-lg transition-all text-emerald-300 hover:text-white hover:bg-emerald-900/40 whitespace-nowrap shrink-0 font-bold border border-emerald-600/40"
+                  >
+                    Ghatal CHF
                   </Link>
                   <Link 
                     href="/farmer/disease" 
