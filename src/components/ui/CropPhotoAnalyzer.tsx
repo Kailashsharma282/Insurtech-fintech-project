@@ -566,3 +566,4 @@ export function CropPhotoAnalyzer({ compact = false }: { compact?: boolean }) {
     </div>
   );
 }
+
