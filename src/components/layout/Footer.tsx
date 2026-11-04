@@ -49,8 +49,8 @@ export const Footer: React.FC = () => {
                 </Link>
               </li>
               <li>
-                <Link href="/farmer/optimization" className="hover:text-white transition-colors">
-                  GA-PSO Hybrid Optimizer
+                <Link href="/intelligence/map" className="hover:text-white transition-colors">
+                  Satellite Map & Earth Engine
                 </Link>
               </li>
             </ul>

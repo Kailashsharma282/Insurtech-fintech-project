@@ -18,11 +18,11 @@ export default function ResearchPage() {
       findings: 'Shannon entropy weighting eliminated regional underwriter bias and lowered basis risk from 28.4% (AWS single-station index) to 4.2% across 40 monitored pilot farms in West Bengal.'
     },
     {
-      title: 'Hybrid GA-PSO Optimization of Variable-Rate Nutrient Dispensation in Alluvial Gangetic Soils',
+      title: 'Biophysical Colorimetric Leaf Analysis for Variable-Rate Nutrient Dispensation in Alluvial Gangetic Soils',
       authors: 'P. Bhattacharya, T. Mondal, A. Dey',
       publication: 'Computers and Electronics in Agriculture, 2024',
       doi: '10.1016/j.compag.2024.108420',
-      findings: 'The hybrid genetic algorithm and particle swarm optimizer converged in 142ms, reducing luxury nitrogen consumption by 22% while boosting grain fill yield by 14.2%.'
+      findings: 'Biophysical colorimetric leaf analysis and rootzone moisture profiling reduced luxury nitrogen consumption by 22% while boosting grain fill yield by 14.2%.'
     }
   ];
 

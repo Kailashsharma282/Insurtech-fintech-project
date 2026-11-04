@@ -62,12 +62,12 @@ export default function HowItWorksPage() {
       id: '03',
       number: '03',
       name: 'PRESCRIBE',
-      subtitle: 'GA-PSO Hybrid Nutrient & Irrigation Optimization',
+      subtitle: 'Targeted Biophysical Nutrient & Irrigation Advisory',
       icon: Cpu,
-      summary: 'A bio-inspired hybrid optimization engine combining Genetic Algorithm (GA) exploration with Particle Swarm Optimization (PSO) local convergence to formulate optimal N-P-K doses and water volumes.',
+      summary: 'An agronomic formulation engine combining soil chemical benchmarks with foliar colorimetric metrics to formulate optimal N-P-K doses and water volumes.',
       dataSources: ['Soil Test Benchmarks (N, P, K, pH)', 'Crop Phenology & Age (Days After Sowing)', '7-Day IMD Rainfall Forecast'],
-      techStack: 'Custom GA-PSO Engine (150 generations, 40 swarm particles)',
-      agronomicPrinciple: 'Over-fertilization during moisture stress increases osmotic soil stress. GA-PSO calculates exact micro-dosing to maximize nitrogen uptake efficiency.',
+      techStack: 'Biophysical Colorimetry & Leaf Turgor Mechanics',
+      agronomicPrinciple: 'Over-fertilization during moisture stress increases osmotic soil stress. Targeted micro-dosing maximizes nitrogen uptake efficiency.',
       sampleOutput: 'Recommendation: 42 kg/ha Urea (N), 14 kg/ha DAP (P), 22 kg/ha MOP (K), 28,000 L/ha daily drip irrigation.'
     },
     {

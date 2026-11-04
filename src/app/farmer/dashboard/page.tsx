@@ -246,7 +246,7 @@ export default function FarmerDashboard() {
                 {t('farmer.next_action_desc')}
               </div>
               <Link 
-                href="/farmer/optimization" 
+                href="/farmer/disease" 
                 className="inline-flex items-center text-[11px] text-blue-300 font-bold hover:underline pt-2"
               >
                 <span>View recipe &rarr;</span>
@@ -438,11 +438,11 @@ export default function FarmerDashboard() {
                   <span>Fertigation Window Open</span>
                 </div>
                 <p className="text-blue-900 text-[11px] leading-relaxed">
-                  Optimal tillering phase. Apply GA-PSO calculated N-P-K dosage (42-14-22 kg/ha).
+                  Optimal tillering phase. Apply balanced N-P-K dosage (42-14-22 kg/ha).
                 </p>
                 <div className="pt-1">
-                  <Link href="/farmer/optimization" className="font-bold text-blue-700 hover:underline text-[11px]">
-                    Calculate exact cost &rarr;
+                  <Link href="/farmer/disease" className="font-bold text-blue-700 hover:underline text-[11px]">
+                    Diagnose NPK via Photo AI &rarr;
                   </Link>
                 </div>
               </div>
@@ -479,7 +479,7 @@ export default function FarmerDashboard() {
 
               <div className="border-l-2 border-blue-400 pl-3 space-y-0.5">
                 <div className="font-bold text-slate-900">Variable N-P-K Dispensation</div>
-                <div className="text-[11px] text-slate-500">GA-PSO Prescription &bull; 10 Sep</div>
+                <div className="text-[11px] text-slate-500">Agronomic Advisory &bull; 10 Sep</div>
               </div>
 
               <div className="border-l-2 border-slate-300 pl-3 space-y-0.5">

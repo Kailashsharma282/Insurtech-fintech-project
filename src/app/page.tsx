@@ -34,7 +34,7 @@ export default function HomePage() {
   const workflowSteps = [
     { step: '01', title: 'OBSERVE', desc: 'Sentinel-2 MSI (10m) + Sentinel-1 SAR (VH backscatter) + field IoT moisture sensors', icon: Satellite },
     { step: '02', title: 'DIAGNOSE', desc: 'Early crop stress, soil water deficit, and 38-class leaf pathology identification', icon: Activity },
-    { step: '03', title: 'PRESCRIBE', desc: 'GA-PSO algorithm calculates targeted N-P-K fertilizer and irrigation schedule', icon: Cpu },
+    { step: '03', title: 'PRESCRIBE', desc: 'Targeted N-P-K nutrient balancing and smart irrigation schedule', icon: Cpu },
     { step: '04', title: 'ACTUATE', desc: 'Automated solar pump relays, micro-irrigation pulses, and regional Bengali/Hindi advisories', icon: Droplets },
     { step: '05', title: 'VERIFY', desc: 'Bi-weekly satellite passes monitor post-intervention crop recovery curves', icon: CheckCircle2 },
     { step: '06', title: 'INSURE', desc: 'Parametric CHF threshold breach trigger issues automated payouts directly to farmer accounts', icon: ShieldCheck },

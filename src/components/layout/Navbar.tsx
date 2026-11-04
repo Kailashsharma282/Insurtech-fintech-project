@@ -152,17 +152,6 @@ export const Navbar: React.FC = () => {
               </Link>
 
               <Link 
-                href="/farmer/optimization" 
-                className={`px-2.5 py-1.5 rounded-lg transition-all whitespace-nowrap shrink-0 ${
-                  pathname === '/farmer/optimization' 
-                    ? 'bg-blue-600/25 text-blue-300 border border-blue-500/40' 
-                    : 'text-slate-300 hover:text-white hover:bg-slate-800'
-                }`}
-              >
-                GA-PSO Optimizer
-              </Link>
-
-              <Link 
                 href="/technology/chf" 
                 className={`px-2.5 py-1.5 rounded-lg transition-all whitespace-nowrap shrink-0 font-bold border ${
                   pathname === '/technology/chf'
@@ -316,18 +305,6 @@ export const Navbar: React.FC = () => {
                 <span className="flex items-center space-x-2">
                   <ShieldCheck className="w-4 h-4 text-blue-400" />
                   <span>Policies</span>
-                </span>
-                <span className="text-slate-500">&rarr;</span>
-              </Link>
-
-              <Link 
-                href="/farmer/optimization" 
-                onClick={() => setMobileMenuOpen(false)} 
-                className="flex items-center justify-between px-3 py-2 rounded-lg text-xs font-bold text-slate-200 hover:bg-slate-800"
-              >
-                <span className="flex items-center space-x-2">
-                  <Cpu className="w-4 h-4 text-blue-400" />
-                  <span>GA-PSO Optimizer</span>
                 </span>
                 <span className="text-slate-500">&rarr;</span>
               </Link>

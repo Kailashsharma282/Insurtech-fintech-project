@@ -1202,7 +1202,7 @@ export const SEED_INTERVENTIONS: Intervention[] = [
     category: 'FERTIGATION',
     status: 'COMPLETED',
     actuatedBy: 'AGRONOMIC_ADVISORY',
-    notes: 'Prescribed by GA-PSO algorithm targeting tillering vegetative surge.',
+    notes: 'Prescribed by agronomic advisory targeting tillering vegetative surge.',
     date: '2026-09-10 09:15 IST'
   },
   {

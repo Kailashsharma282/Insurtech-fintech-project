@@ -100,7 +100,7 @@ export default function AdminOverviewPage() {
               </span>
             </div>
             <span className="text-xs text-slate-500 block">Agronomic AI Engine</span>
-            <div className="font-bold text-slate-900 text-base">GA-PSO & MobileNetV3</div>
+            <div className="font-bold text-slate-900 text-base">MobileNetV3 & Colorimetry</div>
             <div className="text-[11px] text-slate-400 font-mono">38 Classes &bull; 92.9% Precision</div>
           </div>
 

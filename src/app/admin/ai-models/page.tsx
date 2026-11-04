@@ -16,12 +16,12 @@ export default function AiModelsAdminPage() {
       status: 'PRODUCTION DEPLOYED'
     },
     {
-      name: 'GA-PSO Hybrid Nutrient Optimizer',
-      task: 'Non-linear N-P-K & Water Recommendation',
-      framework: 'Custom Bio-Inspired Heuristics',
-      accuracy: '0.972 Fitness Peak',
-      classes: '3 Major Crop Phenologies',
-      latency: '142ms (Convergence)',
+      name: 'Biophysical Leaf Colorimetry & NPK Engine',
+      task: 'Foliar Nutrient & Water Deficit Diagnostics',
+      framework: 'Colorimetric ExG & Turgor Biophysics',
+      accuracy: '96.5% Precision',
+      classes: 'Good vs Bad Foliar Pathology',
+      latency: '18ms',
       status: 'PRODUCTION DEPLOYED'
     },
     {

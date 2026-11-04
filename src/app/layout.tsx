@@ -10,7 +10,7 @@ import { FullPageTranslator } from "@/components/ui/FullPageTranslator";
 
 export const metadata: Metadata = {
   title: "AgriSure Intelligence | Satellite Remote Sensing × Agronomic AI × Parametric Underwriting",
-  description: "Production-grade smart agriculture & parametric insurtech platform for early stress detection, GA-PSO nutrient optimization, and automated claim settlement.",
+  description: "Production-grade smart agriculture & parametric insurtech platform for early stress detection, biophysical nutrient advisory, and automated claim settlement.",
   keywords: ["InsurTech", "Smart Agriculture", "Parametric Insurance", "Crop Health Factor", "Satellite Remote Sensing", "Sentinel-2", "IoT Telemetry", "West Bengal Farming"],
 };
 

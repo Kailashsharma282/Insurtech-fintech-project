@@ -75,7 +75,7 @@ export default function FarmDetailsPage() {
   const timelineStages = [
     { stage: '1. Satellite Observation', date: '08 Sep 04:46 UTC', desc: 'Sentinel-2A pass captured drop in near-infrared reflectance and LSWI moisture canopy.', status: 'COMPLETED' },
     { stage: '2. Stress Detected', date: '08 Sep 05:12 UTC', desc: 'Canopy water stress flagged. CHF dropped from 0.75 to 0.69. Root moisture probe confirmed 38% VWC.', status: 'COMPLETED' },
-    { stage: '3. Recommendation', date: '08 Sep 05:15 UTC', desc: 'GA-PSO engine formulated 45-minute micro-irrigation drip pulse and balanced N-P-K boost.', status: 'COMPLETED' },
+    { stage: '3. Recommendation', date: '08 Sep 05:15 UTC', desc: 'Agronomic advisory formulated 45-minute micro-irrigation drip pulse and balanced N-P-K boost.', status: 'COMPLETED' },
     { stage: '4. Intervention Actuation', date: '09 Sep 06:30 IST', desc: 'ESP32 solar pump relay actuated for 45 mins. 24,000 liters dispensed directly to root zone.', status: 'COMPLETED' },
     { stage: '5. Canopy Recovery Verified', date: '14 Sep 04:47 UTC', desc: 'Sentinel-1 SAR and Sentinel-2 pass confirmed recovery. CHF stabilized back to 0.71.', status: 'COMPLETED' },
   ];
@@ -114,11 +114,11 @@ export default function FarmDetailsPage() {
               <span>IoT Telemetry</span>
             </Link>
             <Link
-              href="/farmer/optimization"
+              href="/farmer/disease"
               className="px-4 py-2.5 rounded-xl bg-blue-600 hover:bg-blue-700 text-white text-xs font-semibold flex items-center space-x-2 shadow-sm"
             >
               <Sparkles className="w-3.5 h-3.5" />
-              <span>Optimize Nutrients</span>
+              <span>Photo AI (NPK & Water)</span>
             </Link>
           </div>
         </div>

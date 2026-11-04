@@ -38,11 +38,11 @@ export default function TechnologyOverviewPage() {
       desc: 'Distinguishing normal seasonal phenology from catastrophic regional weather events across Nadia, Burdwan, Hooghly, and Murshidabad.'
     },
     {
-      title: 'GA-PSO Hybrid Nutrient Optimizer',
-      href: '/farmer/optimization',
+      title: 'Photo AI & Foliar Diagnostic Vision',
+      href: '/farmer/disease',
       icon: Cpu,
-      badge: 'Bio-Inspired Convergence',
-      desc: 'Genetic algorithms search broad variable space; particle swarm optimization zeroes in on micro-dosed N-P-K and irrigation prescriptions.'
+      badge: 'Biophysical Diagnostics',
+      desc: 'MobileNetV3 neural vision analyzing cellular colorimetry, leaf turgidity, N-P-K nutrient status, and irrigation requirements.'
     },
   ];
 
@@ -103,7 +103,7 @@ export default function TechnologyOverviewPage() {
             <div>
               <h4 className="font-bold text-lg text-white mb-2">Agronomic AI Backbone</h4>
               <p className="text-xs text-slate-300 leading-relaxed">
-                MobileNetV3 38-class leaf pathology model coupled with bio-inspired GA-PSO optimization for non-linear nutrient interaction curves.
+                MobileNetV3 crop pathology model coupled with biophysical colorimetric leaf analysis for real-time NPK balancing and water requirement diagnostics.
               </p>
             </div>
             <div>

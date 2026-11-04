@@ -691,9 +691,9 @@ export function CropPhotoAnalyzer({ compact = false }: { compact?: boolean }) {
 
                   </div>
 
-                  {/* GA-PSO Note */}
+                  {/* Agronomic Note */}
                   <div className="p-3 bg-slate-50 rounded border border-slate-200 text-xs text-slate-600">
-                    <strong className="text-slate-800">GA-PSO Nutrient Balancing: </strong>
+                    <strong className="text-slate-800">Agronomic Nutrient Advisory: </strong>
                     <span>{data.npkCondition.gapsoOptimizationNote}</span>
                   </div>
                 </div>

@@ -110,7 +110,7 @@ const HEALTHY_PROFILE: CropDiagnosticProfile = {
       remedyDosage: 'Optimal. Maintain balanced agronomic practice.'
     },
     overallBalanceScore: 98,
-    gapsoOptimizationNote: 'All primary macronutrients in GA-PSO optimal equilibrium. Projected harvest yield expectation: 4,520 kg/ha.'
+    gapsoOptimizationNote: 'All primary macronutrients in balanced agronomic equilibrium. Projected harvest yield expectation: 4,520 kg/ha.'
   },
   recommendedNextAction: 'Canopy is healthy and robust. Continue standard agronomic monitoring and balanced nutrient schedule.',
   chemicalAdvisory: 'None required. Avoid unwarranted prophylactic chemical sprays.',
@@ -171,7 +171,7 @@ const DRY_LEAF_PROFILE: CropDiagnosticProfile = {
       remedyDosage: 'Top-dress Muriate of Potash (MOP) @ 35 kg/ha; spray 1% Potassium Nitrate (KNO3) foliar solution'
     },
     overallBalanceScore: 48,
-    gapsoOptimizationNote: 'Severe water deficit detected. GA-PSO fitness function prioritizes urgent irrigation followed by K180 replenishment to restore stomatal osmotic pressure.'
+    gapsoOptimizationNote: 'Severe water deficit detected. Agronomic advisory prioritizes urgent irrigation followed by K180 replenishment to restore stomatal osmotic pressure.'
   },
   recommendedNextAction: 'Emergency: Start irrigation pumps immediately; apply potassium booster once moisture is restored to strengthen drought tolerance.',
   chemicalAdvisory: 'Foliar spray of 1% Potassium Nitrate (13:0:45) @ 10g/L after irrigation to quickly revive leaf turgor.',
@@ -232,7 +232,7 @@ const BROWN_SPOT_PROFILE: CropDiagnosticProfile = {
       remedyDosage: 'Apply Muriate of Potash (MOP) @ 35 kg/ha immediately; foliar spray of 1% KNO3'
     },
     overallBalanceScore: 54,
-    gapsoOptimizationNote: 'Severe potassium starvation identified. GA-PSO prioritizes K180 replenishment to arrest Bipolaris spread.'
+    gapsoOptimizationNote: 'Severe potassium starvation identified. Agronomic advisory prioritizes K180 replenishment to arrest Bipolaris spread.'
   },
   recommendedNextAction: 'Apply balanced potassium booster to strengthen cell walls; spray Propiconazole 25% EC.',
   chemicalAdvisory: 'Propiconazole 25% EC @ 1ml/L or Mancozeb 75% WP @ 2g/L.',
@@ -293,7 +293,7 @@ const BACTERIAL_BLIGHT_PROFILE: CropDiagnosticProfile = {
       remedyDosage: 'Top-dress Muriate of Potash (MOP) @ 25-30 kg/ha to strengthen epidermal sclerenchyma'
     },
     overallBalanceScore: 61,
-    gapsoOptimizationNote: 'GA-PSO rebalanced N:P:K target to 120:30:60 to suppress Xanthomonas virulence.'
+    gapsoOptimizationNote: 'Agronomic advisory rebalanced N:P:K target to 120:30:60 to suppress Xanthomonas virulence.'
   },
   recommendedNextAction: 'Drain standing water for 48h to prevent bacterial spread; apply copper hydroxide bactericide spray (2g/L).',
   chemicalAdvisory: 'Copper Hydroxide 77% WP @ 500g/acre or Streptocycline 90:10 @ 6g/acre.',
@@ -354,7 +354,7 @@ const WATERLOGGED_PROFILE: CropDiagnosticProfile = {
       remedyDosage: 'Apply MOP @ 25 kg/ha after water recedes to restore root membrane integrity'
     },
     overallBalanceScore: 58,
-    gapsoOptimizationNote: 'Waterlogged profile: GA-PSO restricts rootzone nitrogen and schedules foliar micronutrient feeding after field dewatering.'
+    gapsoOptimizationNote: 'Waterlogged profile: Agronomic advisory restricts rootzone nitrogen and schedules foliar micronutrient feeding after field dewatering.'
   },
   recommendedNextAction: 'Drain field furrows immediately; inspect bund drainage outlets to prevent prolonged root rot.',
   chemicalAdvisory: 'Copper Oxychloride 50% WP @ 3g/L to prevent secondary fungal collar infection.',
@@ -415,7 +415,7 @@ const NUTRIENT_DEFICIENT_PROFILE: CropDiagnosticProfile = {
       remedyDosage: 'Apply MOP @ 30 kg/ha; spray 1% Potassium Nitrate (KNO3) foliar booster'
     },
     overallBalanceScore: 46,
-    gapsoOptimizationNote: 'Severe N & K deficit: GA-PSO prioritizes immediate split application to recover vegetative vigor.'
+    gapsoOptimizationNote: 'Severe N & K deficit: Agronomic advisory prioritizes immediate split application to recover vegetative vigor.'
   },
   recommendedNextAction: 'Apply balanced NPK fertilizer split immediately; foliar spray micronutrient zinc sulphate (0.5%).',
   chemicalAdvisory: 'Zinc Sulphate (21%) @ 2g/L + Urea @ 10g/L foliar spray.',
