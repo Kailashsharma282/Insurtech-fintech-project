@@ -200,6 +200,7 @@ export const AgriMap: React.FC<AgriMapProps> = ({
     return { areaMatches, farmMatches };
   }, [searchQuery, farms]);
 
+
   // Initialize Map
   useEffect(() => {
     let isMounted = true;

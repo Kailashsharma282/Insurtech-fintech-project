@@ -1,5 +1,6 @@
 import type { Metadata, Viewport } from "next";
 import "./globals.css";
+import { ThemeProvider } from "@/context/ThemeContext";
 import { RoleProvider } from "@/context/RoleContext";
 import { LanguageProvider } from "@/context/LanguageContext";
 import { Navbar } from "@/components/layout/Navbar";
@@ -27,20 +28,22 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className="h-full">
-      <body className="min-h-full flex flex-col bg-[#F8FAFC] text-[#0F172A] antialiased overflow-x-hidden w-full max-w-full m-0 p-0">
-        <RoleProvider>
-          <LanguageProvider>
-            <FullPageTranslator />
-            <LanguageModal />
-            <Navbar />
-            <main className="flex-1 w-full max-w-full overflow-x-hidden pb-24 md:pb-6">
-              {children}
-            </main>
-            <FarmerBottomNav />
-            <Footer />
-          </LanguageProvider>
-        </RoleProvider>
+    <html lang="en" className="h-full" suppressHydrationWarning>
+      <body className="min-h-full flex flex-col bg-[#F8FAFC] text-[#0F172A] dark:bg-[#090D16] dark:text-[#F8FAFC] antialiased overflow-x-hidden w-full max-w-full m-0 p-0 transition-colors duration-200">
+        <ThemeProvider>
+          <RoleProvider>
+            <LanguageProvider>
+              <FullPageTranslator />
+              <LanguageModal />
+              <Navbar />
+              <main className="flex-1 w-full max-w-full overflow-x-hidden pb-24 md:pb-6">
+                {children}
+              </main>
+              <FarmerBottomNav />
+              <Footer />
+            </LanguageProvider>
+          </RoleProvider>
+        </ThemeProvider>
       </body>
     </html>
   );

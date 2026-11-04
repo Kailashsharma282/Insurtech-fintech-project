@@ -22,12 +22,16 @@ import {
   FileText,
   LogOut,
   LogIn,
-  UserCheck
+  UserCheck,
+  Sun,
+  Moon
 } from 'lucide-react';
+import { useTheme } from '@/context/ThemeContext';
 
 export const Navbar: React.FC = () => {
   const { role, setRole, user, logout } = useRole();
   const { language, setLanguage, t } = useLanguage();
+  const { theme, toggleTheme } = useTheme();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [simulationModalOpen, setSimulationModalOpen] = useState(false);
   const [simLoading, setSimLoading] = useState(false);
@@ -193,6 +197,21 @@ export const Navbar: React.FC = () => {
                 <ChevronDown className="w-3 h-3 text-slate-400 absolute right-1 sm:right-1.5 top-1/2 -translate-y-1/2 pointer-events-none" />
               </div>
 
+              {/* Dark / Light Mode Toggle */}
+              <button
+                type="button"
+                onClick={toggleTheme}
+                className="h-8 w-8 sm:h-9 sm:w-9 rounded-lg bg-slate-800 hover:bg-slate-700 border border-slate-700 text-slate-200 hover:text-white flex items-center justify-center transition-colors shrink-0"
+                title={theme === 'dark' ? 'Switch to Light Mode' : 'Switch to Dark Mode'}
+                aria-label="Toggle Dark / Light Mode"
+              >
+                {theme === 'dark' ? (
+                  <Sun className="w-4 h-4 text-amber-400" />
+                ) : (
+                  <Moon className="w-4 h-4 text-blue-300" />
+                )}
+              </button>
+
               {/* User Account & Logout */}
               <Link
                 href="/login"
@@ -320,6 +339,31 @@ export const Navbar: React.FC = () => {
                 </span>
                 <span className="text-slate-500">&rarr;</span>
               </Link>
+            </div>
+
+            {/* Mobile Dark / Light Mode Toggle */}
+            <div className="border-t border-slate-800 pt-2 flex items-center justify-between text-xs text-slate-300">
+              <span className="flex items-center gap-1.5 font-bold">
+                {theme === 'dark' ? <Moon className="w-4 h-4 text-blue-400" /> : <Sun className="w-4 h-4 text-amber-400" />}
+                <span>Display Theme:</span>
+              </span>
+              <button
+                type="button"
+                onClick={toggleTheme}
+                className="px-3 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 border border-slate-700 text-xs font-bold text-white flex items-center gap-1.5 transition-colors"
+              >
+                {theme === 'dark' ? (
+                  <>
+                    <Sun className="w-3.5 h-3.5 text-amber-400" />
+                    <span>Dark (Switch to Light)</span>
+                  </>
+                ) : (
+                  <>
+                    <Moon className="w-3.5 h-3.5 text-blue-300" />
+                    <span>Light (Switch to Dark)</span>
+                  </>
+                )}
+              </button>
             </div>
 
             {/* Language Switcher in Mobile Drawer */}
