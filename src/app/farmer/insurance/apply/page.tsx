@@ -37,7 +37,7 @@ const AVAILABLE_PLOTS: PlotOption[] = [
     plotNumber: 'Plot #204',
     crop: 'Aman Paddy',
     areaHa: 2.8,
-    district: 'Ghatal, Purba Medinipur',
+    district: 'Ghatal, Paschim Medinipur',
     insuranceUnitCode: 'WB-GHT-001',
     defaultSumInsured: 140000,
   },

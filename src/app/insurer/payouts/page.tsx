@@ -180,48 +180,28 @@ export default function PayoutsEnginePage() {
               </div>
             </div>
 
-            {/* 7-Step Claim Settlement Timeline Required by Section 21 */}
-            <div className="space-y-2">
+            {/* 7-Step Claim Settlement Timeline */}
+            <div className="space-y-2.5">
               <div className="text-xs font-mono text-blue-400 uppercase tracking-wider font-semibold">
                 Claim Settlement Timeline
               </div>
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-7 gap-2 text-xs font-mono">
-                
-                <div className="p-3 rounded-2xl bg-slate-800/90 border border-slate-700">
-                  <span className="text-slate-400 block text-[10px]">1. Weather Event</span>
-                  <strong className="text-slate-200 text-xs mt-1 block">{selectedPayout.timeline.weatherEvent}</strong>
-                </div>
-
-                <div className="p-3 rounded-2xl bg-slate-800/90 border border-slate-700">
-                  <span className="text-slate-400 block text-[10px]">2. Satellite Pass</span>
-                  <strong className="text-slate-200 text-xs mt-1 block">{selectedPayout.timeline.satelliteVerification}</strong>
-                </div>
-
-                <div className="p-3 rounded-2xl bg-slate-800/90 border border-slate-700">
-                  <span className="text-slate-400 block text-[10px]">3. CHF Calculation</span>
-                  <strong className="text-slate-200 text-xs mt-1 block">{selectedPayout.timeline.chfCalculation}</strong>
-                </div>
-
-                <div className="p-3 rounded-2xl bg-slate-800/90 border border-slate-700">
-                  <span className="text-slate-400 block text-[10px]">4. Threshold Test</span>
-                  <strong className="text-slate-200 text-xs mt-1 block">{selectedPayout.timeline.thresholdTest}</strong>
-                </div>
-
-                <div className="p-3 rounded-2xl bg-slate-800/90 border border-slate-700">
-                  <span className="text-slate-400 block text-[10px]">5. Qualification</span>
-                  <strong className="text-slate-200 text-xs mt-1 block">{selectedPayout.timeline.claimQualification}</strong>
-                </div>
-
-                <div className="p-3 rounded-2xl bg-slate-800/90 border border-slate-700">
-                  <span className="text-slate-400 block text-[10px]">6. Payout Initiation</span>
-                  <strong className="text-slate-200 text-xs mt-1 block">{selectedPayout.timeline.payoutInitiation}</strong>
-                </div>
-
-                <div className="p-3 rounded-2xl bg-slate-800/90 border border-slate-700">
-                  <span className="text-slate-400 block text-[10px]">7. Bank Confirmation</span>
-                  <strong className="text-amber-400 text-xs mt-1 block">Held (Pilot Mandate Verification)</strong>
-                </div>
-
+              <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-7 gap-2.5">
+                {[
+                  { step: "1. Weather Event", val: selectedPayout.timeline.weatherEvent, highlight: false },
+                  { step: "2. Satellite Pass", val: selectedPayout.timeline.satelliteVerification, highlight: false },
+                  { step: "3. CHF Calculation", val: selectedPayout.timeline.chfCalculation, highlight: false },
+                  { step: "4. Threshold Test", val: selectedPayout.timeline.thresholdTest, highlight: false },
+                  { step: "5. Qualification", val: selectedPayout.timeline.claimQualification, highlight: false },
+                  { step: "6. Payout Initiation", val: selectedPayout.timeline.payoutInitiation, highlight: false },
+                  { step: "7. Bank Confirmation", val: "Held (Pilot Mandate)", highlight: true },
+                ].map((item, i) => (
+                  <div key={i} className="p-2.5 rounded-xl bg-slate-800/90 border border-slate-700 flex flex-col justify-between min-h-[72px]">
+                    <span className="text-slate-400 text-[10px] font-bold block">{item.step}</span>
+                    <strong className={`text-[11px] font-semibold mt-1 block leading-snug break-words ${item.highlight ? "text-amber-400" : "text-slate-200"}`}>
+                      {item.val}
+                    </strong>
+                  </div>
+                ))}
               </div>
             </div>
 

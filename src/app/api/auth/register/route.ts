@@ -13,7 +13,7 @@ export async function POST(request: Request) {
       phone, 
       email, 
       password,
-      district = 'Ghatal, Purba Medinipur', 
+      district = 'Ghatal, Paschim Medinipur', 
       village = 'Ghatal', 
       organization, 
       licenseId, 

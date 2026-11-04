@@ -39,7 +39,7 @@ const DEMO_ACCOUNTS: DemoAccount[] = [
     name: 'Subhash Mondal (Plot #204)',
     identifier: 'farmer@agrisure.in',
     password: 'Farmer@2026',
-    description: 'Aman Paddy 2.8 ha holding in Ghatal Village, Purba Medinipur. Real-time soil probes & CHF monitoring.',
+    description: 'Aman Paddy 2.8 ha holding in Ghatal Village, Paschim Medinipur. Real-time soil probes & CHF monitoring.',
     targetUrl: '/farmer/dashboard',
     colorClass: 'border-emerald-500 bg-emerald-50/50 hover:bg-emerald-50 text-emerald-950',
   },
@@ -147,7 +147,7 @@ export default function LoginPage() {
             <div>
               <div className="inline-flex items-center space-x-2 text-xs font-mono font-bold uppercase tracking-wider text-blue-400">
                 <MapPin className="w-3.5 h-3.5 text-amber-400" />
-                <span>Ghatal Village Pilot • Purba Medinipur, West Bengal</span>
+                <span>Ghatal Village Pilot • Paschim Medinipur, West Bengal</span>
               </div>
               <h1 className="text-2xl sm:text-3xl font-black text-white mt-1.5 tracking-tight">
                 AgriSure Demo Authentication Hub

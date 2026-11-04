@@ -292,7 +292,7 @@ export function CropPhotoAnalyzer({ compact = false }: { compact?: boolean }) {
           
           <div className="flex items-center gap-2 shrink-0">
             <span className="text-xs bg-slate-800 text-blue-300 px-3 py-1.5 rounded-md border border-slate-700 font-mono font-medium">
-              Ghatal Block, Purba Medinipur
+              Ghatal Block, Paschim Medinipur
             </span>
           </div>
         </div>

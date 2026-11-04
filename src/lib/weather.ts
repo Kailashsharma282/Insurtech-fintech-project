@@ -59,7 +59,7 @@ export async function fetchLiveWeather(
   lat: number = 22.6710,
   lng: number = 87.7240,
   locationName: string = 'Ghatal Block',
-  district: string = 'Purba Medinipur'
+  district: string = 'Paschim Medinipur'
 ): Promise<LiveWeatherData> {
   const apiKey = process.env.OPENWEATHER_API_KEY;
 

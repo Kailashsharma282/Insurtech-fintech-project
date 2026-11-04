@@ -552,7 +552,7 @@ export async function POST(req: NextRequest) {
           organicAdvisory: selected.organicAdvisory,
           irrigationSchedule: selected.irrigationSchedule
         },
-        disclaimer: 'Model-generated agronomic advisory calibrated for Ghatal Block, Purba Medinipur.'
+        disclaimer: 'Model-generated agronomic advisory calibrated for Ghatal Block, Paschim Medinipur.'
       }
     });
   } catch (err: unknown) {

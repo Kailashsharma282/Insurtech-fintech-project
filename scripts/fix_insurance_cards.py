@@ -369,3 +369,4 @@ export default function FarmerInsurancePage() {
 with open('src/app/farmer/insurance/page.tsx', 'w', encoding='utf-8') as f:
     f.write(content)
 print('Successfully updated src/app/farmer/insurance/page.tsx with high-contrast Light and Dark mode styling!')
+

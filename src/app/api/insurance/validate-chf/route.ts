@@ -32,7 +32,7 @@ export async function GET(req: NextRequest) {
     return NextResponse.json({
       success: true,
       block: 'Ghatal',
-      district: 'Purba Medinipur',
+      district: 'Paschim Medinipur',
       state: 'West Bengal',
       season: 'Kharif 2025',
       satelliteChfBaseline: {

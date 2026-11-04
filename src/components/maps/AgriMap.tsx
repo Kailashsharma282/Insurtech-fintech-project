@@ -388,7 +388,7 @@ export const AgriMap: React.FC<AgriMapProps> = ({
         interactive: true
       }).addTo(boundaryGroup);
 
-      boundaryPoly.bindTooltip('📍 Ghatal Block Boundary (Purba Medinipur)', {
+      boundaryPoly.bindTooltip('📍 Ghatal Block Boundary (Paschim Medinipur)', {
         sticky: true,
         className: 'font-bold text-xs text-red-950 bg-white/95 px-2.5 py-1 rounded-lg shadow-md border border-red-300'
       });
@@ -402,7 +402,7 @@ export const AgriMap: React.FC<AgriMapProps> = ({
             </span>
           </div>
           <div style="font-size: 11px; color: #334155; line-height: 1.6;">
-            <div><strong>District:</strong> Purba Medinipur</div>
+            <div><strong>District:</strong> Paschim Medinipur</div>
             <div><strong>Sub-District:</strong> Ghatal Sub-Division</div>
             <div><strong>Asset Path:</strong> projects/projectmoefcc/assets/Ghatal_block</div>
             <div><strong>Monitored Farms:</strong> 20 Cadastral Plots</div>
@@ -547,7 +547,7 @@ export const AgriMap: React.FC<AgriMapProps> = ({
           <div style="font-size: 11px; color: #334155; line-height: 1.6;">
             <div><strong>Farmer:</strong> ${farm.farmerName}</div>
             <div><strong>Crop:</strong> ${farm.currentCrop} (${farm.acreage} ha)</div>
-            <div><strong>Location:</strong> Ghatal Village, Purba Medinipur</div>
+            <div><strong>Location:</strong> Ghatal Village, Paschim Medinipur</div>
             <div style="margin-top: 3px; padding-top: 3px; border-top: 1px dashed #CBD5E1;">
               <strong>Distance to Silabati River:</strong> <span style="font-family: monospace; font-weight: bold; color: ${distToRiver < 500 ? '#B91C1C' : '#047857'};">${distToRiver} m</span>
             </div>
@@ -917,15 +917,15 @@ export const AgriMap: React.FC<AgriMapProps> = ({
         </div>
 
         {/* TOP-RIGHT SUB-CARD: Layer Legend Directly Matching Authentic GEE Maps */}
-        <div className="absolute top-16 right-3 z-[1000] bg-white/95 backdrop-blur-md px-3.5 py-2.5 rounded-2xl border border-slate-200 shadow-xl text-xs space-y-2 max-w-[270px] pointer-events-auto">
-          <div className="flex items-center justify-between border-b border-slate-100 pb-1.5">
+        <div className="absolute top-16 right-3 z-[1000] bg-white/95 dark:bg-slate-900/95 backdrop-blur-md px-3.5 py-2.5 rounded-2xl border border-slate-200 dark:border-slate-700 shadow-xl text-xs space-y-2 max-w-[270px] pointer-events-auto">
+          <div className="flex items-center justify-between border-b border-slate-100 dark:border-slate-800 pb-1.5">
             <div className="flex items-center space-x-1.5">
               <span>{activeLayerConfig.icon}</span>
-              <strong className="text-slate-900 text-[11px] font-bold truncate max-w-[175px]" title={activeLayerConfig.label}>
+              <strong className="text-slate-900 dark:text-white text-[11px] font-bold truncate max-w-[175px]" title={activeLayerConfig.label}>
                 {activeLayerConfig.label}
               </strong>
             </div>
-            <span className="text-[9px] font-mono font-bold px-1.5 py-0.5 rounded bg-blue-50 text-blue-700">
+            <span className="text-[9px] font-mono font-bold px-1.5 py-0.5 rounded bg-blue-50 dark:bg-blue-950/60 text-blue-700 dark:text-blue-300 border border-blue-200 dark:border-blue-800">
               GEE 2025
             </span>
           </div>
@@ -1058,12 +1058,12 @@ export const AgriMap: React.FC<AgriMapProps> = ({
           )}
 
           {/* Silabati River Corridor Indicator */}
-          <div className="pt-1.5 border-t border-slate-100 flex items-center justify-between text-[9px] text-slate-500">
+          <div className="pt-1.5 border-t border-slate-100 dark:border-slate-800 flex items-center justify-between text-[9px] text-slate-500 dark:text-slate-400">
             <div className="flex items-center space-x-1.5">
               <div className="w-3.5 h-1.5 bg-blue-600 rounded-xs"></div>
-              <span className="font-semibold text-blue-900">Silabati River</span>
+              <span className="font-semibold text-blue-900 dark:text-blue-300">Silabati River</span>
             </div>
-            <span className="font-mono text-slate-400">Purba Medinipur</span>
+            <span className="font-mono text-slate-400">Paschim Medinipur</span>
           </div>
         </div>
 

@@ -8,7 +8,7 @@ export default function TeamPage() {
       role: 'FARMER', 
       user: 'Subhash Biswas', 
       id: 'usr-farmer-01', 
-      focus: 'Plot #204 Ghatal, Purba Medinipur (Aman Paddy 2.8ha)', 
+      focus: 'Plot #204 Ghatal, Paschim Medinipur (Aman Paddy 2.8ha)', 
       portalLink: '/farmer/dashboard',
       dashboardName: 'Farmer Dashboard & Insurance Validation',
       status: 'Active Pilot'

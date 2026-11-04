@@ -105,7 +105,7 @@ export default function ChfEnginePage() {
   };
 
   return (
-    <div className="min-h-screen bg-[#F8FAFC] py-8 text-[#0F172A]">
+    <div className="min-h-screen bg-[#F8FAFC] dark:bg-slate-950 py-8 text-[#0F172A] dark:text-white">
       <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 space-y-8">
         
         {/* Simple, Clean Header */}
@@ -115,10 +115,10 @@ export default function ChfEnginePage() {
               <span>Ghatal Block (2025 Kharif) Algorithm</span>
               <span className="font-mono">&bull; FAPAR Excluded</span>
             </div>
-            <h1 className="text-2xl sm:text-3xl font-black text-slate-900 tracking-tight">
+            <h1 className="text-2xl sm:text-3xl font-black text-slate-900 dark:text-white tracking-tight">
               Crop Health Indicators & Parametric Engine
             </h1>
-            <p className="text-sm text-slate-600 mt-1 max-w-2xl">
+            <p className="text-sm text-slate-600 dark:text-slate-400 mt-1 max-w-2xl">
               10 m resolution multi-satellite pipeline combining Sentinel-2 MSI, Sentinel-1 SAR, CHIRPS rainfall, and ERA5-Land thermal dynamics with pixel-based Shannon entropy weighting.
             </p>
           </div>
@@ -222,7 +222,7 @@ export default function ChfEnginePage() {
                 <div className="grid grid-cols-2 gap-2 text-xs font-mono pt-1">
                   <div className="p-2 rounded bg-slate-50 border border-slate-100">
                     <span className="text-slate-500 block text-[10px]">Sample Observation</span>
-                    <strong className="text-sm text-slate-900">{item.rawSampleValue}</strong>
+                    <strong className="text-sm text-slate-900 dark:text-white">{item.rawSampleValue}</strong>
                   </div>
                   <div className="p-2 rounded bg-slate-50 border border-slate-100">
                     <span className="text-slate-500 block text-[10px]">Min-Max Normalized</span>
@@ -240,41 +240,41 @@ export default function ChfEnginePage() {
         </div>
 
         {/* Additional Sentinel & Radar Indices Breakdown */}
-        <div className="p-6 rounded-xl bg-white border border-slate-200 shadow-sm space-y-4">
-          <h3 className="font-bold text-base text-slate-900">
+        <div className="p-6 rounded-xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 shadow-sm space-y-4">
+          <h3 className="font-bold text-base text-slate-900 dark:text-white">
             Complete Derived Spectral & Radar Metrics (Ghatal 2025)
           </h3>
 
           <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 text-xs font-mono">
-            <div className="p-3 rounded-lg bg-slate-50 border border-slate-200">
+            <div className="p-3 rounded-lg bg-slate-50 dark:bg-slate-800/90 border border-slate-200 dark:border-slate-700">
               <span className="text-slate-500 block text-[10px]">NDVI (B8, B4)</span>
-              <strong className="text-sm text-slate-900">{result.indicators.ndvi}</strong>
+              <strong className="text-sm text-slate-900 dark:text-white">{result.indicators.ndvi}</strong>
             </div>
-            <div className="p-3 rounded-lg bg-slate-50 border border-slate-200">
+            <div className="p-3 rounded-lg bg-slate-50 dark:bg-slate-800/90 border border-slate-200 dark:border-slate-700">
               <span className="text-slate-500 block text-[10px]">LSWI (B8, B12)</span>
-              <strong className="text-sm text-slate-900">{result.indicators.lswi}</strong>
+              <strong className="text-sm text-slate-900 dark:text-white">{result.indicators.lswi}</strong>
             </div>
-            <div className="p-3 rounded-lg bg-slate-50 border border-slate-200">
+            <div className="p-3 rounded-lg bg-slate-50 dark:bg-slate-800/90 border border-slate-200 dark:border-slate-700">
               <span className="text-slate-500 block text-[10px]">SAVI (L=0.5)</span>
-              <strong className="text-sm text-slate-900">{result.indicators.savi}</strong>
+              <strong className="text-sm text-slate-900 dark:text-white">{result.indicators.savi}</strong>
             </div>
-            <div className="p-3 rounded-lg bg-slate-50 border border-slate-200">
+            <div className="p-3 rounded-lg bg-slate-50 dark:bg-slate-800/90 border border-slate-200 dark:border-slate-700">
               <span className="text-slate-500 block text-[10px]">EVI (B8, B4, B2)</span>
-              <strong className="text-sm text-slate-900">{result.indicators.evi}</strong>
+              <strong className="text-sm text-slate-900 dark:text-white">{result.indicators.evi}</strong>
             </div>
-            <div className="p-3 rounded-lg bg-slate-50 border border-slate-200">
+            <div className="p-3 rounded-lg bg-slate-50 dark:bg-slate-800/90 border border-slate-200 dark:border-slate-700">
               <span className="text-slate-500 block text-[10px]">Vegetation Stack (VIS)</span>
               <strong className="text-sm text-emerald-800">{result.indicators.vegetationIndexStack}</strong>
             </div>
-            <div className="p-3 rounded-lg bg-slate-50 border border-slate-200">
+            <div className="p-3 rounded-lg bg-slate-50 dark:bg-slate-800/90 border border-slate-200 dark:border-slate-700">
               <span className="text-slate-500 block text-[10px]">Sentinel-1 VH Max</span>
-              <strong className="text-sm text-slate-900">{result.indicators.vhMax} dB</strong>
+              <strong className="text-sm text-slate-900 dark:text-white">{result.indicators.vhMax} dB</strong>
             </div>
-            <div className="p-3 rounded-lg bg-slate-50 border border-slate-200">
+            <div className="p-3 rounded-lg bg-slate-50 dark:bg-slate-800/90 border border-slate-200 dark:border-slate-700">
               <span className="text-slate-500 block text-[10px]">VH Integrated (Linear)</span>
-              <strong className="text-sm text-slate-900">{result.indicators.vhIntegrated}</strong>
+              <strong className="text-sm text-slate-900 dark:text-white">{result.indicators.vhIntegrated}</strong>
             </div>
-            <div className="p-3 rounded-lg bg-slate-50 border border-slate-200">
+            <div className="p-3 rounded-lg bg-slate-50 dark:bg-slate-800/90 border border-slate-200 dark:border-slate-700">
               <span className="text-slate-500 block text-[10px]">Spatial CV (Max)</span>
               <strong className="text-sm text-amber-800">{result.spatialCv.cropConditionVariability}</strong>
             </div>
@@ -282,8 +282,8 @@ export default function ChfEnginePage() {
         </div>
 
         {/* 5-Class Categorization Table */}
-        <div className="p-6 rounded-xl bg-white border border-slate-200 shadow-sm space-y-4">
-          <h3 className="font-bold text-base text-slate-900">
+        <div className="p-6 rounded-xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 shadow-sm space-y-4">
+          <h3 className="font-bold text-base text-slate-900 dark:text-white">
             Provisional 5-Class Crop Health Intervals & Parametric Payout Schedule
           </h3>
           <div className="overflow-x-auto">

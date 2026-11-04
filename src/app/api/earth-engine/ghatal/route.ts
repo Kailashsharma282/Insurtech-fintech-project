@@ -4,7 +4,7 @@ export async function GET() {
   const telemetry = {
     studyArea: {
       name: 'Ghatal Block',
-      district: 'Purba Medinipur',
+      district: 'Paschim Medinipur',
       state: 'West Bengal',
       country: 'India',
       geeAsset: 'projects/projectmoefcc/assets/Ghatal_block',

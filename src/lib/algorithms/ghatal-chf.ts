@@ -752,7 +752,7 @@ export function computeGhatalChf2025(
 
       block: 'Ghatal',
 
-      district: 'Purba Medinipur',
+      district: 'Paschim Medinipur',
 
       state: 'West Bengal',
 

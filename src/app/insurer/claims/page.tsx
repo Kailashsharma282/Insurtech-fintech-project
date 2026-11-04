@@ -80,14 +80,14 @@ export default function ClaimsDeskPage() {
                 placeholder="Search claim #, farmer, IU..."
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                className="w-full pl-9 pr-3 py-2.5 rounded-xl border border-slate-300 focus:outline-none focus:ring-1 focus:ring-blue-500"
+                className="w-full pl-9 pr-3 py-2.5 rounded-xl border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-900 dark:text-slate-100 placeholder:text-slate-400 focus:outline-none focus:ring-1 focus:ring-blue-500"
               />
             </div>
 
             <select
               value={statusFilter}
               onChange={(e) => setStatusFilter(e.target.value)}
-              className="py-2.5 px-3 rounded-xl border border-slate-300 bg-white"
+              className="py-2.5 px-3 rounded-xl border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-900 dark:text-slate-100 focus:outline-none focus:ring-1 focus:ring-blue-500"
             >
               <option value="ALL">All Statuses</option>
               <option value="PENDING">Pending Ingestion</option>
@@ -99,7 +99,7 @@ export default function ClaimsDeskPage() {
             <select
               value={cropFilter}
               onChange={(e) => setCropFilter(e.target.value)}
-              className="py-2.5 px-3 rounded-xl border border-slate-300 bg-white"
+              className="py-2.5 px-3 rounded-xl border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-900 dark:text-slate-100 focus:outline-none focus:ring-1 focus:ring-blue-500"
             >
               <option value="ALL">All Crops</option>
               <option value="Aman Paddy">Aman Paddy</option>
@@ -110,9 +110,10 @@ export default function ClaimsDeskPage() {
             <select
               value={districtFilter}
               onChange={(e) => setDistrictFilter(e.target.value)}
-              className="py-2.5 px-3 rounded-xl border border-slate-300 bg-white"
+              className="py-2.5 px-3 rounded-xl border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-900 dark:text-slate-100 focus:outline-none focus:ring-1 focus:ring-blue-500"
             >
               <option value="ALL">All Districts</option>
+              <option value="Paschim Medinipur">Paschim Medinipur (Ghatal)</option>
               <option value="Nadia">Nadia District</option>
               <option value="Burdwan">Burdwan District</option>
               <option value="Hooghly">Hooghly District</option>

@@ -96,20 +96,20 @@ export async function getLiveWeather(lat: number, lon: number) {
  * Covers Purba & Paschim Medinipur, Hooghly, Nadia, Burdwan, Murshidabad
  */
 export const VILLAGE_COORDINATES: Record<string, { lat: number; lon: number; district: string; block: string }> = {
-  // Purba Medinipur / Ghatal Sector
-  'ghatal': { lat: 22.6672, lon: 87.7174, district: 'Purba Medinipur', block: 'Ghatal' },
-  'kharar': { lat: 22.7000, lon: 87.6833, district: 'Purba Medinipur', block: 'Kharar GP' },
+  // Paschim Medinipur / Ghatal Sector
+  'ghatal': { lat: 22.6672, lon: 87.7174, district: 'Paschim Medinipur', block: 'Ghatal' },
+  'kharar': { lat: 22.7000, lon: 87.6833, district: 'Paschim Medinipur', block: 'Kharar GP' },
   'kshirpai': { lat: 22.7167, lon: 87.6167, district: 'Paschim Medinipur', block: 'Chandrakona-I' },
   'chandrakona': { lat: 22.7333, lon: 87.5167, district: 'Paschim Medinipur', block: 'Chandrakona' },
   'daspur': { lat: 22.6056, lon: 87.7189, district: 'Paschim Medinipur', block: 'Daspur-I' },
-  'tamluk': { lat: 22.2986, lon: 87.9250, district: 'Purba Medinipur', block: 'Tamluk' },
-  'haldia': { lat: 22.0645, lon: 88.0700, district: 'Purba Medinipur', block: 'Haldia' },
-  'contai': { lat: 21.7781, lon: 87.7516, district: 'Purba Medinipur', block: 'Contai' },
-  'panskura': { lat: 22.4200, lon: 87.7400, district: 'Purba Medinipur', block: 'Panskura' },
-  'kolaghat': { lat: 22.4292, lon: 87.8711, district: 'Purba Medinipur', block: 'Kolaghat' },
-  'mahisadal': { lat: 22.1800, lon: 87.9800, district: 'Purba Medinipur', block: 'Mahisadal' },
-  'nandigram': { lat: 22.0000, lon: 87.9833, district: 'Purba Medinipur', block: 'Nandigram' },
-  'egra': { lat: 21.9000, lon: 87.5333, district: 'Purba Medinipur', block: 'Egra' },
+  'tamluk': { lat: 22.2986, lon: 87.9250, district: 'Paschim Medinipur', block: 'Tamluk' },
+  'haldia': { lat: 22.0645, lon: 88.0700, district: 'Paschim Medinipur', block: 'Haldia' },
+  'contai': { lat: 21.7781, lon: 87.7516, district: 'Paschim Medinipur', block: 'Contai' },
+  'panskura': { lat: 22.4200, lon: 87.7400, district: 'Paschim Medinipur', block: 'Panskura' },
+  'kolaghat': { lat: 22.4292, lon: 87.8711, district: 'Paschim Medinipur', block: 'Kolaghat' },
+  'mahisadal': { lat: 22.1800, lon: 87.9800, district: 'Paschim Medinipur', block: 'Mahisadal' },
+  'nandigram': { lat: 22.0000, lon: 87.9833, district: 'Paschim Medinipur', block: 'Nandigram' },
+  'egra': { lat: 21.9000, lon: 87.5333, district: 'Paschim Medinipur', block: 'Egra' },
 
   // Nadia Pilot
   'baganchra': { lat: 23.2386, lon: 88.5142, district: 'Nadia', block: 'Santipur' },
@@ -144,7 +144,7 @@ export async function getLiveVillageTelemetry(
   const entry = {
     lat: customLat !== undefined ? customLat : (known?.lat ?? 22.6672),
     lon: customLon !== undefined ? customLon : (known?.lon ?? 87.7174),
-    district: customDistrict || known?.district || 'Purba Medinipur',
+    district: customDistrict || known?.district || 'Paschim Medinipur',
     block: customBlock || known?.block || query || 'Ghatal',
   };
 

@@ -102,7 +102,7 @@ export default function SatelliteMapPage() {
             className="py-1.5 px-2.5 rounded-lg border border-slate-300 bg-white font-medium"
           >
             <option value="ALL">All Districts / Pilot Blocks</option>
-            <option value="Purba Medinipur">Purba Medinipur (Ghatal Block — 40 Plots)</option>
+            <option value="Paschim Medinipur">Paschim Medinipur (Ghatal Block — 40 Plots)</option>
             <option value="Nadia">Nadia</option>
             <option value="Burdwan">Burdwan</option>
             <option value="Hooghly">Hooghly</option>
@@ -155,10 +155,10 @@ export default function SatelliteMapPage() {
           </div>
 
           {/* Selected Farm Information Drawer */}
-          <div className="lg:col-span-4 bg-white p-6 rounded-3xl border border-[#E2E8F0] shadow-sm space-y-5">
-            <div className="border-b border-slate-100 pb-4">
+          <div className="lg:col-span-4 bg-white dark:bg-slate-900 p-6 rounded-3xl border border-[#E2E8F0] dark:border-slate-800 shadow-sm space-y-5">
+            <div className="border-b border-slate-100 dark:border-slate-800 dark:border-slate-800 pb-4">
               <div className="flex items-center justify-between">
-                <span className="text-xs font-mono font-bold px-2.5 py-0.5 rounded bg-slate-100 text-slate-700">
+                <span className="text-xs font-mono font-bold px-2.5 py-0.5 rounded bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300">
                   {selectedFarm.plotNumber}
                 </span>
                 <span className={`text-[10px] font-bold px-2.5 py-0.5 rounded-full ${
@@ -170,67 +170,67 @@ export default function SatelliteMapPage() {
                   {selectedFarm.riskLevel.replace('_', ' ')}
                 </span>
               </div>
-              <h3 className="font-extrabold text-xl text-[#0F172A] mt-2">
+              <h3 className="font-extrabold text-xl text-[#0F172A] dark:text-white mt-2">
                 {selectedFarm.name}
               </h3>
-              <p className="text-xs text-slate-500 mt-0.5">
+              <p className="text-xs text-slate-500 dark:text-slate-400 mt-0.5">
                 {selectedFarm.farmerName} &bull; {selectedFarm.village}, {selectedFarm.district}
               </p>
             </div>
 
             {/* Farm Summary Details with River Distance */}
             <div className="space-y-3 text-xs">
-              <div className="flex justify-between py-1.5 border-b border-slate-100">
-                <span className="text-slate-500">Crop & Acreage:</span>
-                <strong className="text-slate-900">{selectedFarm.currentCrop} ({selectedFarm.acreage} ha)</strong>
+              <div className="flex justify-between py-1.5 border-b border-slate-100 dark:border-slate-800">
+                <span className="text-slate-500 dark:text-slate-400">Crop & Acreage:</span>
+                <strong className="text-slate-900 dark:text-white">{selectedFarm.currentCrop} ({selectedFarm.acreage} ha)</strong>
               </div>
 
               {/* Silabati River Distance & Hydrological Zone */}
-              <div className="flex justify-between py-1.5 border-b border-slate-100 bg-blue-50/50 px-2 rounded-lg">
-                <span className="text-blue-900 font-semibold flex items-center gap-1">
+              <div className="flex justify-between py-1.5 border-b border-slate-100 dark:border-slate-800 bg-blue-50/80 dark:bg-blue-950/50 px-2 rounded-lg">
+                <span className="text-blue-900 dark:text-blue-300 font-semibold flex items-center gap-1">
                   <Waves className="w-3.5 h-3.5 text-blue-700" />
                   Distance to Silabati:
                 </span>
-                <strong className="text-blue-950 font-mono">
+                <strong className="text-blue-950 dark:text-blue-200 font-mono">
                   {selectedFarm.distanceToRiverMeters || 450} m ({selectedFarm.hydrologicalZone || 'SILABATI_FLOODPLAIN'})
                 </strong>
               </div>
 
-              <div className="flex justify-between py-1.5 border-b border-slate-100">
-                <span className="text-slate-500">Current CHF Index:</span>
+              <div className="flex justify-between py-1.5 border-b border-slate-100 dark:border-slate-800">
+                <span className="text-slate-500 dark:text-slate-400">Current CHF Index:</span>
                 <strong className={`font-mono text-sm ${selectedFarm.currentChf < 0.55 ? 'text-red-600' : 'text-emerald-700'}`}>
                   {selectedFarm.currentChf.toFixed(2)}
                 </strong>
               </div>
 
-              <div className="flex justify-between py-1.5 border-b border-slate-100">
-                <span className="text-slate-500">Baseline CHF (4-Yr Normal):</span>
-                <strong className="text-slate-800 font-mono">{selectedFarm.chfBaseline.toFixed(2)}</strong>
+              <div className="flex justify-between py-1.5 border-b border-slate-100 dark:border-slate-800">
+                <span className="text-slate-500 dark:text-slate-400">Baseline CHF (4-Yr Normal):</span>
+                <strong className="text-slate-800 dark:text-slate-200 font-mono">{selectedFarm.chfBaseline.toFixed(2)}</strong>
               </div>
 
-              <div className="flex justify-between py-1.5 border-b border-slate-100">
-                <span className="text-slate-500">Baseline Deviation &Delta;:</span>
+              <div className="flex justify-between py-1.5 border-b border-slate-100 dark:border-slate-800">
+                <span className="text-slate-500 dark:text-slate-400">Baseline Deviation &Delta;:</span>
                 <strong className={`font-mono ${selectedFarm.currentChf < selectedFarm.chfBaseline ? 'text-red-600' : 'text-emerald-600'}`}>
                   {(selectedFarm.currentChf - selectedFarm.chfBaseline).toFixed(2)}
                 </strong>
               </div>
 
-              <div className="flex justify-between py-1.5 border-b border-slate-100">
-                <span className="text-slate-500">Soil Moisture:</span>
+              <div className="flex justify-between py-1.5 border-b border-slate-100 dark:border-slate-800">
+                <span className="text-slate-500 dark:text-slate-400">Soil Moisture:</span>
                 <strong className={`font-mono ${selectedFarm.soilMoisturePct > 80 ? 'text-blue-700 font-bold' : 'text-slate-700'}`}>
                   {selectedFarm.soilMoisturePct}% VWC {selectedFarm.soilMoisturePct > 80 ? '(Waterlogged)' : ''}
                 </strong>
               </div>
 
-              <div className="flex justify-between py-1.5 border-b border-slate-100">
-                <span className="text-slate-500">Sentinel-2 NDVI / S1 VH:</span>
+              <div className="flex justify-between py-1.5 border-b border-slate-100 dark:border-slate-800">
+                <span className="text-slate-500 dark:text-slate-400">Sentinel-2 NDVI / S1 VH:</span>
                 <span className="font-mono text-[11px] text-slate-700">
                   {selectedFarm.ndvi} / {selectedFarm.vhBackscatterDb} dB
                 </span>
               </div>
 
-              <div className="flex justify-between py-1.5 border-b border-slate-100">
-                <span className="text-slate-500">Sum Insured:</span>
+              <div className="flex justify-between py-1.5 border-b border-slate-100 dark:border-slate-800">
+                <span className="text-slate-500 dark:text-slate-400">Sum Insured:</span>
                 <span className="text-slate-900 font-mono font-bold">₹{selectedFarm.sumInsured.toLocaleString('en-IN')}</span>
               </div>
             </div>

@@ -55,7 +55,7 @@ h1, h2, h3, h4, h5, h6, p, label {
 }
 
 /* Badges, table headers, table cells, buttons, IDs, tags, links must NEVER wrap or split letters mid-word */
-th, td, .badge, [class*="badge-"], button, a.btn, .whitespace-nowrap, .pill, [class*="rounded-full"], .font-mono {
+th, td, .badge, [class*="badge-"], button, a.btn, .whitespace-nowrap, .pill, [class*="rounded-full"], .nowrap-text {
   white-space: nowrap !important;
   word-break: keep-all !important;
   overflow-wrap: normal !important;
