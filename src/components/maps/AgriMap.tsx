@@ -1,10 +1,12 @@
 'use client';
 
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef, useState, useMemo } from 'react';
 import { Farm } from '@/lib/types';
 import { SILABATI_RIVER_POINTS, GHATAL_VILLAGE_BOUNDARY } from '@/lib/db/seed-data';
+import { SEARCHABLE_AREAS, SearchableArea } from '@/lib/db/boundaries';
+import { Search, MapPin, X, RotateCcw, Check, Sparkles, SlidersHorizontal, Layers } from 'lucide-react';
 
-export type GeeLayerType = 'chf' | 'ndvi' | 'rainfall' | 'gdd' | 'fapar' | 'risk';
+export type GeeLayerType = 'chf' | 'ndvi' | 'lswi' | 'vh' | 'rainfall' | 'gdd' | 'fapar' | 'risk';
 
 export interface GeeLayerInfo {
   id: GeeLayerType;
@@ -37,6 +39,26 @@ export const GEE_LAYERS: GeeLayerInfo[] = [
     source: 'Sentinel-2 MSI 10m Optical',
     unit: '-0.16 to 1.0',
     scaleDescription: 'Low: -0.16 (Water/Low) | High: 1.0 (Vigorous Canopy)'
+  },
+  {
+    id: 'lswi',
+    label: 'Land Surface Water Index (LSWI)',
+    shortName: 'LSWI (Water)',
+    icon: '💧',
+    overlayPath: '/images/earth-engine/layers/lswi_overlay.png',
+    source: 'Sentinel-2 SWIR/NIR Moisture Processor',
+    unit: '-0.23 to 1.0',
+    scaleDescription: 'Low: -0.23 (Dry/Low) | High: 1.0 (Waterlogged/High)'
+  },
+  {
+    id: 'vh',
+    label: 'VH Max Backscatter',
+    shortName: 'VH Radar (dB)',
+    icon: '📡',
+    overlayPath: '/images/earth-engine/layers/vh_overlay.png',
+    source: 'Sentinel-1 C-Band SAR Synthetic Aperture Radar',
+    unit: 'dB',
+    scaleDescription: 'Low: -28.71 dB (Water/Flooded) | High: 5.96 dB'
   },
   {
     id: 'rainfall',
@@ -113,13 +135,14 @@ export const AgriMap: React.FC<AgriMapProps> = ({
   const leafletInstanceRef = useRef<any>(null);
   const rasterOverlayRef = useRef<any>(null);
   const boundaryLayerRef = useRef<any>(null);
+  const searchedBoundaryLayerRef = useRef<any>(null);
   const riverLayerRef = useRef<any>(null);
   const plotsLayerRef = useRef<any>(null);
 
   const [mapReady, setMapReady] = useState<boolean>(false);
 
   const normalizeLayer = (l: string): GeeLayerType => {
-    if (l === 'rainfall' || l === 'gdd' || l === 'fapar' || l === 'ndvi' || l === 'risk') return l;
+    if (l === 'rainfall' || l === 'gdd' || l === 'fapar' || l === 'ndvi' || l === 'lswi' || l === 'vh' || l === 'risk') return l;
     return 'chf';
   };
 
@@ -129,11 +152,18 @@ export const AgriMap: React.FC<AgriMapProps> = ({
   const [showPlots, setShowPlots] = useState<boolean>(true);
   const [overlayOpacity, setOverlayOpacity] = useState<number>(0.85);
 
+  // SEARCH BAR STATE
+  const [searchQuery, setSearchQuery] = useState<string>('');
+  const [isSearchOpen, setIsSearchOpen] = useState<boolean>(false);
+  const [activeSearchedArea, setActiveSearchedArea] = useState<SearchableArea | null>(null);
+
   const [probedPixel, setProbedPixel] = useState<{
     lat: number;
     lng: number;
     chf: number;
     ndvi: number;
+    lswi: number;
+    vhDb: number;
     rainfallMm: number;
     gdd: number;
     fapar: number;
@@ -146,6 +176,29 @@ export const AgriMap: React.FC<AgriMapProps> = ({
       setCurrentLayer(normalizeLayer(activeLayer));
     }
   }, [activeLayer]);
+
+  // Search Results filtering
+  const searchResults = useMemo<{
+    areaMatches: SearchableArea[];
+    farmMatches: Farm[];
+  }>(() => {
+    const q = searchQuery.trim().toLowerCase();
+    if (!q) return { areaMatches: [], farmMatches: [] };
+
+    const areaMatches = SEARCHABLE_AREAS.filter(area => 
+      area.name.toLowerCase().includes(q) ||
+      area.district.toLowerCase().includes(q) ||
+      area.aliases.some(a => a.includes(q))
+    );
+
+    const farmMatches = farms.filter(f => 
+      f.plotNumber.toLowerCase().includes(q) ||
+      f.farmerName.toLowerCase().includes(q) ||
+      f.name.toLowerCase().includes(q)
+    ).slice(0, 4);
+
+    return { areaMatches, farmMatches };
+  }, [searchQuery, farms]);
 
   // Initialize Map
   useEffect(() => {
@@ -183,6 +236,7 @@ export const AgriMap: React.FC<AgriMapProps> = ({
         leafletMapRef.current = map;
         rasterOverlayRef.current = L.layerGroup().addTo(map);
         boundaryLayerRef.current = L.layerGroup().addTo(map);
+        searchedBoundaryLayerRef.current = L.layerGroup().addTo(map);
         riverLayerRef.current = L.layerGroup().addTo(map);
         plotsLayerRef.current = L.layerGroup().addTo(map);
 
@@ -214,6 +268,11 @@ export const AgriMap: React.FC<AgriMapProps> = ({
           chfVal = Math.max(0.18, Math.min(0.92, parseFloat(chfVal.toFixed(2))));
 
           let ndviVal = parseFloat((chfVal * 0.92).toFixed(2));
+          // LSWI between -0.23 and 1.0 (higher near waterlogged river: 0.65-0.85, dry upland: 0.25-0.45)
+          let lswiVal = parseFloat((0.20 + (1 - Math.min(1, minDist / 1600)) * 0.65).toFixed(2));
+          // VH SAR between -28.71 dB and 5.96 dB (flooded: -24 to -18 dB, dense upland: -14 to -8 dB)
+          let vhVal = parseFloat((-22.5 + (minDist / 1800) * 12.0).toFixed(1));
+
           let rainVal = parseFloat((1284.68 + (1 - (lat - 22.54) / 0.25) * 67.39).toFixed(1));
           rainVal = Math.max(1284.7, Math.min(1352.1, rainVal));
 
@@ -227,6 +286,8 @@ export const AgriMap: React.FC<AgriMapProps> = ({
             lng,
             chf: chfVal,
             ndvi: ndviVal,
+            lswi: lswiVal,
+            vhDb: vhVal,
             rainfallMm: rainVal,
             gdd: gddVal,
             fapar: faparVal,
@@ -310,6 +371,39 @@ export const AgriMap: React.FC<AgriMapProps> = ({
     }
   }, [mapReady, showVillageBoundary]);
 
+  // Handle Searched Area Boundary Overlay
+  useEffect(() => {
+    if (!mapReady || !leafletMapRef.current || !searchedBoundaryLayerRef.current || !leafletInstanceRef.current) return;
+    const L = leafletInstanceRef.current;
+    const searchedGroup = searchedBoundaryLayerRef.current;
+    searchedGroup.clearLayers();
+
+    if (activeSearchedArea) {
+      const isDistrict = activeSearchedArea.type === 'DISTRICT';
+      const color = isDistrict ? '#7C3AED' : '#2563EB'; // Purple for District, Blue for Village/Block
+
+      const poly = L.polygon(activeSearchedArea.boundary, {
+        color: color,
+        weight: 3.5,
+        dashArray: isDistrict ? '8, 6' : '6, 4',
+        fillColor: color,
+        fillOpacity: 0.12,
+      }).addTo(searchedGroup);
+
+      poly.bindTooltip(`📍 ${activeSearchedArea.name}`, {
+        permanent: true,
+        direction: 'center',
+        className: 'font-bold text-xs bg-slate-900/90 text-white px-3 py-1 rounded-xl shadow-lg border border-slate-700'
+      });
+
+      // Fly to bounds smoothly
+      leafletMapRef.current.flyToBounds(activeSearchedArea.bounds, {
+        padding: [30, 30],
+        duration: 1.2
+      });
+    }
+  }, [mapReady, activeSearchedArea]);
+
   // Update Silabati River polyline
   useEffect(() => {
     if (!mapReady || !leafletMapRef.current || !riverLayerRef.current || !leafletInstanceRef.current) return;
@@ -366,6 +460,12 @@ export const AgriMap: React.FC<AgriMapProps> = ({
         if (f.ndvi < 0.50) return '#EF4444';
         if (f.ndvi < 0.65) return '#FBBF24';
         return '#059669';
+      }
+      if (currentLayer === 'lswi') {
+        return '#4F46E5'; // Indigo for water index
+      }
+      if (currentLayer === 'vh') {
+        return '#BE185D'; // Magenta for radar backscatter
       }
       if (currentLayer === 'rainfall') {
         return '#2563EB';
@@ -438,6 +538,8 @@ export const AgriMap: React.FC<AgriMapProps> = ({
           lng: farm.centroid.lng,
           chf: farm.currentChf,
           ndvi: farm.ndvi,
+          lswi: 0.45,
+          vhDb: farm.vhBackscatterDb,
           rainfallMm: 1348.6,
           gdd: 2874,
           fapar: parseFloat((farm.ndvi * 0.9).toFixed(2)),
@@ -457,239 +559,433 @@ export const AgriMap: React.FC<AgriMapProps> = ({
 
   const activeLayerConfig = GEE_LAYERS.find(l => l.id === currentLayer) || GEE_LAYERS[0];
 
+  const handleSelectArea = (area: SearchableArea) => {
+    setActiveSearchedArea(area);
+    setIsSearchOpen(false);
+    setSearchQuery(area.name);
+  };
+
+  const handleSelectFarmPlot = (farm: Farm) => {
+    if (onSelectFarm) onSelectFarm(farm);
+    setIsSearchOpen(false);
+    setSearchQuery(`${farm.plotNumber} (${farm.farmerName})`);
+    if (leafletMapRef.current) {
+      leafletMapRef.current.flyTo([farm.centroid.lat, farm.centroid.lng], 15, { duration: 1.2 });
+    }
+  };
+
+  const handleResetToGhatal = () => {
+    setActiveSearchedArea(null);
+    setSearchQuery('');
+    if (leafletMapRef.current) {
+      leafletMapRef.current.flyToBounds(GEE_BOUNDS, { padding: [15, 15], duration: 1.2 });
+    }
+  };
+
   return (
-    <div className="relative w-full rounded-2xl overflow-hidden border border-[#E2E8F0] shadow-sm bg-slate-900" style={{ height }}>
-      {/* Leaflet Container */}
-      <div ref={mapRef} className="w-full h-full" />
-
-      {/* TOP CONTROLS BAR: Multi-Variation Layer Switcher (NDVI, Rainfall, GDD, FAPAR, CHF) */}
-      <div className="absolute top-3 left-3 right-3 z-[1000] flex flex-wrap items-center justify-between gap-2 pointer-events-none">
-        
-        {/* Left: 5 GEE Variations Layer Switcher Pills */}
-        <div className="flex flex-wrap items-center gap-1.5 bg-slate-950/90 backdrop-blur-md p-1.5 rounded-2xl border border-slate-700/80 shadow-xl pointer-events-auto max-w-full overflow-x-auto">
-          {GEE_LAYERS.map(layer => {
-            const isSelected = currentLayer === layer.id;
-            return (
+    <div className="space-y-3">
+      {/* SEARCH BAR ABOVE MAP: Search for Village, Block, or District with Boundary */}
+      <div className="relative z-[1001] w-full">
+        <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-2 bg-white p-2 rounded-2xl border border-slate-200 shadow-sm">
+          
+          <div className="relative flex-1 flex items-center">
+            <Search className="w-4 h-4 text-blue-600 absolute left-3 pointer-events-none" />
+            <input
+              type="text"
+              value={searchQuery}
+              onChange={(e) => {
+                setSearchQuery(e.target.value);
+                setIsSearchOpen(true);
+              }}
+              onFocus={() => setIsSearchOpen(true)}
+              placeholder="🔍 Search Area, Village, or District for boundary (e.g. 'Ghatal', 'Purba Medinipur', 'Kharar', 'Plot #204')..."
+              className="w-full pl-9 pr-8 py-2 rounded-xl text-xs bg-slate-50 border border-slate-200 focus:bg-white focus:outline-none focus:ring-2 focus:ring-blue-500 font-medium text-slate-800 placeholder-slate-400"
+            />
+            {searchQuery && (
               <button
-                key={layer.id}
                 onClick={() => {
-                  setCurrentLayer(layer.id);
-                  setShowGeeOverlay(true);
+                  setSearchQuery('');
+                  setActiveSearchedArea(null);
+                  setIsSearchOpen(false);
                 }}
-                className={`px-2.5 py-1 rounded-xl text-[11px] font-bold transition-all flex items-center space-x-1.5 whitespace-nowrap border ${
-                  isSelected
-                    ? 'bg-blue-600 border-blue-400 text-white shadow-md'
-                    : 'bg-slate-900/80 border-slate-700 text-slate-300 hover:bg-slate-800 hover:text-white'
-                }`}
-                title={layer.label}
+                className="absolute right-2.5 text-slate-400 hover:text-slate-600 p-0.5"
               >
-                <span>{layer.icon}</span>
-                <span>{layer.shortName}</span>
+                <X className="w-3.5 h-3.5" />
               </button>
-            );
-          })}
-        </div>
+            )}
+          </div>
 
-        {/* Right: Map Toggles (Boundary, Plots, Opacity) */}
-        <div className="flex items-center gap-1.5 bg-white/95 backdrop-blur-md p-1.5 rounded-2xl border border-slate-200 shadow-md text-xs pointer-events-auto">
-          {/* Ghatal Outline Toggle */}
-          <button
-            onClick={() => setShowVillageBoundary(!showVillageBoundary)}
-            className={`px-2.5 py-1 rounded-lg text-[10px] font-bold transition-colors border ${
-              showVillageBoundary 
-                ? 'bg-red-50 text-red-700 border-red-300' 
-                : 'bg-slate-100 text-slate-500 border-slate-200'
-            }`}
-            title="Toggle Ghatal Block Outline Boundary"
-          >
-            Boundary: {showVillageBoundary ? 'ON' : 'OFF'}
-          </button>
-
-          {/* Cadastral Plots Toggle */}
-          <button
-            onClick={() => setShowPlots(!showPlots)}
-            className={`px-2.5 py-1 rounded-lg text-[10px] font-bold transition-colors border ${
-              showPlots 
-                ? 'bg-emerald-50 text-emerald-800 border-emerald-300' 
-                : 'bg-slate-100 text-slate-500 border-slate-200'
-            }`}
-            title="Toggle 20 Cadastral Farm Plots"
-          >
-            Plots ({farms.length}): {showPlots ? 'ON' : 'OFF'}
-          </button>
-
-          {/* Opacity Selector */}
-          <div className="hidden sm:flex items-center space-x-1 text-[10px] text-slate-600 font-semibold pl-1 border-l border-slate-200">
-            <span>Opacity:</span>
-            {[0.70, 0.85, 1.0].map(val => (
+          {/* Quick Boundary Pills */}
+          <div className="flex items-center gap-1 overflow-x-auto text-[11px] font-semibold text-slate-600">
+            <span className="text-[10px] text-slate-400 font-bold uppercase hidden md:inline">Quick Boundaries:</span>
+            {SEARCHABLE_AREAS.slice(0, 3).map(area => (
               <button
-                key={val}
-                onClick={() => setOverlayOpacity(val)}
-                className={`px-1.5 py-0.5 rounded text-[9px] font-mono ${
-                  overlayOpacity === val ? 'bg-slate-900 text-white font-bold' : 'bg-slate-100 text-slate-700 hover:bg-slate-200'
+                key={area.id}
+                onClick={() => handleSelectArea(area)}
+                className={`px-2.5 py-1 rounded-lg transition-colors whitespace-nowrap border text-[10px] font-bold ${
+                  activeSearchedArea?.id === area.id
+                    ? 'bg-blue-600 border-blue-500 text-white shadow-xs'
+                    : 'bg-slate-100 border-slate-200 hover:bg-slate-200 text-slate-700'
                 }`}
               >
-                {Math.round(val * 100)}%
+                {area.name.split(' (')[0]}
               </button>
             ))}
+
+            {activeSearchedArea && (
+              <button
+                onClick={handleResetToGhatal}
+                className="px-2.5 py-1 rounded-lg bg-amber-50 border border-amber-300 text-amber-800 hover:bg-amber-100 transition-colors text-[10px] font-bold flex items-center space-x-1"
+                title="Reset view to Ghatal Block"
+              >
+                <RotateCcw className="w-3 h-3" />
+                <span>Reset View</span>
+              </button>
+            )}
           </div>
         </div>
+
+        {/* Search Results Dropdown */}
+        {isSearchOpen && (searchResults.areaMatches?.length > 0 || searchResults.farmMatches?.length > 0) && (
+          <div className="absolute top-full left-0 right-0 mt-1 bg-white rounded-2xl border border-slate-200 shadow-2xl overflow-hidden z-[1050] max-h-72 overflow-y-auto divide-y divide-slate-100">
+            
+            {searchResults.areaMatches?.length > 0 && (
+              <div className="p-2">
+                <div className="text-[10px] font-bold text-slate-400 uppercase px-2 py-1">
+                  Districts &amp; Villages / Blocks (Boundary Available)
+                </div>
+                {searchResults.areaMatches.map(area => (
+                  <div
+                    key={area.id}
+                    onClick={() => handleSelectArea(area)}
+                    className="p-2 hover:bg-blue-50 rounded-xl cursor-pointer transition-colors flex items-center justify-between"
+                  >
+                    <div className="flex items-center space-x-2">
+                      <span className="p-1.5 rounded-lg bg-blue-100 text-blue-700 text-xs">
+                        <MapPin className="w-3.5 h-3.5" />
+                      </span>
+                      <div>
+                        <div className="font-bold text-xs text-slate-900">{area.name}</div>
+                        <div className="text-[10px] text-slate-500">{area.description}</div>
+                      </div>
+                    </div>
+                    <span className="text-[9px] font-mono font-bold px-2 py-0.5 rounded bg-blue-50 text-blue-700">
+                      {area.type}
+                    </span>
+                  </div>
+                ))}
+              </div>
+            )}
+
+            {searchResults.farmMatches?.length > 0 && (
+              <div className="p-2">
+                <div className="text-[10px] font-bold text-slate-400 uppercase px-2 py-1">
+                  Cadastral Plots &amp; Farmers
+                </div>
+                {searchResults.farmMatches.map(f => (
+                  <div
+                    key={f.id}
+                    onClick={() => handleSelectFarmPlot(f)}
+                    className="p-2 hover:bg-emerald-50 rounded-xl cursor-pointer transition-colors flex items-center justify-between"
+                  >
+                    <div>
+                      <span className="font-bold text-xs text-slate-900">{f.plotNumber}</span>
+                      <span className="text-slate-500 text-xs ml-2">&bull; {f.farmerName} ({f.currentCrop})</span>
+                    </div>
+                    <span className={`text-[9px] font-bold px-2 py-0.5 rounded ${
+                      f.riskLevel === 'CLAIM_TRIGGERED' ? 'bg-red-100 text-red-700' : 'bg-emerald-100 text-emerald-800'
+                    }`}>
+                      {f.riskLevel}
+                    </span>
+                  </div>
+                ))}
+              </div>
+            )}
+          </div>
+        )}
       </div>
 
-      {/* TOP-RIGHT SUB-CARD: Layer Legend Directly Matching Authentic GEE Maps */}
-      <div className="absolute top-16 right-3 z-[1000] bg-white/95 backdrop-blur-md px-3.5 py-2.5 rounded-2xl border border-slate-200 shadow-xl text-xs space-y-2 max-w-[260px] pointer-events-auto">
-        <div className="flex items-center justify-between border-b border-slate-100 pb-1.5">
-          <div className="flex items-center space-x-1.5">
-            <span>{activeLayerConfig.icon}</span>
-            <strong className="text-slate-900 text-[11px] font-bold truncate max-w-[170px]" title={activeLayerConfig.label}>
-              {activeLayerConfig.label}
-            </strong>
+      {/* Active Area Banner if an area is selected via Search */}
+      {activeSearchedArea && (
+        <div className="flex items-center justify-between p-2.5 px-4 rounded-xl bg-gradient-to-r from-blue-50 via-indigo-50 to-purple-50 border border-blue-200 text-xs text-blue-900 shadow-xs">
+          <div className="flex items-center space-x-2">
+            <span className="w-2.5 h-2.5 rounded-full bg-blue-600 animate-ping"></span>
+            <strong>Active Highlighted Boundary:</strong>
+            <span className="font-bold text-indigo-900">{activeSearchedArea.name}</span>
+            <span className="text-[10px] px-2 py-0.5 rounded bg-indigo-100 text-indigo-800 font-bold font-mono">
+              {activeSearchedArea.type}
+            </span>
+            <span className="text-slate-500 text-[11px] hidden sm:inline">&bull; {activeSearchedArea.description}</span>
           </div>
-          <span className="text-[9px] font-mono font-bold px-1.5 py-0.5 rounded bg-blue-50 text-blue-700">
-            GEE 2025
-          </span>
-        </div>
-
-        {/* Dynamic Legend Matching Current Layer */}
-        {currentLayer === 'chf' && (
-          <div className="space-y-1.5 text-[10px]">
-            <div className="text-[9px] font-semibold text-slate-500">CHF 2025 Index Scale:</div>
-            <div className="grid grid-cols-5 gap-1 text-center font-mono font-bold text-[9px]">
-              <div className="bg-[#A83232] text-white py-0.5 rounded">0.0-0.2</div>
-              <div className="bg-[#E78B3C] text-white py-0.5 rounded">0.2-0.4</div>
-              <div className="bg-[#F0D86B] text-slate-900 py-0.5 rounded">0.4-0.6</div>
-              <div className="bg-[#81BD78] text-slate-900 py-0.5 rounded">0.6-0.8</div>
-              <div className="bg-[#23734B] text-white py-0.5 rounded">0.8-1.0</div>
-            </div>
-            <div className="flex justify-between text-[9px] text-slate-600 font-semibold pt-0.5">
-              <span className="text-red-700">Silabati River (Low)</span>
-              <span className="text-emerald-700">Upland (High)</span>
-            </div>
-          </div>
-        )}
-
-        {currentLayer === 'ndvi' && (
-          <div className="space-y-1.5 text-[10px]">
-            <div className="text-[9px] font-semibold text-slate-500">NDVI Scale (-0.16 to 1.0):</div>
-            <div className="h-3 rounded-md bg-gradient-to-r from-[#16A34A] via-[#FACC15] to-[#EA580C] shadow-inner" />
-            <div className="flex justify-between text-[9px] font-mono font-bold text-slate-700">
-              <span className="text-emerald-700">Low : -0.16</span>
-              <span className="text-orange-700">High : 1</span>
-            </div>
-            <div className="text-[9px] text-slate-500">Sentinel-2 MSI 10m Optical Canopy</div>
-          </div>
-        )}
-
-        {currentLayer === 'rainfall' && (
-          <div className="space-y-1.5 text-[10px]">
-            <div className="text-[9px] font-semibold text-slate-500">Seasonal Rainfall (mm):</div>
-            <div className="h-3 rounded-md bg-gradient-to-r from-[#38BDF8] via-[#2563EB] to-[#1E3A8A] shadow-inner" />
-            <div className="flex justify-between text-[9px] font-mono font-bold text-slate-700">
-              <span className="text-sky-600">Low : 1284.68</span>
-              <span className="text-blue-900">High : 1352.07</span>
-            </div>
-            <div className="text-[9px] text-slate-500">CHIRPS Pentad Cumulative Kharif</div>
-          </div>
-        )}
-
-        {currentLayer === 'gdd' && (
-          <div className="space-y-1.5 text-[10px]">
-            <div className="text-[9px] font-semibold text-slate-500">Growing Degree Days (ERA5):</div>
-            <div className="grid grid-cols-4 gap-1 text-center font-mono font-bold text-[9px]">
-              <div className="bg-[#15803D] text-white py-0.5 rounded">2859</div>
-              <div className="bg-[#EAB308] text-slate-900 py-0.5 rounded">2870</div>
-              <div className="bg-[#EA580C] text-white py-0.5 rounded">2882</div>
-              <div className="bg-[#DC2626] text-white py-0.5 rounded">2892</div>
-            </div>
-            <div className="flex justify-between text-[9px] font-mono font-bold text-slate-700">
-              <span className="text-emerald-700">Low : 2859</span>
-              <span className="text-red-700">High : 2892</span>
-            </div>
-          </div>
-        )}
-
-        {currentLayer === 'fapar' && (
-          <div className="space-y-1.5 text-[10px]">
-            <div className="text-[9px] font-semibold text-slate-500">Ghatal FAPAR 2025 (%):</div>
-            <div className="space-y-0.5 text-[9px] font-mono font-semibold">
-              <div className="flex items-center space-x-2">
-                <span className="w-3.5 h-2.5 rounded-xs bg-[#14532D]" />
-                <span className="text-slate-700">0.04 - 0.18</span>
-              </div>
-              <div className="flex items-center space-x-2">
-                <span className="w-3.5 h-2.5 rounded-xs bg-[#22C55E]" />
-                <span className="text-slate-700">0.18 - 0.27</span>
-              </div>
-              <div className="flex items-center space-x-2">
-                <span className="w-3.5 h-2.5 rounded-xs bg-[#FACC15]" />
-                <span className="text-slate-700">0.27 - 0.35</span>
-              </div>
-              <div className="flex items-center space-x-2">
-                <span className="w-3.5 h-2.5 rounded-xs bg-[#FB923C]" />
-                <span className="text-slate-700">0.35 - 0.45</span>
-              </div>
-              <div className="flex items-center space-x-2">
-                <span className="w-3.5 h-2.5 rounded-xs bg-[#EF4444]" />
-                <span className="text-slate-700">0.45 - 0.89</span>
-              </div>
-            </div>
-          </div>
-        )}
-
-        {currentLayer === 'risk' && (
-          <div className="space-y-1 text-[10px]">
-            <div className="text-[9px] font-semibold text-slate-500">Parametric Trigger Status:</div>
-            <div className="flex items-center justify-between text-[9px]">
-              <span className="flex items-center gap-1 font-semibold text-emerald-700">
-                <span className="w-2 h-2 rounded-full bg-emerald-500" /> Optimal (&gt;0.70)
-              </span>
-              <span className="flex items-center gap-1 font-semibold text-amber-700">
-                <span className="w-2 h-2 rounded-full bg-amber-500" /> Watch (0.55-0.70)
-              </span>
-              <span className="flex items-center gap-1 font-semibold text-red-700">
-                <span className="w-2 h-2 rounded-full bg-red-500" /> Trigger (&lt;0.55)
-              </span>
-            </div>
-          </div>
-        )}
-
-        {/* Silabati River Corridor Indicator */}
-        <div className="pt-1.5 border-t border-slate-100 flex items-center justify-between text-[9px] text-slate-500">
-          <div className="flex items-center space-x-1.5">
-            <div className="w-3.5 h-1.5 bg-blue-600 rounded-xs"></div>
-            <span className="font-semibold text-blue-900">Silabati River</span>
-          </div>
-          <span className="font-mono text-slate-400">Purba Medinipur</span>
-        </div>
-      </div>
-
-      {/* BOTTOM-LEFT: GEE Pixel Probe HUD Panel */}
-      {probedPixel && (
-        <div className="absolute bottom-3 left-3 right-3 sm:right-auto z-[1000] bg-slate-950/95 text-white backdrop-blur-md px-4 py-3 rounded-2xl border border-slate-700 shadow-2xl text-xs max-w-md pointer-events-auto">
-          <div className="flex items-center justify-between border-b border-slate-800 pb-1.5 mb-2">
-            <div className="flex items-center space-x-1.5">
-              <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
-              <strong className="text-emerald-400 font-mono text-[11px]">GEE Multi-Spectral Pixel Probe</strong>
-            </div>
-            <button 
-              onClick={() => setProbedPixel(null)}
-              className="text-slate-400 hover:text-white text-xs px-1"
-            >
-              &times;
-            </button>
-          </div>
-          <div className="grid grid-cols-2 gap-x-4 gap-y-1 text-[11px] text-slate-300">
-            <div>Coords: <span className="font-mono text-white">{probedPixel.lat}, {probedPixel.lng}</span></div>
-            <div>River Dist: <span className="font-mono text-yellow-300 font-bold">{probedPixel.distToRiver} m</span></div>
-            <div>Zone: <span className="font-bold text-blue-300">{probedPixel.zone}</span></div>
-            <div>CHF 2025: <span className={`font-mono font-bold ${probedPixel.chf < 0.55 ? 'text-red-400' : 'text-emerald-400'}`}>{probedPixel.chf}</span></div>
-            <div>NDVI: <span className="font-mono text-white">{probedPixel.ndvi}</span></div>
-            <div>Rainfall: <span className="font-mono text-white">{probedPixel.rainfallMm} mm</span></div>
-            <div>GDD: <span className="font-mono text-white">{probedPixel.gdd} °C-d</span></div>
-            <div>FAPAR: <span className="font-mono text-white">{probedPixel.fapar}</span></div>
-          </div>
+          <button
+            onClick={handleResetToGhatal}
+            className="text-[11px] font-bold text-blue-700 hover:text-blue-900 underline flex items-center space-x-1"
+          >
+            <span>Reset to Ghatal Block</span>
+          </button>
         </div>
       )}
+
+      {/* MAIN MAP CONTAINER */}
+      <div className="relative w-full rounded-2xl overflow-hidden border border-[#E2E8F0] shadow-sm bg-slate-900" style={{ height }}>
+        {/* Leaflet Container */}
+        <div ref={mapRef} className="w-full h-full" />
+
+        {/* TOP CONTROLS BAR: Multi-Variation Layer Switcher (All 7 GEE Variations + Risk) */}
+        <div className="absolute top-3 left-3 right-3 z-[1000] flex flex-wrap items-center justify-between gap-2 pointer-events-none">
+          
+          {/* Left: 7 GEE Variations Layer Switcher Pills */}
+          <div className="flex flex-wrap items-center gap-1.5 bg-slate-950/90 backdrop-blur-md p-1.5 rounded-2xl border border-slate-700/80 shadow-xl pointer-events-auto max-w-full overflow-x-auto">
+            {GEE_LAYERS.map(layer => {
+              const isSelected = currentLayer === layer.id;
+              return (
+                <button
+                  key={layer.id}
+                  onClick={() => {
+                    setCurrentLayer(layer.id);
+                    setShowGeeOverlay(true);
+                  }}
+                  className={`px-2.5 py-1 rounded-xl text-[11px] font-bold transition-all flex items-center space-x-1.5 whitespace-nowrap border ${
+                    isSelected
+                      ? 'bg-blue-600 border-blue-400 text-white shadow-md'
+                      : 'bg-slate-900/80 border-slate-700 text-slate-300 hover:bg-slate-800 hover:text-white'
+                  }`}
+                  title={layer.label}
+                >
+                  <span>{layer.icon}</span>
+                  <span>{layer.shortName}</span>
+                </button>
+              );
+            })}
+          </div>
+
+          {/* Right: Map Toggles (Boundary, Plots, Opacity) */}
+          <div className="flex items-center gap-1.5 bg-white/95 backdrop-blur-md p-1.5 rounded-2xl border border-slate-200 shadow-md text-xs pointer-events-auto">
+            {/* Ghatal Outline Toggle */}
+            <button
+              onClick={() => setShowVillageBoundary(!showVillageBoundary)}
+              className={`px-2.5 py-1 rounded-lg text-[10px] font-bold transition-colors border ${
+                showVillageBoundary 
+                  ? 'bg-red-50 text-red-700 border-red-300' 
+                  : 'bg-slate-100 text-slate-500 border-slate-200'
+              }`}
+              title="Toggle Ghatal Block Outline Boundary"
+            >
+              Boundary: {showVillageBoundary ? 'ON' : 'OFF'}
+            </button>
+
+            {/* Cadastral Plots Toggle */}
+            <button
+              onClick={() => setShowPlots(!showPlots)}
+              className={`px-2.5 py-1 rounded-lg text-[10px] font-bold transition-colors border ${
+                showPlots 
+                  ? 'bg-emerald-50 text-emerald-800 border-emerald-300' 
+                  : 'bg-slate-100 text-slate-500 border-slate-200'
+              }`}
+              title="Toggle 20 Cadastral Farm Plots"
+            >
+              Plots ({farms.length}): {showPlots ? 'ON' : 'OFF'}
+            </button>
+
+            {/* Opacity Selector */}
+            <div className="hidden sm:flex items-center space-x-1 text-[10px] text-slate-600 font-semibold pl-1 border-l border-slate-200">
+              <span>Opacity:</span>
+              {[0.70, 0.85, 1.0].map(val => (
+                <button
+                  key={val}
+                  onClick={() => setOverlayOpacity(val)}
+                  className={`px-1.5 py-0.5 rounded text-[9px] font-mono ${
+                    overlayOpacity === val ? 'bg-slate-900 text-white font-bold' : 'bg-slate-100 text-slate-700 hover:bg-slate-200'
+                  }`}
+                >
+                  {Math.round(val * 100)}%
+                </button>
+              ))}
+            </div>
+          </div>
+        </div>
+
+        {/* TOP-RIGHT SUB-CARD: Layer Legend Directly Matching Authentic GEE Maps */}
+        <div className="absolute top-16 right-3 z-[1000] bg-white/95 backdrop-blur-md px-3.5 py-2.5 rounded-2xl border border-slate-200 shadow-xl text-xs space-y-2 max-w-[270px] pointer-events-auto">
+          <div className="flex items-center justify-between border-b border-slate-100 pb-1.5">
+            <div className="flex items-center space-x-1.5">
+              <span>{activeLayerConfig.icon}</span>
+              <strong className="text-slate-900 text-[11px] font-bold truncate max-w-[175px]" title={activeLayerConfig.label}>
+                {activeLayerConfig.label}
+              </strong>
+            </div>
+            <span className="text-[9px] font-mono font-bold px-1.5 py-0.5 rounded bg-blue-50 text-blue-700">
+              GEE 2025
+            </span>
+          </div>
+
+          {/* Dynamic Legend Matching Current Layer */}
+          {currentLayer === 'chf' && (
+            <div className="space-y-1.5 text-[10px]">
+              <div className="text-[9px] font-semibold text-slate-500">CHF 2025 Index Scale:</div>
+              <div className="grid grid-cols-5 gap-1 text-center font-mono font-bold text-[9px]">
+                <div className="bg-[#A83232] text-white py-0.5 rounded">0.0-0.2</div>
+                <div className="bg-[#E78B3C] text-white py-0.5 rounded">0.2-0.4</div>
+                <div className="bg-[#F0D86B] text-slate-900 py-0.5 rounded">0.4-0.6</div>
+                <div className="bg-[#81BD78] text-slate-900 py-0.5 rounded">0.6-0.8</div>
+                <div className="bg-[#23734B] text-white py-0.5 rounded">0.8-1.0</div>
+              </div>
+              <div className="flex justify-between text-[9px] text-slate-600 font-semibold pt-0.5">
+                <span className="text-red-700">Silabati River (Low)</span>
+                <span className="text-emerald-700">Upland (High)</span>
+              </div>
+            </div>
+          )}
+
+          {currentLayer === 'ndvi' && (
+            <div className="space-y-1.5 text-[10px]">
+              <div className="text-[9px] font-semibold text-slate-500">NDVI Scale (-0.16 to 1.0):</div>
+              <div className="h-3 rounded-md bg-gradient-to-r from-[#16A34A] via-[#FACC15] to-[#EA580C] shadow-inner" />
+              <div className="flex justify-between text-[9px] font-mono font-bold text-slate-700">
+                <span className="text-emerald-700">Low : -0.16</span>
+                <span className="text-orange-700">High : 1</span>
+              </div>
+              <div className="text-[9px] text-slate-500">Sentinel-2 MSI 10m Optical Canopy</div>
+            </div>
+          )}
+
+          {currentLayer === 'lswi' && (
+            <div className="space-y-1.5 text-[10px]">
+              <div className="text-[9px] font-semibold text-slate-500">Land Surface Water Index (LSWI):</div>
+              <div className="h-3 rounded-md bg-gradient-to-r from-[#C7D2FE] via-[#6366F1] to-[#312E81] shadow-inner" />
+              <div className="flex justify-between text-[9px] font-mono font-bold text-slate-700">
+                <span className="text-indigo-400">Low : -0.23</span>
+                <span className="text-indigo-900">High : 1</span>
+              </div>
+              <div className="text-[9px] text-slate-500">Sentinel-2 SWIR/NIR Moisture Absorption</div>
+            </div>
+          )}
+
+          {currentLayer === 'vh' && (
+            <div className="space-y-1.5 text-[10px]">
+              <div className="text-[9px] font-semibold text-slate-500">VH Max Backscatter (dB):</div>
+              <div className="h-3 rounded-md bg-gradient-to-r from-[#FBCFE8] via-[#F43F5E] to-[#9D174D] shadow-inner" />
+              <div className="flex justify-between text-[9px] font-mono font-bold text-slate-700">
+                <span className="text-pink-600">Low : -28.71 dB</span>
+                <span className="text-pink-900">High : 5.96 dB</span>
+              </div>
+              <div className="text-[9px] text-slate-500">Sentinel-1 C-Band SAR Depolarization</div>
+            </div>
+          )}
+
+          {currentLayer === 'rainfall' && (
+            <div className="space-y-1.5 text-[10px]">
+              <div className="text-[9px] font-semibold text-slate-500">Seasonal Rainfall (mm):</div>
+              <div className="h-3 rounded-md bg-gradient-to-r from-[#38BDF8] via-[#2563EB] to-[#1E3A8A] shadow-inner" />
+              <div className="flex justify-between text-[9px] font-mono font-bold text-slate-700">
+                <span className="text-sky-600">Low : 1284.68</span>
+                <span className="text-blue-900">High : 1352.07</span>
+              </div>
+              <div className="text-[9px] text-slate-500">CHIRPS Pentad Cumulative Kharif</div>
+            </div>
+          )}
+
+          {currentLayer === 'gdd' && (
+            <div className="space-y-1.5 text-[10px]">
+              <div className="text-[9px] font-semibold text-slate-500">Growing Degree Days (ERA5):</div>
+              <div className="grid grid-cols-4 gap-1 text-center font-mono font-bold text-[9px]">
+                <div className="bg-[#15803D] text-white py-0.5 rounded">2859</div>
+                <div className="bg-[#EAB308] text-slate-900 py-0.5 rounded">2870</div>
+                <div className="bg-[#EA580C] text-white py-0.5 rounded">2882</div>
+                <div className="bg-[#DC2626] text-white py-0.5 rounded">2892</div>
+              </div>
+              <div className="flex justify-between text-[9px] font-mono font-bold text-slate-700">
+                <span className="text-emerald-700">Low : 2859</span>
+                <span className="text-red-700">High : 2892</span>
+              </div>
+            </div>
+          )}
+
+          {currentLayer === 'fapar' && (
+            <div className="space-y-1.5 text-[10px]">
+              <div className="text-[9px] font-semibold text-slate-500">Ghatal FAPAR 2025 (%):</div>
+              <div className="space-y-0.5 text-[9px] font-mono font-semibold">
+                <div className="flex items-center space-x-2">
+                  <span className="w-3.5 h-2.5 rounded-xs bg-[#14532D]" />
+                  <span className="text-slate-700">0.04 - 0.18</span>
+                </div>
+                <div className="flex items-center space-x-2">
+                  <span className="w-3.5 h-2.5 rounded-xs bg-[#22C55E]" />
+                  <span className="text-slate-700">0.18 - 0.27</span>
+                </div>
+                <div className="flex items-center space-x-2">
+                  <span className="w-3.5 h-2.5 rounded-xs bg-[#FACC15]" />
+                  <span className="text-slate-700">0.27 - 0.35</span>
+                </div>
+                <div className="flex items-center space-x-2">
+                  <span className="w-3.5 h-2.5 rounded-xs bg-[#FB923C]" />
+                  <span className="text-slate-700">0.35 - 0.45</span>
+                </div>
+                <div className="flex items-center space-x-2">
+                  <span className="w-3.5 h-2.5 rounded-xs bg-[#EF4444]" />
+                  <span className="text-slate-700">0.45 - 0.89</span>
+                </div>
+              </div>
+            </div>
+          )}
+
+          {currentLayer === 'risk' && (
+            <div className="space-y-1 text-[10px]">
+              <div className="text-[9px] font-semibold text-slate-500">Parametric Trigger Status:</div>
+              <div className="flex items-center justify-between text-[9px]">
+                <span className="flex items-center gap-1 font-semibold text-emerald-700">
+                  <span className="w-2 h-2 rounded-full bg-emerald-500" /> Optimal (&gt;0.70)
+                </span>
+                <span className="flex items-center gap-1 font-semibold text-amber-700">
+                  <span className="w-2 h-2 rounded-full bg-amber-500" /> Watch (0.55-0.70)
+                </span>
+                <span className="flex items-center gap-1 font-semibold text-red-700">
+                  <span className="w-2 h-2 rounded-full bg-red-500" /> Trigger (&lt;0.55)
+                </span>
+              </div>
+            </div>
+          )}
+
+          {/* Silabati River Corridor Indicator */}
+          <div className="pt-1.5 border-t border-slate-100 flex items-center justify-between text-[9px] text-slate-500">
+            <div className="flex items-center space-x-1.5">
+              <div className="w-3.5 h-1.5 bg-blue-600 rounded-xs"></div>
+              <span className="font-semibold text-blue-900">Silabati River</span>
+            </div>
+            <span className="font-mono text-slate-400">Purba Medinipur</span>
+          </div>
+        </div>
+
+        {/* BOTTOM-LEFT: GEE Pixel Probe HUD Panel */}
+        {probedPixel && (
+          <div className="absolute bottom-3 left-3 right-3 sm:right-auto z-[1000] bg-slate-950/95 text-white backdrop-blur-md px-4 py-3 rounded-2xl border border-slate-700 shadow-2xl text-xs max-w-md pointer-events-auto">
+            <div className="flex items-center justify-between border-b border-slate-800 pb-1.5 mb-2">
+              <div className="flex items-center space-x-1.5">
+                <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+                <strong className="text-emerald-400 font-mono text-[11px]">GEE Multi-Spectral Pixel Probe</strong>
+              </div>
+              <button 
+                onClick={() => setProbedPixel(null)}
+                className="text-slate-400 hover:text-white text-xs px-1"
+              >
+                &times;
+              </button>
+            </div>
+            <div className="grid grid-cols-2 gap-x-4 gap-y-1 text-[11px] text-slate-300">
+              <div>Coords: <span className="font-mono text-white">{probedPixel.lat}, {probedPixel.lng}</span></div>
+              <div>River Dist: <span className="font-mono text-yellow-300 font-bold">{probedPixel.distToRiver} m</span></div>
+              <div>Zone: <span className="font-bold text-blue-300">{probedPixel.zone}</span></div>
+              <div>CHF 2025: <span className={`font-mono font-bold ${probedPixel.chf < 0.55 ? 'text-red-400' : 'text-emerald-400'}`}>{probedPixel.chf}</span></div>
+              <div>NDVI: <span className="font-mono text-white">{probedPixel.ndvi}</span></div>
+              <div>LSWI (Water): <span className="font-mono text-indigo-300 font-bold">{probedPixel.lswi}</span></div>
+              <div>SAR VH: <span className="font-mono text-pink-300 font-bold">{probedPixel.vhDb} dB</span></div>
+              <div>Rainfall: <span className="font-mono text-white">{probedPixel.rainfallMm} mm</span></div>
+              <div>GDD: <span className="font-mono text-white">{probedPixel.gdd} °C-d</span></div>
+              <div>FAPAR: <span className="font-mono text-white">{probedPixel.fapar}</span></div>
+            </div>
+          </div>
+        )}
+      </div>
     </div>
   );
 };

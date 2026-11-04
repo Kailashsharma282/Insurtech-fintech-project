@@ -64,8 +64,11 @@ export default function SatelliteMapPage() {
           {/* Layer Selector Tabs */}
           <div className="bg-white p-1.5 rounded-2xl border border-slate-200 shadow-sm flex flex-wrap gap-1 text-xs font-semibold">
             {[
+
               { id: 'chf', label: '🌱 Ghatal CHF 2025' },
               { id: 'ndvi', label: '🌿 NDVI' },
+              { id: 'lswi', label: '💧 LSWI (Water)' },
+              { id: 'vh', label: '📡 VH Radar (dB)' },
               { id: 'rainfall', label: '🌧️ Rainfall (CHIRPS)' },
               { id: 'gdd', label: '☀️ GDD (ERA5)' },
               { id: 'fapar', label: '🌾 FAPAR (%)' },
