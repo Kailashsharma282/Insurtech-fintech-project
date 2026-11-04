@@ -22,7 +22,9 @@ export const ThemeProvider: React.FC<{ children: React.ReactNode }> = ({ childre
 
   useEffect(() => {
     try {
-      const saved = localStorage.getItem('agrisure_theme') as Theme | null;
+      const urlParams = typeof window !== 'undefined' ? new URLSearchParams(window.location.search) : null;
+      const queryTheme = urlParams?.get('theme') as Theme | null;
+      const saved = (queryTheme === 'dark' || queryTheme === 'light') ? queryTheme : (localStorage.getItem('agrisure_theme') as Theme | null);
       if (saved === 'dark' || saved === 'light') {
         setThemeState(saved);
         if (saved === 'dark') {
