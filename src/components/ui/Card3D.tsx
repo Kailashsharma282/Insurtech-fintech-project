@@ -13,8 +13,7 @@ interface CardProps extends React.HTMLAttributes<HTMLDivElement> {
 }
 
 /**
- * Simple, accessible Card component without 3D animations, glare, or motion.
- * Designed for rural/farmer accessibility with clean contrast and solid borders.
+ * Simple, accessible Card component with high contrast in Light and Dark modes.
  */
 export const Card3D: React.FC<CardProps> = ({
   children,
@@ -28,7 +27,7 @@ export const Card3D: React.FC<CardProps> = ({
 }) => {
   return (
     <div
-      className={`rounded-2xl border border-slate-200 bg-white shadow-sm transition-colors ${
+      className={`rounded-2xl transition-colors ${
         clickable ? 'cursor-pointer hover:border-blue-600' : ''
       } ${className}`}
       {...props}

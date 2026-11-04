@@ -155,3 +155,4 @@ with open('src/components/layout/Navbar.tsx', 'w', encoding='utf-8') as f:
     f.write(text)
 
 print('Updated Navbar.tsx with role-based navigation!')
+

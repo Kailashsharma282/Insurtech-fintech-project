@@ -229,3 +229,4 @@ with open('src/components/maps/AgriMap.tsx', 'w', encoding='utf-8') as f:
     f.write(text)
 
 print('Updated AgriMap.tsx with Pan-India search & live telemetry!')
+
