@@ -65,3 +65,4 @@ if 'GHATAL_VILLAGE_BOUNDARY' not in seed_content:
     print("Added GHATAL_VILLAGE_BOUNDARY to seed-data.ts")
 
 print("Done Purba Medinipur replacement and boundary injection!")
+

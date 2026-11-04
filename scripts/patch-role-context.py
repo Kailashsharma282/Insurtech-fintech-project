@@ -101,3 +101,4 @@ with open('src/context/RoleContext.tsx', 'w', encoding='utf-8') as f:
     f.write(text)
 
 print("Updated RoleContext.tsx profiles!")
+
