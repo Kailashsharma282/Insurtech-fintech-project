@@ -14,3 +14,4 @@ if target in text:
     print("Successfully added EarthEngineTelemetry to technology/chf/page.tsx")
 else:
     print("Target not found!")
+

@@ -98,7 +98,7 @@ export default function FarmerDashboard() {
                 <span className="w-2.5 h-2.5 rounded-full bg-blue-600 inline-block" title="Connected to Ghatal IoT gateway"></span>
               </div>
               <p className="text-xs sm:text-sm text-slate-500 mt-1">
-                Field Hub: <strong className="text-slate-800">Ghatal Central, Paschim Medinipur, West Bengal</strong>
+                Field Hub: <strong className="text-slate-800">Ghatal Central, Purba Medinipur, West Bengal</strong>
               </p>
             </div>
 

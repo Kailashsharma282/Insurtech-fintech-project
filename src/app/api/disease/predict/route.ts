@@ -378,7 +378,7 @@ export async function POST(req: NextRequest) {
           organicAdvisory: selected.organicAdvisory,
           irrigationSchedule: selected.irrigationSchedule
         },
-        disclaimer: 'Model-generated advisory for research & operational decision support. Calibrated for Ghatal Block, Paschim Medinipur.'
+        disclaimer: 'Model-generated advisory for research & operational decision support. Calibrated for Ghatal Block, Purba Medinipur.'
       }
     });
   } catch (err: unknown) {

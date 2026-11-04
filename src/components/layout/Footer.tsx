@@ -19,7 +19,7 @@ export const Footer: React.FC = () => {
               Enterprise Agricultural Parametric InsurTech Platform combining Sentinel-2/1 satellite remote sensing, localized Shannon entropy Crop Health Factor (CHF) computation, agricultural IoT telemetry, and autonomous underwriting.
             </p>
             <div className="p-3 rounded-lg bg-slate-800/80 border border-slate-700 text-[11px] text-blue-300">
-              <strong>West Bengal Pilot Coverage:</strong> Operational telemetry, Earth Observation algorithms, and parametric underwriting calibrated for Ghatal Block, Paschim Medinipur.
+              <strong>West Bengal Pilot Coverage:</strong> Operational telemetry, Earth Observation algorithms, and parametric underwriting calibrated for Ghatal Block, Purba Medinipur.
             </div>
           </div>
 

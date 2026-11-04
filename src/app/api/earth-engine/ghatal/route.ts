@@ -4,7 +4,7 @@ export async function GET() {
   const telemetry = {
     studyArea: {
       name: 'Ghatal Block',
-      district: 'Paschim Medinipur',
+      district: 'Purba Medinipur',
       state: 'West Bengal',
       country: 'India',
       geeAsset: 'projects/projectmoefcc/assets/Ghatal_block',
@@ -129,3 +129,4 @@ Map.addLayer(area, {color: 'red'}, 'Ghatal Block boundary');`
     data: telemetry
   });
 }
+

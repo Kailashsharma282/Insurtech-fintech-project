@@ -82,7 +82,7 @@ export default function InsuranceValidationPage() {
               Government PMFBY Insurance Validation Hub
             </span>
             <span className="px-3 py-0.5 rounded-full bg-slate-100 text-slate-700 text-xs font-mono">
-              Ghatal Block &bull; Paschim Medinipur &bull; Kharif 2025
+              Ghatal Block &bull; Purba Medinipur &bull; Kharif 2025
             </span>
           </div>
           <h1 className="text-xl sm:text-3xl font-extrabold text-slate-900 break-words">

@@ -25,7 +25,7 @@ export interface Farm {
   insuranceUnitCode: string;
   plotNumber: string;
   name: string;
-  district: 'Nadia' | 'Burdwan' | 'Hooghly' | 'Murshidabad' | 'Paschim Medinipur' | string;
+  district: 'Nadia' | 'Burdwan' | 'Hooghly' | 'Murshidabad' | 'Purba Medinipur' | string;
   village: string;
   gramPanchayat: string;
   acreage: number; // in hectares or acres

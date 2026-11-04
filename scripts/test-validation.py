@@ -63,3 +63,4 @@ print(f"Upland CHF: min={min(f['currentChf'] for f in upland)}, max={max(f['curr
 assert all(f['currentChf'] >= 0.70 for f in upland), "All upland plots must have CHF >= 0.70"
 
 print("\n>>> ALL VALIDATION TESTS PASSED 100%! <<<")
+

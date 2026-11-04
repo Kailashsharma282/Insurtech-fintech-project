@@ -86,3 +86,4 @@ print(f"Total plots defined: {len(offsets)}")
 for i, (lat, lng, name, zone, chf, moist) in enumerate(offsets):
     d = get_dist_to_river_m(lat, lng)
     print(f"Plot #{205+i}: {name} -> Dist: {d}m | Zone: {zone} | CHF: {chf} | Moist: {moist}%")
+

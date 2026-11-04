@@ -91,3 +91,4 @@ with open('src/lib/db/seed-data.ts', 'w', encoding='utf-8') as f:
     f.write(text)
 
 print(f"Recalibrated {replacements} farms in seed-data.ts!")
+

@@ -23,3 +23,4 @@ with open('src/app/farmer/farms/page.tsx', 'w', encoding='utf-8') as f:
     f.write(text)
 
 print("Updated farmer/farms/page.tsx")
+

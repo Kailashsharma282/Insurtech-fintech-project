@@ -98,7 +98,7 @@ export default function SatelliteMapPage() {
             className="py-1.5 px-2.5 rounded-lg border border-slate-300 bg-white font-medium"
           >
             <option value="ALL">All Districts / Pilot Blocks</option>
-            <option value="Paschim Medinipur">Paschim Medinipur (Ghatal Block — 40 Plots)</option>
+            <option value="Purba Medinipur">Purba Medinipur (Ghatal Block — 40 Plots)</option>
             <option value="Nadia">Nadia</option>
             <option value="Burdwan">Burdwan</option>
             <option value="Hooghly">Hooghly</option>

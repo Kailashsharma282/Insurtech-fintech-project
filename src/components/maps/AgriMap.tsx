@@ -2,7 +2,7 @@
 
 import React, { useEffect, useRef, useState } from 'react';
 import { Farm } from '@/lib/types';
-import { SILABATI_RIVER_POINTS } from '@/lib/db/seed-data';
+import { SILABATI_RIVER_POINTS, GHATAL_VILLAGE_BOUNDARY } from '@/lib/db/seed-data';
 
 interface AgriMapProps {
   farms: Farm[];
@@ -30,6 +30,7 @@ export const AgriMap: React.FC<AgriMapProps> = ({
   const layersGroupRef = useRef<any>(null);
   const rasterGroupRef = useRef<any>(null);
   const [showGeeRaster, setShowGeeRaster] = useState<boolean>(initialShowGeeGrid);
+  const [showVillageBoundary, setShowVillageBoundary] = useState<boolean>(true);
   const [currentLayer, setCurrentLayer] = useState<'chf' | 'ndvi' | 'lswi' | 'vh' | 'risk'>(activeLayer);
   const [probedPixel, setProbedPixel] = useState<{
     lat: number;
@@ -98,7 +99,43 @@ export const AgriMap: React.FC<AgriMapProps> = ({
       rasterGroup.clearLayers();
 
       // -------------------------------------------------------------
-      // 1. RENDER SILABATI RIVER & FLOOD BUFFER CORRIDOR
+      // 1. RENDER GHATAL VILLAGE CADASTRAL OUTLINE BOUNDARY (PURBA MEDINIPUR)
+      // -------------------------------------------------------------
+      if (showVillageBoundary) {
+        const villagePoly = L.polygon(GHATAL_VILLAGE_BOUNDARY, {
+          color: '#D97706',      // Rich Amber/Gold outline
+          weight: 3.5,
+          dashArray: '8, 6',    // Cadastral border style
+          fillColor: '#FEF3C7',
+          fillOpacity: 0.12,
+        }).addTo(layerGroup);
+
+        villagePoly.bindTooltip('📍 Ghatal Village Boundary (Purba Medinipur)', {
+          sticky: true,
+          className: 'font-bold text-xs text-amber-950 bg-amber-50 px-2.5 py-1 rounded shadow-md border border-amber-300'
+        });
+
+        villagePoly.bindPopup(`
+          <div style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; min-width: 220px; padding: 4px;">
+            <div style="border-bottom: 1px solid #E2E8F0; padding-bottom: 4px; margin-bottom: 6px;">
+              <strong style="color: #92400E; font-size: 13px;">📍 Ghatal Village Cadastral Boundary</strong>
+              <span style="font-size: 10px; font-weight: bold; padding: 2px 6px; border-radius: 4px; background: #FEF3C7; color: #92400E; float: right;">
+                Boundary
+              </span>
+            </div>
+            <div style="font-size: 11px; color: #334155; line-height: 1.6;">
+              <div><strong>District:</strong> Purba Medinipur</div>
+              <div><strong>Gram Panchayat:</strong> Ghatal Central</div>
+              <div><strong>Cadastral Area:</strong> 1,450 hectares</div>
+              <div><strong>Monitored Farms:</strong> 40 Agricultural Plots</div>
+              <div><strong>Drainage Influx:</strong> Silabati River Corridor</div>
+            </div>
+          </div>
+        `);
+      }
+
+      // -------------------------------------------------------------
+      // 2. RENDER SILABATI RIVER & FLOOD BUFFER CORRIDOR
       // -------------------------------------------------------------
       // Translucent Flood Buffer Corridor (400 m buffer along river)
       L.polyline(SILABATI_RIVER_POINTS, {
@@ -124,7 +161,7 @@ export const AgriMap: React.FC<AgriMapProps> = ({
       });
 
       // -------------------------------------------------------------
-      // 2. GOOGLE EARTH ENGINE 10 m MULTI-SPECTRAL RASTER OVERLAY
+      // 3. GOOGLE EARTH ENGINE 10 m MULTI-SPECTRAL RASTER OVERLAY
       // -------------------------------------------------------------
       if (showGeeRaster) {
         // Build 10m-equivalent raster cell grid over Ghatal study area
@@ -198,7 +235,7 @@ export const AgriMap: React.FC<AgriMapProps> = ({
       }
 
       // -------------------------------------------------------------
-      // 3. RENDER ALL 40 GHATAL BLOCK FARMS & POLYGONS
+      // 4. RENDER ALL 40 GHATAL BLOCK FARMS & POLYGONS
       // -------------------------------------------------------------
       const getColor = (f: Farm) => {
         if (currentLayer === 'risk') {
@@ -254,7 +291,7 @@ export const AgriMap: React.FC<AgriMapProps> = ({
             <div style="font-size: 11px; color: #334155; line-height: 1.6;">
               <div><strong>Farmer:</strong> ${farm.farmerName}</div>
               <div><strong>Crop:</strong> ${farm.currentCrop} (${farm.acreage} ha)</div>
-              <div><strong>Location:</strong> Ghatal Block (${farm.village || 'Paschim Medinipur'})</div>
+              <div><strong>Location:</strong> Ghatal Village, Purba Medinipur</div>
               <div style="margin-top: 3px; padding-top: 3px; border-top: 1px dashed #CBD5E1;">
                 <strong>Distance to Silabati River:</strong> <span style="font-family: monospace; font-weight: bold; color: ${distToRiver < 500 ? '#B91C1C' : '#047857'};">${distToRiver} m</span>
               </div>
@@ -311,14 +348,30 @@ export const AgriMap: React.FC<AgriMapProps> = ({
     return () => {
       isMounted = false;
     };
-  }, [farms, selectedFarmId, currentLayer, center, zoom, onSelectFarm, showGeeRaster]);
+  }, [farms, selectedFarmId, currentLayer, center, zoom, onSelectFarm, showGeeRaster, showVillageBoundary]);
 
   return (
     <div className="relative w-full rounded-2xl overflow-hidden border border-[#E2E8F0] shadow-sm bg-slate-900" style={{ height }}>
       <div ref={mapRef} className="w-full h-full" />
       
-      {/* Top Left: GEE 10m Grid Toggle & River Legend */}
+      {/* Top Left: Ghatal Village Boundary Toggle & GEE 10m Grid Toggle */}
       <div className="absolute top-3 left-3 z-[1000] flex flex-col gap-2">
+        
+        {/* Village Boundary Toggle */}
+        <button
+          onClick={() => setShowVillageBoundary(!showVillageBoundary)}
+          className={`px-3 py-1.5 rounded-xl text-xs font-bold shadow-md transition-all flex items-center space-x-1.5 border ${
+            showVillageBoundary 
+              ? 'bg-amber-600 border-amber-500 text-white' 
+              : 'bg-white/95 border-slate-300 text-slate-700 hover:bg-slate-100'
+          }`}
+          title="Toggle Ghatal Village Cadastral Boundary"
+        >
+          <span className="w-2 h-2 rounded-full bg-amber-300"></span>
+          <span>Ghatal Village Outline: {showVillageBoundary ? 'ON' : 'OFF'}</span>
+        </button>
+
+        {/* GEE 10m Grid Toggle */}
         <button
           onClick={() => setShowGeeRaster(!showGeeRaster)}
           className={`px-3 py-1.5 rounded-xl text-xs font-bold shadow-md transition-all flex items-center space-x-1.5 border ${

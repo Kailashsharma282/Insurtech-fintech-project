@@ -196,3 +196,4 @@ if re.search(pattern, content):
     print("Successfully replaced PRIMARY_DEMO_FARM and SEED_FARMS in src/lib/db/seed-data.ts!")
 else:
     print("Pattern match failed! Let's check regex.")
+

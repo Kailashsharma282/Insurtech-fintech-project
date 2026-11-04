@@ -27,7 +27,7 @@ export async function GET(
 
   return NextResponse.json({
     success: true,
-    studyArea: 'Ghatal Block, Paschim Medinipur (2025 Kharif)',
+    studyArea: 'Ghatal Block, Purba Medinipur (2025 Kharif)',
     farmId: farm.id,
     plotNumber: farm.plotNumber,
     crop: farm.currentCrop,

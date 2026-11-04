@@ -33,7 +33,9 @@ export interface UserAccount {
   role: Role;
   phone?: string;
   email?: string;
+  aliases?: string[];
   passwordHash: string;
+  altPasswordHash?: string;
   district: string;
   village?: string;
   organization?: string;
@@ -52,57 +54,62 @@ export class UserStore {
   }
 
   private seedDefaultPilotUsers() {
-    // 1. Farmer: Subhash Biswas
+    // 1. Farmer: Subhash Mondal
     this.users.push({
       id: 'usr-farmer-01',
-      name: 'Subhash Biswas',
+      name: 'Subhash Mondal (Plot #204)',
       role: 'FARMER',
       phone: '+91 98321 44820',
-      email: 'subhash.biswas@agrisure-wb.in',
+      email: 'farmer@agrisure.in',
+      aliases: ['subhash.biswas@agrisure-wb.in', 'subhash.mondal@agrisure.in', '9832144820'],
       passwordHash: hashPassword('Farmer@2026'),
-      district: 'Paschim Medinipur',
+      district: 'Purba Medinipur',
       village: 'Ghatal',
       primaryCrop: 'Aman Paddy',
       farmSizeHa: 2.8,
       createdAt: '2026-06-01T08:00:00Z',
     });
 
-    // 2. Insurer: Dr. S. Sen (Chief Actuary / Underwriter)
+    // 2. Insurer: Dr. S. Sen (Chief Underwriter)
     this.users.push({
       id: 'usr-insurer-01',
-      name: 'Dr. S. Sen (Chief Actuary)',
+      name: 'Dr. S. Sen (Chief Underwriting Officer)',
       role: 'INSURER',
-      email: 'underwriter@agrisure.in',
+      email: 'insurer@agrisure.in',
+      aliases: ['underwriter@agrisure.in', '9830011223'],
       phone: '+91 98300 11223',
       passwordHash: hashPassword('Insurer@2026'),
-      district: 'Kolkata Underwriting HQ',
+      district: 'Purba Medinipur & WB Cluster',
       organization: 'Agriculture Insurance Company',
       licenseId: 'IRDAI-AGR-2024-8842',
       createdAt: '2026-01-10T09:00:00Z',
     });
 
-    // 3. Admin: AgriSure Operations Lead
+    // 3. Admin: AgriSure Operations Administrator
     this.users.push({
       id: 'usr-admin-01',
-      name: 'AgriSure Operations Lead',
+      name: 'AgriSure Operations Administrator',
       role: 'ADMIN',
       email: 'admin@agrisure.in',
+      aliases: ['admin@agrisure-systems.in', '9830099887'],
       phone: '+91 98300 99887',
       passwordHash: hashPassword('Admin@2026'),
-      district: 'Geospatial Engineering Lab',
-      organization: 'AgriSure Systems',
+      district: 'Purba Medinipur',
+      organization: 'AgriSure Systems Engineering Lab',
       createdAt: '2025-11-01T08:00:00Z',
     });
 
-    // 4. Field Agent: Prabir Bhattacharya
+    // 4. Field Inspector: Prabir Bhattacharya (Lead Field Inspector & CCE Agronomist)
     this.users.push({
       id: 'usr-agent-01',
-      name: 'Prabir Bhattacharya (FA-WB-441)',
+      name: 'Prabir Bhattacharya (Lead Field Inspector & CCE Agronomist)',
       role: 'FIELD_AGENT',
       phone: '+91 94330 12345',
-      email: 'agent@agrisure.in',
-      passwordHash: hashPassword('Agent@2026'),
-      district: 'Ghatal, Paschim Medinipur',
+      email: 'inspector@agrisure.in',
+      aliases: ['agent@agrisure.in', 'field@agrisure.in', '9433012345'],
+      passwordHash: hashPassword('Inspector@2026'),
+      altPasswordHash: hashPassword('Agent@2026'),
+      district: 'Ghatal, Purba Medinipur',
       organization: 'State Agri Extension Wing (FA-WB-441)',
       createdAt: '2026-03-20T11:30:00Z',
     });
@@ -114,7 +121,9 @@ export class UserStore {
     return this.users.find(u => {
       const emailNorm = u.email ? normalizeIdentifier(u.email) : '';
       const phoneNorm = u.phone ? normalizeIdentifier(u.phone) : '';
-      return emailNorm === norm || phoneNorm === norm;
+      if (emailNorm === norm || phoneNorm === norm) return true;
+      if (u.aliases && u.aliases.some(a => normalizeIdentifier(a) === norm)) return true;
+      return false;
     });
   }
 
@@ -132,14 +141,18 @@ export class UserStore {
 
     const user = this.findUserByIdentifier(rawIdentifier);
     if (!user) {
-      return { error: 'No account found matching this mobile number or email. Please register first.' };
+      return { error: 'No account found matching this mobile number or email. Please check your demo credentials.' };
     }
 
     if (requestedRole && user.role !== requestedRole) {
       return { error: `Account exists as ${user.role}, but you selected ${requestedRole}. Please switch role tabs.` };
     }
 
-    const isValid = verifyPassword(passwordAttempt, user.passwordHash);
+    let isValid = verifyPassword(passwordAttempt, user.passwordHash);
+    if (!isValid && user.altPasswordHash) {
+      isValid = verifyPassword(passwordAttempt, user.altPasswordHash);
+    }
+
     if (!isValid) {
       return { error: 'Invalid password. Please check your credentials.' };
     }
@@ -171,30 +184,32 @@ export class UserStore {
 
     const isEmail = params.identifier.includes('@');
     const newUser: UserAccount = {
-      id: `usr_${params.role.toLowerCase()}_${Date.now()}`,
-      name: params.name.trim(),
+      id: `usr-reg-${Date.now()}`,
+      name: params.name,
       role: params.role,
-      phone: !isEmail ? params.identifier.trim() : undefined,
-      email: isEmail ? params.identifier.trim() : undefined,
+      email: isEmail ? params.identifier : undefined,
+      phone: !isEmail ? params.identifier : undefined,
       passwordHash: hashPassword(params.password),
-      district: params.district || 'Ghatal, Paschim Medinipur',
+      district: params.district || 'Ghatal, Purba Medinipur',
       village: params.village || 'Ghatal',
       organization: params.organization,
       licenseId: params.licenseId,
       primaryCrop: params.primaryCrop || 'Aman Paddy',
-      farmSizeHa: params.farmSizeHa || 2.5,
-      bankAccount: params.bankAccount || 'Direct Bank NEFT Registered',
+      farmSizeHa: params.farmSizeHa || 2.0,
+      bankAccount: params.bankAccount,
       createdAt: new Date().toISOString(),
     };
 
     this.users.push(newUser);
     return { user: newUser };
   }
+
+  getAllUsers(): UserAccount[] {
+    return [...this.users];
+  }
 }
 
-const globalForUserStore = globalThis as unknown as { userStore: UserStore };
-export const userStore = globalForUserStore.userStore || new UserStore();
-if (process.env.NODE_ENV !== 'production') {
-  globalForUserStore.userStore = userStore;
-}
-
+// Global in-memory singleton
+const globalForUsers = globalThis as unknown as { userStoreInstance: UserStore };
+export const userStore = globalForUsers.userStoreInstance || new UserStore();
+if (process.env.NODE_ENV !== 'production') globalForUsers.userStoreInstance = userStore;

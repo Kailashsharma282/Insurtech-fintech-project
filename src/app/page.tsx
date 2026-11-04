@@ -99,7 +99,7 @@ export default function HomePage() {
             </div>
 
             <div className="pt-2 text-xs text-slate-500">
-              * Active Pilot: Plot #204 Ghatal Block, Paschim Medinipur, West Bengal (Aman Paddy 2.8 ha)
+              * Active Pilot: Plot #204 Ghatal Block, Purba Medinipur, West Bengal (Aman Paddy 2.8 ha)
             </div>
 
           </div>
@@ -169,7 +169,7 @@ export default function HomePage() {
           <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-slate-200 pb-3">
             <div>
               <span className="text-xs font-mono font-bold text-blue-600 uppercase">Live Pilot Unit</span>
-              <h3 className="text-lg font-bold text-slate-900">Plot #204 &bull; Ghatal Block, Paschim Medinipur</h3>
+              <h3 className="text-lg font-bold text-slate-900">Plot #204 &bull; Ghatal Block, Purba Medinipur</h3>
             </div>
             <span className="text-xs font-mono font-bold px-2.5 py-1 rounded bg-slate-100 text-slate-700 self-start sm:self-auto">
               Aman Paddy (2.8 Hectares)

@@ -61,3 +61,4 @@ for idx, (seg_i, d_lat, d_lng) in enumerate(near_river_offsets):
 
 print(f'Generated {len(plots)} near river plots. Min dist: {min(p["dist"] for p in plots)}m, Max dist: {max(p["dist"] for p in plots)}m')
 print(f'CHF range: {min(p["chf"] for p in plots)} to {max(p["chf"] for p in plots)} (All < 0.55!)')
+

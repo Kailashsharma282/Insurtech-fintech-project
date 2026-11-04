@@ -19,11 +19,14 @@ import {
   Zap,
   Globe,
   ArrowRight,
-  FileText
+  FileText,
+  LogOut,
+  LogIn,
+  UserCheck
 } from 'lucide-react';
 
 export const Navbar: React.FC = () => {
-  const { role, setRole, user } = useRole();
+  const { role, setRole, user, logout } = useRole();
   const { language, setLanguage, t } = useLanguage();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [simulationModalOpen, setSimulationModalOpen] = useState(false);
@@ -200,6 +203,29 @@ export const Navbar: React.FC = () => {
                 </select>
                 <ChevronDown className="w-3 h-3 text-slate-400 absolute right-1 sm:right-1.5 top-1/2 -translate-y-1/2 pointer-events-none" />
               </div>
+
+              {/* User Account & Logout */}
+              <Link
+                href="/login"
+                className="h-8 sm:h-9 px-2 sm:px-2.5 rounded-lg bg-slate-800 hover:bg-slate-700 border border-slate-700 text-slate-200 text-[11px] sm:text-xs font-semibold flex items-center gap-1.5 transition-colors shrink-0"
+                title="Switch Demo Account"
+              >
+                <UserCheck className="w-3.5 h-3.5 text-blue-400 shrink-0" />
+                <span className="hidden xl:inline truncate max-w-[100px]">{user?.name?.split(' ')[0] || 'Demo'}</span>
+              </Link>
+
+              <button
+                type="button"
+                onClick={async () => {
+                  await logout();
+                  router.push('/login');
+                }}
+                className="h-8 sm:h-9 px-2 sm:px-2.5 rounded-lg bg-red-950/60 hover:bg-red-900/80 border border-red-800/80 text-red-200 text-[11px] sm:text-xs font-bold flex items-center gap-1 transition-colors shrink-0"
+                title="Log Out of Session"
+              >
+                <LogOut className="w-3.5 h-3.5 text-red-400 shrink-0" />
+                <span className="hidden sm:inline">Logout</span>
+              </button>
 
               {/* Mobile Drawer Trigger */}
               <button
