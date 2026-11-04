@@ -45,6 +45,8 @@ export interface Farm {
   ndvi: number;
   lswi: number;
   vhBackscatterDb: number;
+  distanceToRiverMeters?: number;
+  hydrologicalZone?: 'SILABATI_FLOODPLAIN' | 'TRANSITION_ZONE' | 'ELEVATED_UPLAND';
 }
 
 export interface Farmer {

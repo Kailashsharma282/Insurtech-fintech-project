@@ -58,7 +58,7 @@ export default function FarmsListPage() {
               Registered Farm Holdings
             </h1>
             <p className="text-slate-500 text-xs sm:text-sm mt-1">
-              Monitored plots across West Bengal (Nadia, Burdwan, Hooghly, Murshidabad). Total: <strong>{filteredFarms.length} of {SEED_FARMS.length} plots</strong>
+              Monitored agricultural plots across Ghatal Block & West Bengal. Silabati river floodplain plots show low CHF (&lt;0.55), while upland sectors show high CHF. Total: <strong>{filteredFarms.length} of {SEED_FARMS.length} plots</strong>
             </p>
           </div>
 
@@ -99,7 +99,7 @@ export default function FarmsListPage() {
           </div>
 
           <AgriMap
-            farms={filteredFarms.slice(0, 25)}
+            farms={filteredFarms}
             selectedFarmId={selectedFarm.id}
             onSelectFarm={(f) => setSelectedFarm(f)}
             height="320px"
@@ -136,7 +136,8 @@ export default function FarmsListPage() {
               onChange={(e) => setDistrictFilter(e.target.value)}
               className="w-full py-2.5 px-3 rounded-xl border border-slate-300 bg-white focus:outline-none focus:ring-1 focus:ring-blue-500"
             >
-              <option value="ALL">All Districts (West Bengal)</option>
+              <option value="ALL">All Districts / Pilot Blocks</option>
+              <option value="Paschim Medinipur">Paschim Medinipur (Ghatal Block — 40 Plots)</option>
               <option value="Nadia">Nadia District</option>
               <option value="Burdwan">Burdwan District</option>
               <option value="Hooghly">Hooghly District</option>

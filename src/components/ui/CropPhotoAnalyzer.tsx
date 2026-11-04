@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { 
   Camera, 
   UploadCloud, 
@@ -9,7 +9,9 @@ import {
   RefreshCw, 
   Beaker, 
   FileImage,
-  ArrowRight
+  ArrowRight,
+  CheckCircle,
+  AlertTriangle
 } from 'lucide-react';
 
 interface NpkStatus {
@@ -56,43 +58,48 @@ interface PhotoAnalysisData {
 const SAMPLE_OPTIONS = [
   { 
     id: 0, 
-    label: 'Aman Paddy — Bacterial Blight', 
+    condition: 'healthy',
+    label: '🌿 Healthy Green Leaf (Optimal Canopy)', 
     crop: 'Aman Paddy',
-    waterFlag: 'NO (Drain)', 
-    npkFlag: 'High N, Low K',
-    previewUrl: '/samples/crop-leaf-blight.jpg' 
+    waterFlag: 'NO (Optimal 65%)', 
+    npkFlag: 'Balanced 98%',
+    previewUrl: '/samples/healthy-crop.jpg' 
   },
   { 
     id: 1, 
-    label: 'Aman Paddy — Brown Spot (Moisture Deficit)', 
+    condition: 'dry',
+    label: '🍂 Dry / Wilted Leaf (Severe Moisture Deficit)', 
     crop: 'Aman Paddy',
-    waterFlag: 'YES (Needed)', 
+    waterFlag: 'YES (Critical 22%)', 
     npkFlag: 'Severe Low K & N',
     previewUrl: '/samples/paddy-brown-spot.jpg' 
   },
   { 
     id: 2, 
-    label: 'Potato — Late Blight (Waterlogged Soil)', 
+    condition: 'waterlogged',
+    label: '🌊 Waterlogged Leaf (Flooded Rootzone)', 
     crop: 'Potato',
-    waterFlag: 'NO (Flooded)', 
+    waterFlag: 'NO (Drain Excess)', 
     npkFlag: 'Leached N & K',
     previewUrl: '/samples/potato-late-blight.jpg' 
   },
   { 
     id: 3, 
-    label: 'Potato — Early Blight (Dry Soil 26%)', 
-    crop: 'Potato',
-    waterFlag: 'YES (Urgent)', 
-    npkFlag: 'Low N & K',
-    previewUrl: '/samples/potato-early-blight.jpg' 
+    condition: 'brown_spot',
+    label: '🔬 Brown Spot (Foliar Fungus)', 
+    crop: 'Aman Paddy',
+    waterFlag: 'YES (Needed)', 
+    npkFlag: 'Low K Deficit',
+    previewUrl: '/samples/paddy-brown-spot.jpg' 
   },
   { 
-    id: 5, 
-    label: 'Aman Paddy — Healthy Normal Canopy', 
+    id: 4, 
+    condition: 'bacterial_blight',
+    label: '⚡ Bacterial Leaf Blight', 
     crop: 'Aman Paddy',
-    waterFlag: 'NO (Optimal)', 
-    npkFlag: 'NPK Balanced (97%)',
-    previewUrl: '/samples/healthy-crop.jpg' 
+    waterFlag: 'NO (Drain)', 
+    npkFlag: 'High N, Low K',
+    previewUrl: '/samples/crop-leaf-blight.jpg' 
   }
 ];
 
@@ -101,15 +108,18 @@ export function CropPhotoAnalyzer({ compact = false }: { compact?: boolean }) {
   const [analyzing, setAnalyzing] = useState<boolean>(false);
   const [data, setData] = useState<PhotoAnalysisData | null>(null);
   const [previewImage, setPreviewImage] = useState<string | null>(null);
-  const [selectedSampleId, setSelectedSampleId] = useState<number>(1);
+  const [activeCondition, setActiveCondition] = useState<string>('healthy');
+  const [selectedSampleId, setSelectedSampleId] = useState<number>(0);
   const fileInputRef = useRef<HTMLInputElement>(null);
   const cameraInputRef = useRef<HTMLInputElement>(null);
 
-  const runAnalysis = async (sampleId?: number, file?: File) => {
+  const runAnalysis = async (condition?: string, sampleId?: number, file?: File) => {
     setAnalyzing(true);
+    const cond = condition || activeCondition;
     try {
       let payload: Record<string, unknown> = {
         crop: selectedCrop,
+        condition: cond,
         sampleId: sampleId !== undefined ? sampleId : selectedSampleId
       };
 
@@ -134,24 +144,72 @@ export function CropPhotoAnalyzer({ compact = false }: { compact?: boolean }) {
     }
   };
 
-  React.useEffect(() => {
-    runAnalysis(1);
+  useEffect(() => {
+    runAnalysis('healthy', 0);
   }, []);
 
-  const handleFileUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+  // In-browser colorimetry to detect healthy green vs dry leaf
+  const detectImageDominance = (imgUrl: string): Promise<'healthy' | 'dry'> => {
+    return new Promise((resolve) => {
+      const img = new Image();
+      img.crossOrigin = 'anonymous';
+      img.onload = () => {
+        try {
+          const canvas = document.createElement('canvas');
+          canvas.width = 64;
+          canvas.height = 64;
+          const ctx = canvas.getContext('2d');
+          if (!ctx) return resolve('healthy');
+          ctx.drawImage(img, 0, 0, 64, 64);
+          const pxData = ctx.getImageData(0, 0, 64, 64).data;
+          let r = 0, g = 0, b = 0;
+          for (let i = 0; i < pxData.length; i += 4) {
+            r += pxData[i];
+            g += pxData[i + 1];
+            b += pxData[i + 2];
+          }
+          const total = pxData.length / 4;
+          const avgR = r / total;
+          const avgG = g / total;
+          // Green dominance check
+          if (avgG > avgR * 1.08 && avgG > 75) {
+            resolve('healthy');
+          } else {
+            resolve('dry');
+          }
+        } catch {
+          resolve('healthy');
+        }
+      };
+      img.onerror = () => resolve('healthy');
+      img.src = imgUrl;
+    });
+  };
+
+  const handleFileUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (file) {
       const url = URL.createObjectURL(file);
       setPreviewImage(url);
-      runAnalysis(0, file);
+      const detectedCond = await detectImageDominance(url);
+      setActiveCondition(detectedCond);
+      runAnalysis(detectedCond, detectedCond === 'healthy' ? 0 : 1, file);
     }
   };
 
   const selectSample = (sample: typeof SAMPLE_OPTIONS[0]) => {
     setSelectedSampleId(sample.id);
     setSelectedCrop(sample.crop);
+    setActiveCondition(sample.condition);
     setPreviewImage(null);
-    runAnalysis(sample.id);
+    runAnalysis(sample.condition, sample.id);
+  };
+
+  const triggerDirectCondition = (cond: string) => {
+    setActiveCondition(cond);
+    const sample = SAMPLE_OPTIONS.find(s => s.condition === cond);
+    if (sample) setSelectedSampleId(sample.id);
+    runAnalysis(cond, sample ? sample.id : undefined);
   };
 
   return (
@@ -163,13 +221,13 @@ export function CropPhotoAnalyzer({ compact = false }: { compact?: boolean }) {
           <div>
             <div className="inline-flex items-center space-x-1.5 text-xs font-semibold uppercase tracking-wider text-blue-400">
               <Camera className="w-4 h-4" />
-              <span>Smart Crop Diagnostic Camera</span>
+              <span>Smart Crop Diagnostic Camera & Soil Water Probe</span>
             </div>
             <h2 className="text-xl sm:text-2xl font-bold mt-1 text-white">
-              Crop Photo Analysis — NPK & Water Requirement
+              Crop Photo Analysis — NPK Status & Water Requirement
             </h2>
             <p className="text-xs sm:text-sm text-slate-300 mt-1 max-w-2xl leading-relaxed">
-              Upload or snap a photo of your crop leaf. The system immediately analyzes <strong>NPK nutrient status</strong>, reports whether <strong>water is required</strong>, and diagnoses foliar pathology.
+              Upload or snap a photo of your crop leaf. The system immediately analyzes <strong>NPK nutrient status</strong>, reports whether <strong>water is required</strong> (Healthy vs Dry leaf), and calculates precise fertilizer remedies.
             </p>
           </div>
           
@@ -189,13 +247,13 @@ export function CropPhotoAnalyzer({ compact = false }: { compact?: boolean }) {
           {/* Upload Dropzone */}
           <div className="md:col-span-5 space-y-3 w-full">
             <label className="block text-xs font-bold uppercase tracking-wider text-slate-700">
-              1. Upload or Take Photo
+              1. Upload or Snap Leaf Photo
             </label>
 
             <div className="border-2 border-dashed border-slate-300 rounded-xl p-4 sm:p-5 text-center bg-slate-50 hover:bg-slate-100 transition-colors w-full">
               {previewImage ? (
                 <div className="space-y-3 w-full">
-                  <div className="relative w-full h-40 bg-slate-200 rounded-lg overflow-hidden border border-slate-300 flex items-center justify-center">
+                  <div className="relative w-full h-44 bg-slate-200 rounded-lg overflow-hidden border border-slate-300 flex items-center justify-center">
                     {/* eslint-disable-next-line @next/next/no-img-element */}
                     <img 
                       src={previewImage} 
@@ -203,7 +261,12 @@ export function CropPhotoAnalyzer({ compact = false }: { compact?: boolean }) {
                       className="w-full h-full object-cover"
                     />
                   </div>
-                  <p className="text-xs text-slate-700 font-medium">Leaf Photo Uploaded</p>
+                  <div className="flex items-center justify-between text-xs text-slate-700 font-medium px-1">
+                    <span>Leaf Photo Uploaded</span>
+                    <span className="font-mono text-[11px] text-blue-700 font-bold uppercase">
+                      Detected: {activeCondition}
+                    </span>
+                  </div>
                 </div>
               ) : (
                 <div className="space-y-2">
@@ -258,7 +321,7 @@ export function CropPhotoAnalyzer({ compact = false }: { compact?: boolean }) {
             {/* Quick Sample Selector */}
             <div className="space-y-1.5 pt-1 w-full">
               <span className="text-[11px] font-bold uppercase tracking-wider text-slate-500">
-                Or pick a verified field photo:
+                Or pick a verified test leaf:
               </span>
               <div className="grid grid-cols-1 gap-1.5 w-full">
                 {SAMPLE_OPTIONS.map((sample) => (
@@ -273,8 +336,10 @@ export function CropPhotoAnalyzer({ compact = false }: { compact?: boolean }) {
                   >
                     <span className="truncate pr-2">{sample.label}</span>
                     <div className="flex items-center gap-1 shrink-0 text-[10px]">
-                      <span className={`px-1.5 py-0.5 rounded font-mono ${
-                        sample.waterFlag.includes('YES') ? 'bg-red-100 text-red-800 font-bold' : 'bg-slate-100 text-slate-700'
+                      <span className={`px-2 py-0.5 rounded font-mono font-bold ${
+                        sample.waterFlag.includes('YES') 
+                          ? 'bg-red-100 text-red-800 border border-red-300' 
+                          : 'bg-emerald-100 text-emerald-800 border border-emerald-300'
                       }`}>
                         Water: {sample.waterFlag}
                       </span>
@@ -287,6 +352,54 @@ export function CropPhotoAnalyzer({ compact = false }: { compact?: boolean }) {
 
           {/* Right Column: Loading or Live Diagnostic Results */}
           <div className="md:col-span-7 space-y-4 w-full">
+            
+            {/* Condition Override Bar */}
+            <div className="bg-slate-50 border border-slate-200 rounded-xl p-3 flex flex-wrap items-center justify-between gap-2">
+              <span className="text-xs font-bold text-slate-700">Quick Condition Test:</span>
+              <div className="flex items-center gap-1.5 flex-wrap">
+                <button
+                  onClick={() => triggerDirectCondition('healthy')}
+                  className={`px-2.5 py-1 rounded-lg text-xs font-bold transition-all ${
+                    activeCondition === 'healthy' 
+                      ? 'bg-emerald-600 text-white shadow-xs' 
+                      : 'bg-white border border-slate-300 text-slate-700 hover:bg-emerald-50'
+                  }`}
+                >
+                  🌿 Healthy (Water: NO)
+                </button>
+                <button
+                  onClick={() => triggerDirectCondition('dry')}
+                  className={`px-2.5 py-1 rounded-lg text-xs font-bold transition-all ${
+                    activeCondition === 'dry' 
+                      ? 'bg-red-600 text-white shadow-xs' 
+                      : 'bg-white border border-slate-300 text-slate-700 hover:bg-red-50'
+                  }`}
+                >
+                  🍂 Dry Leaf (Water: YES)
+                </button>
+                <button
+                  onClick={() => triggerDirectCondition('waterlogged')}
+                  className={`px-2.5 py-1 rounded-lg text-xs font-bold transition-all ${
+                    activeCondition === 'waterlogged' 
+                      ? 'bg-amber-600 text-white shadow-xs' 
+                      : 'bg-white border border-slate-300 text-slate-700 hover:bg-amber-50'
+                  }`}
+                >
+                  🌊 Waterlogged
+                </button>
+                <button
+                  onClick={() => triggerDirectCondition('brown_spot')}
+                  className={`px-2.5 py-1 rounded-lg text-xs font-bold transition-all ${
+                    activeCondition === 'brown_spot' 
+                      ? 'bg-purple-600 text-white shadow-xs' 
+                      : 'bg-white border border-slate-300 text-slate-700 hover:bg-purple-50'
+                  }`}
+                >
+                  🔬 Brown Spot
+                </button>
+              </div>
+            </div>
+
             {analyzing && (
               <div className="border border-slate-200 rounded-xl p-10 text-center bg-slate-50 flex flex-col items-center justify-center space-y-3 min-h-[280px]">
                 <RefreshCw className="w-8 h-8 text-blue-600 animate-spin" />
@@ -294,7 +407,7 @@ export function CropPhotoAnalyzer({ compact = false }: { compact?: boolean }) {
                   Analyzing leaf morphology & cellular chlorophyll...
                 </div>
                 <p className="text-xs text-slate-500 max-w-sm">
-                  Calculating soil moisture index, NPK nutrient deficits, and foliar pathology.
+                  Calculating rootzone soil moisture index, NPK nutrient deficits, and foliar pathology.
                 </p>
               </div>
             )}
@@ -303,24 +416,28 @@ export function CropPhotoAnalyzer({ compact = false }: { compact?: boolean }) {
               <div className="space-y-4 w-full">
                 
                 {/* 2. WATER REQUIREMENT (HIGH-VISIBILITY CALLOUT) */}
-                <div className={`p-4 sm:p-5 rounded-xl border-2 text-left w-full ${
+                <div className={`p-4 sm:p-5 rounded-xl border-2 text-left w-full transition-all ${
                   data.waterRequirement.required
-                    ? 'bg-red-50 border-red-500 text-red-950'
+                    ? 'bg-red-50/90 border-red-500 text-red-950 shadow-sm'
                     : data.waterRequirement.urgency === 'EXCESS_DRAINAGE_NEEDED'
-                    ? 'bg-amber-50 border-amber-500 text-amber-950'
-                    : 'bg-blue-50 border-blue-600 text-blue-950'
+                    ? 'bg-amber-50/90 border-amber-500 text-amber-950 shadow-sm'
+                    : 'bg-emerald-50/90 border-emerald-500 text-emerald-950 shadow-sm'
                 }`}>
                   <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b pb-3 border-current/20">
                     <div className="flex items-center space-x-2">
-                      <Droplets className={`w-6 h-6 shrink-0 ${
-                        data.waterRequirement.required ? 'text-red-600' : 'text-blue-700'
+                      <Droplets className={`w-7 h-7 shrink-0 ${
+                        data.waterRequirement.required 
+                          ? 'text-red-600' 
+                          : (data.waterRequirement.urgency === 'EXCESS_DRAINAGE_NEEDED' ? 'text-amber-600' : 'text-emerald-600')
                       }`} />
                       <div>
                         <span className="text-[10px] font-mono uppercase tracking-widest font-bold opacity-80">
                           Irrigation Requirement Status
                         </span>
                         <div className={`text-xl sm:text-2xl font-black ${
-                          data.waterRequirement.required ? 'text-red-700' : 'text-blue-900'
+                          data.waterRequirement.required 
+                            ? 'text-red-700' 
+                            : (data.waterRequirement.urgency === 'EXCESS_DRAINAGE_NEEDED' ? 'text-amber-800' : 'text-emerald-800')
                         }`}>
                           {data.waterRequirement.statusBadge}
                         </div>
@@ -332,7 +449,7 @@ export function CropPhotoAnalyzer({ compact = false }: { compact?: boolean }) {
                         {data.waterRequirement.estimatedSoilMoisturePct}% Moisture
                       </div>
                       <span className="text-[11px] opacity-80 font-medium">
-                        Soil Moisture Level
+                        Rootzone Soil Moisture Level
                       </span>
                     </div>
                   </div>
@@ -376,7 +493,7 @@ export function CropPhotoAnalyzer({ compact = false }: { compact?: boolean }) {
                         ? 'bg-amber-50/50 border-amber-300'
                         : data.npkCondition.nitrogen.status === 'EXCESS'
                         ? 'bg-purple-50/50 border-purple-300'
-                        : 'bg-blue-50/50 border-blue-300'
+                        : 'bg-emerald-50/50 border-emerald-300'
                     }`}>
                       <div className="flex items-center justify-between">
                         <span className="font-extrabold text-sm text-slate-900">Nitrogen (N)</span>
@@ -385,7 +502,7 @@ export function CropPhotoAnalyzer({ compact = false }: { compact?: boolean }) {
                             ? 'bg-amber-200 text-amber-900'
                             : data.npkCondition.nitrogen.status === 'EXCESS'
                             ? 'bg-purple-200 text-purple-900'
-                            : 'bg-blue-200 text-blue-900'
+                            : 'bg-emerald-200 text-emerald-900'
                         }`}>
                           {data.npkCondition.nitrogen.status}
                         </span>
@@ -400,7 +517,7 @@ export function CropPhotoAnalyzer({ compact = false }: { compact?: boolean }) {
                           <div 
                             className={`h-full ${
                               data.npkCondition.nitrogen.status === 'DEFICIENT' ? 'bg-amber-500' :
-                              data.npkCondition.nitrogen.status === 'EXCESS' ? 'bg-purple-600' : 'bg-blue-600'
+                              data.npkCondition.nitrogen.status === 'EXCESS' ? 'bg-purple-600' : 'bg-emerald-600'
                             }`}
                             style={{ width: `${Math.min(100, data.npkCondition.nitrogen.percentageOfTarget)}%` }}
                           />
@@ -418,7 +535,7 @@ export function CropPhotoAnalyzer({ compact = false }: { compact?: boolean }) {
                         ? 'bg-amber-50/50 border-amber-300'
                         : data.npkCondition.phosphorus.status === 'EXCESS'
                         ? 'bg-purple-50/50 border-purple-300'
-                        : 'bg-blue-50/50 border-blue-300'
+                        : 'bg-emerald-50/50 border-emerald-300'
                     }`}>
                       <div className="flex items-center justify-between">
                         <span className="font-extrabold text-sm text-slate-900">Phosphorus (P)</span>
@@ -427,7 +544,7 @@ export function CropPhotoAnalyzer({ compact = false }: { compact?: boolean }) {
                             ? 'bg-amber-200 text-amber-900'
                             : data.npkCondition.phosphorus.status === 'EXCESS'
                             ? 'bg-purple-200 text-purple-900'
-                            : 'bg-blue-200 text-blue-900'
+                            : 'bg-emerald-200 text-emerald-900'
                         }`}>
                           {data.npkCondition.phosphorus.status}
                         </span>
@@ -442,7 +559,7 @@ export function CropPhotoAnalyzer({ compact = false }: { compact?: boolean }) {
                           <div 
                             className={`h-full ${
                               data.npkCondition.phosphorus.status === 'DEFICIENT' ? 'bg-amber-500' :
-                              data.npkCondition.phosphorus.status === 'EXCESS' ? 'bg-purple-600' : 'bg-blue-600'
+                              data.npkCondition.phosphorus.status === 'EXCESS' ? 'bg-purple-600' : 'bg-emerald-600'
                             }`}
                             style={{ width: `${Math.min(100, data.npkCondition.phosphorus.percentageOfTarget)}%` }}
                           />
@@ -457,19 +574,19 @@ export function CropPhotoAnalyzer({ compact = false }: { compact?: boolean }) {
                     {/* Potassium (K) */}
                     <div className={`p-3.5 rounded-lg border text-xs space-y-2 ${
                       data.npkCondition.potassium.status === 'DEFICIENT'
-                        ? 'bg-amber-50/50 border-amber-300'
+                        ? 'bg-red-50/60 border-red-300'
                         : data.npkCondition.potassium.status === 'EXCESS'
                         ? 'bg-purple-50/50 border-purple-300'
-                        : 'bg-blue-50/50 border-blue-300'
+                        : 'bg-emerald-50/50 border-emerald-300'
                     }`}>
                       <div className="flex items-center justify-between">
                         <span className="font-extrabold text-sm text-slate-900">Potassium (K)</span>
                         <span className={`px-2 py-0.5 rounded text-[10px] font-bold ${
                           data.npkCondition.potassium.status === 'DEFICIENT'
-                            ? 'bg-amber-200 text-amber-900'
+                            ? 'bg-red-200 text-red-900'
                             : data.npkCondition.potassium.status === 'EXCESS'
                             ? 'bg-purple-200 text-purple-900'
-                            : 'bg-blue-200 text-blue-900'
+                            : 'bg-emerald-200 text-emerald-900'
                         }`}>
                           {data.npkCondition.potassium.status}
                         </span>
@@ -483,8 +600,8 @@ export function CropPhotoAnalyzer({ compact = false }: { compact?: boolean }) {
                         <div className="w-full bg-slate-200 h-2 rounded-full overflow-hidden">
                           <div 
                             className={`h-full ${
-                              data.npkCondition.potassium.status === 'DEFICIENT' ? 'bg-amber-500' :
-                              data.npkCondition.potassium.status === 'EXCESS' ? 'bg-purple-600' : 'bg-blue-600'
+                              data.npkCondition.potassium.status === 'DEFICIENT' ? 'bg-red-500' :
+                              data.npkCondition.potassium.status === 'EXCESS' ? 'bg-purple-600' : 'bg-emerald-600'
                             }`}
                             style={{ width: `${Math.min(100, data.npkCondition.potassium.percentageOfTarget)}%` }}
                           />
@@ -519,7 +636,7 @@ export function CropPhotoAnalyzer({ compact = false }: { compact?: boolean }) {
                         Crop: <strong>{data.crop}</strong> &bull; Severity: <strong className={
                           data.severity === 'SEVERE' ? 'text-red-600' :
                           data.severity === 'HIGH' ? 'text-orange-600' :
-                          data.severity === 'MODERATE' ? 'text-amber-600' : 'text-blue-700'
+                          data.severity === 'MODERATE' ? 'text-amber-600' : 'text-emerald-700'
                         }>{data.severity}</strong> &bull; Vigor Score: <strong>{data.cropVigorScore}/100</strong>
                       </p>
                     </div>

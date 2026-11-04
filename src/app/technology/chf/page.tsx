@@ -17,6 +17,7 @@ import {
   ArrowRight
 } from 'lucide-react';
 import { computeGhatalChf2025, GhatalRawObservations, GHATAL_2025_BOUNDS } from '@/lib/algorithms/ghatal-chf';
+import { EarthEngineTelemetry } from '@/components/ui/EarthEngineTelemetry';
 
 export default function ChfEnginePage() {
   // Interactive observations calibrated for Ghatal Block, West Bengal (2025 Kharif season)
@@ -140,6 +141,9 @@ export default function ChfEnginePage() {
             </Link>
           </div>
         </div>
+
+        {/* Real-Time Google Earth Engine Multi-Spectral Telemetry */}
+        <EarthEngineTelemetry />
 
         {/* Live Calculation Banner - Simple Solid Design */}
         <div className="p-4 sm:p-6 rounded-xl bg-white border border-slate-300 shadow-sm space-y-5">

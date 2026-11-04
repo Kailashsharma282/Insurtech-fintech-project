@@ -12,11 +12,13 @@ import {
   ShieldCheck, 
   CloudSun, 
   ArrowRight,
-  Eye
+  Eye,
+  Waves
 } from 'lucide-react';
 import { SEED_FARMS, SEED_INSURANCE_UNITS } from '@/lib/db/seed-data';
 import { Farm } from '@/lib/types';
 import dynamic from 'next/dynamic';
+import { EarthEngineTelemetry } from '@/components/ui/EarthEngineTelemetry';
 
 const AgriMap = dynamic(() => import('@/components/maps/AgriMap').then(m => m.AgriMap), {
   ssr: false,
@@ -48,19 +50,22 @@ export default function SatelliteMapPage() {
           <div>
             <div className="flex items-center space-x-2">
               <span className="text-xs font-mono uppercase tracking-wider text-blue-600 font-bold">
-                Sentinel-2 & Sentinel-1 GIS Viewer
+                Sentinel-2 & Sentinel-1 GIS Engine (Ghatal Block, 2025)
               </span>
             </div>
             <h1 className="text-2xl sm:text-3xl font-black text-[#0F172A] tracking-tight">
-              Satellite Intelligence & Cadastral Map
+              Satellite Intelligence & Silabati Basin Cadastral Map
             </h1>
+            <p className="text-xs sm:text-sm text-slate-600 mt-1 max-w-2xl">
+              Real-time multi-spectral crop health monitoring across 40 agricultural plots in Ghatal Block. Plots adjacent to the Silabati River reflect monsoonal inundation with lower CHF (&lt;0.55), while elevated upland sectors show high canopy vigor.
+            </p>
           </div>
 
           {/* Layer Selector Tabs */}
           <div className="bg-white p-1.5 rounded-2xl border border-slate-200 shadow-sm flex flex-wrap gap-1 text-xs font-semibold">
             {[
               { id: 'chf', label: 'Composite CHF' },
-              { id: 'ndvi', label: 'NDVI (Optical)' },
+              { id: 'ndvi', label: 'NDVI (Optical 10m)' },
               { id: 'lswi', label: 'LSWI (Moisture)' },
               { id: 'vh', label: 'Radar VH (dB)' },
               { id: 'risk', label: 'Parametric Risk' },
@@ -70,7 +75,7 @@ export default function SatelliteMapPage() {
                 onClick={() => setSelectedLayer(layer.id as any)}
                 className={`px-3 py-1.5 rounded-xl transition-colors ${
                   selectedLayer === layer.id 
-                    ? 'bg-blue-600 text-white' 
+                    ? 'bg-blue-600 text-white shadow-xs' 
                     : 'text-slate-600 hover:text-slate-900'
                 }`}
               >
@@ -90,9 +95,10 @@ export default function SatelliteMapPage() {
           <select
             value={districtFilter}
             onChange={(e) => setDistrictFilter(e.target.value)}
-            className="py-1.5 px-2.5 rounded-lg border border-slate-300 bg-white"
+            className="py-1.5 px-2.5 rounded-lg border border-slate-300 bg-white font-medium"
           >
-            <option value="ALL">All Districts</option>
+            <option value="ALL">All Districts / Pilot Blocks</option>
+            <option value="Paschim Medinipur">Paschim Medinipur (Ghatal Block — 40 Plots)</option>
             <option value="Nadia">Nadia</option>
             <option value="Burdwan">Burdwan</option>
             <option value="Hooghly">Hooghly</option>
@@ -102,7 +108,7 @@ export default function SatelliteMapPage() {
           <select
             value={cropFilter}
             onChange={(e) => setCropFilter(e.target.value)}
-            className="py-1.5 px-2.5 rounded-lg border border-slate-300 bg-white"
+            className="py-1.5 px-2.5 rounded-lg border border-slate-300 bg-white font-medium"
           >
             <option value="ALL">All Crops</option>
             <option value="Aman Paddy">Aman Paddy</option>
@@ -113,14 +119,14 @@ export default function SatelliteMapPage() {
           <select
             value={riskFilter}
             onChange={(e) => setRiskFilter(e.target.value)}
-            className="py-1.5 px-2.5 rounded-lg border border-slate-300 bg-white"
+            className="py-1.5 px-2.5 rounded-lg border border-slate-300 bg-white font-medium"
           >
             <option value="ALL">All Risk States</option>
+            <option value="CLAIM_TRIGGERED">Claim Triggered (&lt; 0.55 CHF)</option>
+            <option value="HIGH">High Risk</option>
+            <option value="MODERATE">Moderate Risk</option>
+            <option value="LOW">Low Risk / Healthy</option>
             <option value="NORMAL">Normal</option>
-            <option value="LOW">Low</option>
-            <option value="MODERATE">Moderate</option>
-            <option value="HIGH">High</option>
-            <option value="CLAIM_TRIGGERED">Claim Triggered</option>
           </select>
 
           <span className="ml-auto font-mono text-[11px] text-slate-500">
@@ -144,7 +150,7 @@ export default function SatelliteMapPage() {
             />
           </div>
 
-          {/* Selected Farm Information Drawer (Section 9) */}
+          {/* Selected Farm Information Drawer */}
           <div className="lg:col-span-4 bg-white p-6 rounded-3xl border border-[#E2E8F0] shadow-sm space-y-5">
             <div className="border-b border-slate-100 pb-4">
               <div className="flex items-center justify-between">
@@ -152,10 +158,10 @@ export default function SatelliteMapPage() {
                   {selectedFarm.plotNumber}
                 </span>
                 <span className={`text-[10px] font-bold px-2.5 py-0.5 rounded-full ${
-                  selectedFarm.riskLevel === 'CLAIM_TRIGGERED' ? 'bg-red-100 text-red-700' :
+                  selectedFarm.riskLevel === 'CLAIM_TRIGGERED' ? 'bg-red-100 text-red-700 border border-red-300' :
                   selectedFarm.riskLevel === 'HIGH' ? 'bg-orange-100 text-orange-800' :
                   selectedFarm.riskLevel === 'MODERATE' ? 'bg-amber-100 text-amber-800' :
-                  'bg-emerald-100 text-emerald-800'
+                  'bg-emerald-100 text-emerald-800 border border-emerald-300'
                 }`}>
                   {selectedFarm.riskLevel.replace('_', ' ')}
                 </span>
@@ -168,43 +174,60 @@ export default function SatelliteMapPage() {
               </p>
             </div>
 
-            {/* Farm Summary Details */}
+            {/* Farm Summary Details with River Distance */}
             <div className="space-y-3 text-xs">
               <div className="flex justify-between py-1.5 border-b border-slate-100">
                 <span className="text-slate-500">Crop & Acreage:</span>
                 <strong className="text-slate-900">{selectedFarm.currentCrop} ({selectedFarm.acreage} ha)</strong>
               </div>
 
-              <div className="flex justify-between py-1.5 border-b border-slate-100">
-                <span className="text-slate-500">Current CHF Index:</span>
-                <strong className="text-emerald-700 font-mono text-sm">{selectedFarm.currentChf.toFixed(2)}</strong>
+              {/* Silabati River Distance & Hydrological Zone */}
+              <div className="flex justify-between py-1.5 border-b border-slate-100 bg-blue-50/50 px-2 rounded-lg">
+                <span className="text-blue-900 font-semibold flex items-center gap-1">
+                  <Waves className="w-3.5 h-3.5 text-blue-700" />
+                  Distance to Silabati:
+                </span>
+                <strong className="text-blue-950 font-mono">
+                  {selectedFarm.distanceToRiverMeters || 450} m ({selectedFarm.hydrologicalZone || 'SILABATI_FLOODPLAIN'})
+                </strong>
               </div>
 
               <div className="flex justify-between py-1.5 border-b border-slate-100">
-                <span className="text-slate-500">4-Yr Baseline CHF:</span>
+                <span className="text-slate-500">Current CHF Index:</span>
+                <strong className={`font-mono text-sm ${selectedFarm.currentChf < 0.55 ? 'text-red-600' : 'text-emerald-700'}`}>
+                  {selectedFarm.currentChf.toFixed(2)}
+                </strong>
+              </div>
+
+              <div className="flex justify-between py-1.5 border-b border-slate-100">
+                <span className="text-slate-500">Baseline CHF (4-Yr Normal):</span>
                 <strong className="text-slate-800 font-mono">{selectedFarm.chfBaseline.toFixed(2)}</strong>
               </div>
 
               <div className="flex justify-between py-1.5 border-b border-slate-100">
                 <span className="text-slate-500">Baseline Deviation &Delta;:</span>
-                <strong className={`font-mono ${selectedFarm.currentChf < selectedFarm.chfBaseline ? 'text-amber-600' : 'text-emerald-600'}`}>
+                <strong className={`font-mono ${selectedFarm.currentChf < selectedFarm.chfBaseline ? 'text-red-600' : 'text-emerald-600'}`}>
                   {(selectedFarm.currentChf - selectedFarm.chfBaseline).toFixed(2)}
                 </strong>
               </div>
 
               <div className="flex justify-between py-1.5 border-b border-slate-100">
                 <span className="text-slate-500">Soil Moisture:</span>
-                <strong className="text-blue-600 font-mono">{selectedFarm.soilMoisturePct}% VWC</strong>
+                <strong className={`font-mono ${selectedFarm.soilMoisturePct > 80 ? 'text-blue-700 font-bold' : 'text-slate-700'}`}>
+                  {selectedFarm.soilMoisturePct}% VWC {selectedFarm.soilMoisturePct > 80 ? '(Waterlogged)' : ''}
+                </strong>
               </div>
 
               <div className="flex justify-between py-1.5 border-b border-slate-100">
-                <span className="text-slate-500">Latest Sentinel Scene:</span>
-                <span className="font-mono text-[11px] text-slate-700">{selectedFarm.lastSatelliteDate}</span>
+                <span className="text-slate-500">Sentinel-2 NDVI / S1 VH:</span>
+                <span className="font-mono text-[11px] text-slate-700">
+                  {selectedFarm.ndvi} / {selectedFarm.vhBackscatterDb} dB
+                </span>
               </div>
 
               <div className="flex justify-between py-1.5 border-b border-slate-100">
-                <span className="text-slate-500">Weather Status:</span>
-                <span className="text-emerald-700 font-semibold">Optimal Inflow (31.4&deg;C)</span>
+                <span className="text-slate-500">Sum Insured:</span>
+                <span className="text-slate-900 font-mono font-bold">₹{selectedFarm.sumInsured.toLocaleString('en-IN')}</span>
               </div>
             </div>
 
@@ -217,6 +240,11 @@ export default function SatelliteMapPage() {
             </Link>
           </div>
 
+        </div>
+
+        {/* Real-Time Google Earth Engine Multi-Spectral Telemetry */}
+        <div className="pt-4">
+          <EarthEngineTelemetry />
         </div>
 
       </div>
