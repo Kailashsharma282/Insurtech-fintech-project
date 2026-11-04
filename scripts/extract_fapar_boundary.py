@@ -48,3 +48,4 @@ print(f"FAPAR Ghatal Block Area: {cv2.contourArea(largest)}, Vertices: {len(appr
 preview = map_crop.copy()
 cv2.drawContours(preview, [approx], -1, (255, 0, 0), 2) # Blue contour on preview
 cv2.imwrite('scripts/fapar_boundary_preview.png', preview)
+

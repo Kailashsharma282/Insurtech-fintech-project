@@ -4,8 +4,8 @@ import type { NextRequest } from 'next/server';
 export function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
 
-  // For dummy demo mode: Redirect login and register attempts straight to the farmer dashboard
-  if (pathname === '/login' || pathname === '/register') {
+  // Allow /register so farmers can access the new land registration and Banglarbhumi verification desk
+  if (pathname === '/login') {
     const url = request.nextUrl.clone();
     url.pathname = '/farmer/dashboard';
     return NextResponse.redirect(url);

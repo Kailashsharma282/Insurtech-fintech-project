@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, useMemo } from 'react';
+import React, { useState, useMemo, useEffect } from 'react';
 import Link from 'next/link';
 import { 
   Satellite, 
@@ -26,20 +26,33 @@ const AgriMap = dynamic(() => import('@/components/maps/AgriMap').then(m => m.Ag
 });
 
 export default function SatelliteMapPage() {
+  const [farmsList, setFarmsList] = useState<Farm[]>(SEED_FARMS);
   const [selectedLayer, setSelectedLayer] = useState<string>('chf');
   const [districtFilter, setDistrictFilter] = useState<string>('ALL');
   const [cropFilter, setCropFilter] = useState<string>('ALL');
   const [riskFilter, setRiskFilter] = useState<string>('ALL');
   const [selectedFarm, setSelectedFarm] = useState<Farm>(SEED_FARMS[0]);
 
+  useEffect(() => {
+    fetch('/api/farms')
+      .then(res => res.json())
+      .then(data => {
+        if (Array.isArray(data) && data.length > 0) {
+          setFarmsList(data);
+          setSelectedFarm(data[0]);
+        }
+      })
+      .catch(() => {});
+  }, []);
+
   const filteredFarms = useMemo(() => {
-    return SEED_FARMS.filter(f => {
+    return farmsList.filter(f => {
       const matchDist = districtFilter === 'ALL' || f.district.toLowerCase() === districtFilter.toLowerCase();
       const matchCrop = cropFilter === 'ALL' || f.currentCrop.toLowerCase() === cropFilter.toLowerCase();
       const matchRisk = riskFilter === 'ALL' || f.riskLevel === riskFilter;
       return matchDist && matchCrop && matchRisk;
     });
-  }, [districtFilter, cropFilter, riskFilter]);
+  }, [farmsList, districtFilter, cropFilter, riskFilter]);
 
   return (
     <div className="min-h-screen bg-[#F8FAFC] py-8 pb-24 md:pb-12">

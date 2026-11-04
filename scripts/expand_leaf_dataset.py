@@ -85,3 +85,4 @@ for cls, pattern in class_file_patterns.items():
     total_samples += cls_count
 
 print(f"Total dataset size: {total_samples} training images across {len(CLASSES)} classes.")
+

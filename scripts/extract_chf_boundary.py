@@ -49,3 +49,4 @@ with open('scripts/exact_ghatal_chf_boundary.json', 'w') as f:
     json.dump(geo_polygon, f, indent=2)
 
 print(f"Saved {len(geo_polygon)} geo points to scripts/exact_ghatal_chf_boundary.json!")
+

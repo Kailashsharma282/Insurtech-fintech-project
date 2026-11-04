@@ -73,3 +73,4 @@ with open(file_path, 'w', encoding='utf-8', newline='') as f:
     f.write(new_content)
 
 print("SUCCESS: route.ts updated cleanly with fast leaf prediction wiring!")
+

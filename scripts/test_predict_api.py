@@ -48,3 +48,4 @@ print('  Water Status:', data_upload['data']['waterRequirement']['statusBadge'])
 print('  Urgency:', data_upload['data']['waterRequirement']['urgency'])
 print('  Moisture:', data_upload['data']['waterRequirement']['estimatedSoilMoisturePct'])
 print('  Biophysical Metrics:', data_upload['data']['biophysicalMetrics'])
+

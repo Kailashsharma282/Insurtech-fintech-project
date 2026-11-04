@@ -45,3 +45,4 @@ assert new_b != b_content, "Failed to replace in boundaries.ts"
 with open('src/lib/db/boundaries.ts', 'w', encoding='utf-8') as f:
     f.write(new_b)
 print("Updated src/lib/db/boundaries.ts!")
+

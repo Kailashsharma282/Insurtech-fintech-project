@@ -14,3 +14,4 @@ print(f"Lng min: {min(lngs):.6f}, max: {max(lngs):.6f}")
 # Check centroid
 centroid = [np.mean(lats), np.mean(lngs)]
 print(f"Centroid: {centroid[0]:.6f}, {centroid[1]:.6f}")
+

@@ -1,6 +1,7 @@
 'use client';
 
-import React, { useState, useMemo } from 'react';
+import React, { useState, useMemo, useEffect } from 'react';
+import { PlusCircle } from 'lucide-react';
 import Link from 'next/link';
 import { 
   Sprout, 
@@ -31,10 +32,23 @@ export default function FarmsListPage() {
   const [cropFilter, setCropFilter] = useState('ALL');
   const [riskFilter, setRiskFilter] = useState('ALL');
   const [viewMode, setViewMode] = useState<'grid' | 'table'>('grid');
+  const [farmsList, setFarmsList] = useState<Farm[]>(SEED_FARMS);
   const [selectedFarm, setSelectedFarm] = useState<Farm>(SEED_FARMS[0]);
 
+  useEffect(() => {
+    fetch('/api/farms')
+      .then(r => r.json())
+      .then(data => {
+        if (Array.isArray(data) && data.length > 0) {
+          setFarmsList(data);
+          setSelectedFarm(data[0]);
+        }
+      })
+      .catch(() => {});
+  }, []);
+
   const filteredFarms = useMemo(() => {
-    return SEED_FARMS.filter(farm => {
+    return farmsList.filter(farm => {
       const matchesSearch = farm.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
                             farm.plotNumber.toLowerCase().includes(searchQuery.toLowerCase()) ||
                             farm.farmerName.toLowerCase().includes(searchQuery.toLowerCase()) ||
@@ -45,7 +59,7 @@ export default function FarmsListPage() {
 
       return matchesSearch && matchesDistrict && matchesCrop && matchesRisk;
     });
-  }, [searchQuery, districtFilter, cropFilter, riskFilter]);
+  }, [farmsList, searchQuery, districtFilter, cropFilter, riskFilter]);
 
   return (
     <div className="min-h-screen bg-[#F8FAFC] py-10 pb-24 md:pb-12">
@@ -62,7 +76,14 @@ export default function FarmsListPage() {
             </p>
           </div>
 
-          <div className="flex items-center space-x-2">
+          <div className="flex flex-wrap items-center gap-2">
+            <Link
+              href="/register"
+              className="px-3.5 py-2 rounded-xl text-xs font-bold bg-emerald-600 hover:bg-emerald-700 text-white flex items-center space-x-1.5 shadow-sm transition-all"
+            >
+              <PlusCircle className="w-4 h-4" />
+              <span>+ Register New Plot / Farmer</span>
+            </Link>
             <div className="bg-white p-1 rounded-xl border border-slate-200 flex items-center space-x-1 shadow-sm">
               <button
                 onClick={() => setViewMode('grid')}

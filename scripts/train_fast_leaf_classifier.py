@@ -167,3 +167,4 @@ with open(model_pkl_path, 'wb') as f:
     }, f)
 
 print(f"Model saved to {model_pkl_path}!")
+

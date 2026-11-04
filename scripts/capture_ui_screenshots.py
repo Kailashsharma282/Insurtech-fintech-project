@@ -35,3 +35,4 @@ for name, url in pages:
         print(f'FAILED to capture {name}')
 
 print('ALL SCREENSHOTS COMPLETED')
+

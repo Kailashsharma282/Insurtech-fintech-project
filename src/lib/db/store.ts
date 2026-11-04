@@ -43,6 +43,16 @@ class AgriSureStore {
     return this.farms.find(f => f.id === id || f.plotNumber.replace(/[^0-9]/g, '') === id.replace(/[^0-9]/g, ''));
   }
 
+  addFarm(farm: Farm): Farm {
+    const idx = this.farms.findIndex(f => f.id === farm.id);
+    if (idx >= 0) {
+      this.farms[idx] = farm;
+    } else {
+      this.farms.unshift(farm);
+    }
+    return farm;
+  }
+
   // Insurance Units
   getInsuranceUnits(): InsuranceUnit[] {
     return this.insuranceUnits;
