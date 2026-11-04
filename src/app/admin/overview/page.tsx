@@ -120,7 +120,7 @@ export default function AdminOverviewPage() {
             </div>
             <div className="p-3 rounded-2xl bg-[#102820] border border-emerald-800/40">
               <span className="text-slate-400 block text-[10px]">Farms</span>
-              <strong className="text-2xl text-white font-black mt-1 block">40</strong>
+              <strong className="text-2xl text-white font-black mt-1 block">20</strong>
             </div>
             <div className="p-3 rounded-2xl bg-[#102820] border border-emerald-800/40">
               <span className="text-slate-400 block text-[10px]">IoT Devices</span>

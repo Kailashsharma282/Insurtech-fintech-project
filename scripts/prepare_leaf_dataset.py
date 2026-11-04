@@ -166,3 +166,4 @@ total_dataset = h_count + dry_count + bs_count + bb_count + wl_count + nd_count
 print(f"\n[DONE] Dataset preparation complete! Total authentic images: {total_dataset}")
 print(f"Saved into: {DATASET_DIR}")
 print(f"Sample showcase images into: {SAMPLES_DIR}")
+

@@ -26,7 +26,7 @@ const AgriMap = dynamic(() => import('@/components/maps/AgriMap').then(m => m.Ag
 });
 
 export default function SatelliteMapPage() {
-  const [selectedLayer, setSelectedLayer] = useState<'chf' | 'ndvi' | 'lswi' | 'vh' | 'risk'>('chf');
+  const [selectedLayer, setSelectedLayer] = useState<string>('chf');
   const [districtFilter, setDistrictFilter] = useState<string>('ALL');
   const [cropFilter, setCropFilter] = useState<string>('ALL');
   const [riskFilter, setRiskFilter] = useState<string>('ALL');
@@ -57,18 +57,19 @@ export default function SatelliteMapPage() {
               Satellite Intelligence & Silabati Basin Cadastral Map
             </h1>
             <p className="text-xs sm:text-sm text-slate-600 mt-1 max-w-2xl">
-              Real-time multi-spectral crop health monitoring across 40 agricultural plots in Ghatal Block. Plots adjacent to the Silabati River reflect monsoonal inundation with lower CHF (&lt;0.55), while elevated upland sectors show high canopy vigor.
+              Real-time multi-spectral crop health monitoring across 20 agricultural plots in Ghatal Block. Plots adjacent to the Silabati River reflect monsoonal inundation with lower CHF (&lt;0.55), while elevated upland sectors show high canopy vigor.
             </p>
           </div>
 
           {/* Layer Selector Tabs */}
           <div className="bg-white p-1.5 rounded-2xl border border-slate-200 shadow-sm flex flex-wrap gap-1 text-xs font-semibold">
             {[
-              { id: 'chf', label: 'Composite CHF' },
-              { id: 'ndvi', label: 'NDVI (Optical 10m)' },
-              { id: 'lswi', label: 'LSWI (Moisture)' },
-              { id: 'vh', label: 'Radar VH (dB)' },
-              { id: 'risk', label: 'Parametric Risk' },
+              { id: 'chf', label: '🌱 Ghatal CHF 2025' },
+              { id: 'ndvi', label: '🌿 NDVI' },
+              { id: 'rainfall', label: '🌧️ Rainfall (CHIRPS)' },
+              { id: 'gdd', label: '☀️ GDD (ERA5)' },
+              { id: 'fapar', label: '🌾 FAPAR (%)' },
+              { id: 'risk', label: '🛡️ Parametric Risk' },
             ].map(layer => (
               <button
                 key={layer.id}

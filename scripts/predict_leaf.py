@@ -96,3 +96,4 @@ if __name__ == '__main__':
         img_path = os.path.join(os.path.dirname(__file__), '..', 'public', 'samples', 'leaves', 'healthy_leaf_1.jpg')
     res = predict_image(img_path)
     print(json.dumps(res, indent=2))
+

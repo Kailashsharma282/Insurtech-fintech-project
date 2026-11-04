@@ -137,7 +137,7 @@ export default function FarmsListPage() {
               className="w-full py-2.5 px-3 rounded-xl border border-slate-300 bg-white focus:outline-none focus:ring-1 focus:ring-blue-500"
             >
               <option value="ALL">All Districts / Pilot Blocks</option>
-              <option value="Purba Medinipur">Purba Medinipur (Ghatal Block — 40 Plots)</option>
+              <option value="Purba Medinipur">Purba Medinipur (Ghatal Block — 20 Plots)</option>
               <option value="Nadia">Nadia District</option>
               <option value="Burdwan">Burdwan District</option>
               <option value="Hooghly">Hooghly District</option>
