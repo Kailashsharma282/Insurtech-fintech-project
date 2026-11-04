@@ -28,6 +28,46 @@ import {
 } from 'lucide-react';
 import { useTheme } from '@/context/ThemeContext';
 
+interface NavItem {
+  name: string;
+  href: string;
+  icon?: any;
+  highlight?: boolean;
+}
+
+const ROLE_NAV_LINKS: Record<Role, NavItem[]> = {
+  FARMER: [
+    { name: 'Dashboard', href: '/farmer/dashboard', icon: Satellite },
+    { name: 'My Farms', href: '/farmer/farms', icon: Layers },
+    { name: 'Photo AI & NPK', href: '/farmer/disease', icon: Sparkles },
+    { name: 'Insurance Claims', href: '/farmer/insurance-validation', icon: ShieldCheck, highlight: true },
+    { name: 'Weather Telemetry', href: '/intelligence/weather', icon: Activity },
+    { name: 'Policies', href: '/farmer/insurance', icon: FileText },
+  ],
+  INSURER: [
+    { name: 'Underwriting Desk', href: '/insurer/dashboard', icon: Activity },
+    { name: 'Cadastral Risk Map', href: '/insurer/risk-map', icon: Satellite, highlight: true },
+    { name: 'Parametric Claims', href: '/insurer/claims', icon: ShieldCheck },
+    { name: 'Policies Portfolio', href: '/insurer/policies', icon: FileText },
+    { name: 'Settlement Payouts', href: '/insurer/payouts', icon: Zap },
+    { name: 'Audit Trail', href: '/insurer/audit', icon: Layers },
+  ],
+  ADMIN: [
+    { name: 'System Overview', href: '/admin/overview', icon: Activity },
+    { name: 'IoT Relays', href: '/operations/iot', icon: Cpu, highlight: true },
+    { name: 'AI Models', href: '/admin/ai-models', icon: Sparkles },
+    { name: 'Exceptions Desk', href: '/admin/exceptions', icon: ShieldCheck },
+    { name: 'Cadastral Map', href: '/insurer/risk-map', icon: Satellite },
+  ],
+  FIELD_AGENT: [
+    { name: 'Field Risk Map', href: '/insurer/risk-map', icon: Satellite, highlight: true },
+    { name: 'Farms Registry', href: '/farmer/farms', icon: Layers },
+    { name: 'Leaf AI Scanner', href: '/farmer/disease', icon: Sparkles },
+    { name: 'Ground Inspection', href: '/insurer/claims', icon: ShieldCheck },
+    { name: 'Weather Station', href: '/intelligence/weather', icon: Activity },
+  ],
+};
+
 export const Navbar: React.FC = () => {
   const { role, setRole, user, logout } = useRole();
   const { language, setLanguage, t } = useLanguage();
@@ -41,12 +81,14 @@ export const Navbar: React.FC = () => {
 
   const currentLangObj = SUPPORTED_LANGUAGES.find(l => l.code === language) || SUPPORTED_LANGUAGES[0];
 
+  const activeNavLinks = ROLE_NAV_LINKS[role] || ROLE_NAV_LINKS.FARMER;
+
   const handleRoleChange = (newRole: Role) => {
     setRole(newRole);
     if (newRole === 'FARMER') router.push('/farmer/dashboard');
     else if (newRole === 'INSURER') router.push('/insurer/dashboard');
-    else if (newRole === 'ADMIN') router.push('/operations/iot');
-    else if (newRole === 'FIELD_AGENT') router.push('/intelligence/map');
+    else if (newRole === 'ADMIN') router.push('/admin/overview');
+    else if (newRole === 'FIELD_AGENT') router.push('/insurer/risk-map');
   };
 
   const triggerSimulation = async (eventType: string) => {
@@ -78,7 +120,10 @@ export const Navbar: React.FC = () => {
             
             {/* 1. Left: Brand Logo */}
             <div className="flex items-center shrink-0">
-              <Link href="/farmer/dashboard" className="flex items-center space-x-1.5 sm:space-x-2.5 group">
+              <Link 
+                href={role === 'INSURER' ? '/insurer/dashboard' : role === 'ADMIN' ? '/admin/overview' : role === 'FIELD_AGENT' ? '/insurer/risk-map' : '/farmer/dashboard'} 
+                className="flex items-center space-x-1.5 sm:space-x-2.5 group"
+              >
                 <div className="w-7 h-7 sm:w-9 sm:h-9 rounded-lg bg-blue-600 flex items-center justify-center text-white shrink-0 shadow-sm">
                   <Satellite className="w-3.5 h-3.5 sm:w-4.5 sm:h-4.5 text-white" />
                 </div>
@@ -98,73 +143,26 @@ export const Navbar: React.FC = () => {
               </Link>
             </div>
 
-            {/* 2. Center: Primary Navigation Links */}
+            {/* 2. Center: Dynamic Role-Specific Navigation Links */}
             <nav className="hidden lg:flex items-center space-x-1 text-xs font-semibold overflow-x-hidden">
-              <Link 
-                href="/farmer/dashboard" 
-                className={`px-2.5 py-1.5 rounded-lg transition-all whitespace-nowrap shrink-0 ${
-                  pathname === '/farmer/dashboard' 
-                    ? 'bg-blue-600/25 text-blue-300 border border-blue-500/40' 
-                    : 'text-slate-300 hover:text-white hover:bg-slate-800'
-                }`}
-              >
-                Dashboard
-              </Link>
-
-              <Link 
-                href="/farmer/insurance-validation" 
-                className={`px-2.5 py-1.5 rounded-lg transition-all whitespace-nowrap shrink-0 font-bold ${
-                  pathname === '/farmer/insurance-validation' 
-                    ? 'bg-blue-600/25 text-blue-300 border border-blue-500/40' 
-                    : 'text-blue-400 hover:text-white hover:bg-slate-800'
-                }`}
-              >
-                Insurance Validation
-              </Link>
-
-              <Link 
-                href="/farmer/disease" 
-                className={`px-2.5 py-1.5 rounded-lg transition-all whitespace-nowrap shrink-0 ${
-                  pathname === '/farmer/disease' 
-                    ? 'bg-blue-600/25 text-blue-300 border border-blue-500/40' 
-                    : 'text-slate-300 hover:text-white hover:bg-slate-800'
-                }`}
-              >
-                Photo AI (NPK & Water)
-              </Link>
-
-              <Link 
-                href="/farmer/farms" 
-                className={`px-2.5 py-1.5 rounded-lg transition-all whitespace-nowrap shrink-0 ${
-                  pathname.startsWith('/farmer/farms') 
-                    ? 'bg-blue-600/25 text-blue-300 border border-blue-500/40' 
-                    : 'text-slate-300 hover:text-white hover:bg-slate-800'
-                }`}
-              >
-                Farms
-              </Link>
-
-              <Link 
-                href="/farmer/insurance" 
-                className={`px-2.5 py-1.5 rounded-lg transition-all whitespace-nowrap shrink-0 ${
-                  pathname === '/farmer/insurance' 
-                    ? 'bg-blue-600/25 text-blue-300 border border-blue-500/40' 
-                    : 'text-slate-300 hover:text-white hover:bg-slate-800'
-                }`}
-              >
-                Policies
-              </Link>
-
-              <Link 
-                href="/technology/chf" 
-                className={`px-2.5 py-1.5 rounded-lg transition-all whitespace-nowrap shrink-0 font-bold border ${
-                  pathname === '/technology/chf'
-                    ? 'bg-blue-600/30 text-blue-300 border-blue-500'
-                    : 'text-slate-300 hover:text-white hover:bg-slate-800 border-slate-700'
-                }`}
-              >
-                Ghatal CHF
-              </Link>
+              {activeNavLinks.map((item) => {
+                const isActive = pathname === item.href || (item.href !== '/farmer/dashboard' && item.href !== '/insurer/dashboard' && item.href !== '/admin/overview' && pathname.startsWith(item.href));
+                return (
+                  <Link
+                    key={item.href}
+                    href={item.href}
+                    className={`px-2.5 py-1.5 rounded-lg transition-all whitespace-nowrap shrink-0 ${
+                      isActive
+                        ? 'bg-blue-600/25 text-blue-300 border border-blue-500/40'
+                        : item.highlight
+                        ? 'text-blue-400 hover:text-white hover:bg-slate-800'
+                        : 'text-slate-300 hover:text-white hover:bg-slate-800'
+                    }`}
+                  >
+                    {item.name}
+                  </Link>
+                );
+              })}
             </nav>
 
             {/* 3. Right: Demo Persona Pill & Quick Controls (NO LOGIN/SIGNUP) */}
@@ -268,77 +266,32 @@ export const Navbar: React.FC = () => {
 
             {/* Mobile Nav Links */}
             <div className="space-y-1 border-t border-slate-800 pt-2">
-              <Link 
-                href="/farmer/dashboard" 
-                onClick={() => setMobileMenuOpen(false)} 
-                className="flex items-center justify-between px-3 py-2 rounded-lg text-xs font-bold text-slate-200 hover:bg-slate-800"
-              >
-                <span className="flex items-center space-x-2">
-                  <Activity className="w-4 h-4 text-blue-400" />
-                  <span>Farmer Dashboard</span>
-                </span>
-                <span className="text-slate-500">&rarr;</span>
-              </Link>
-
-              <Link 
-                href="/farmer/insurance-validation" 
-                onClick={() => setMobileMenuOpen(false)} 
-                className="flex items-center justify-between px-3 py-2 rounded-lg text-xs font-bold text-blue-300 bg-blue-950/60 border border-blue-800/60"
-              >
-                <span className="flex items-center space-x-2">
-                  <FileText className="w-4 h-4 text-blue-400" />
-                  <span>Insurance Validation Hub</span>
-                </span>
-                <span className="text-blue-400">&rarr;</span>
-              </Link>
-
-              <Link 
-                href="/farmer/disease" 
-                onClick={() => setMobileMenuOpen(false)} 
-                className="flex items-center justify-between px-3 py-2 rounded-lg text-xs font-bold text-slate-200 hover:bg-slate-800"
-              >
-                <span className="flex items-center space-x-2">
-                  <Sparkles className="w-4 h-4 text-blue-400" />
-                  <span>Photo AI (NPK & Water)</span>
-                </span>
-                <span className="text-slate-500">&rarr;</span>
-              </Link>
-
-              <Link 
-                href="/farmer/farms" 
-                onClick={() => setMobileMenuOpen(false)} 
-                className="flex items-center justify-between px-3 py-2 rounded-lg text-xs font-bold text-slate-200 hover:bg-slate-800"
-              >
-                <span className="flex items-center space-x-2">
-                  <Layers className="w-4 h-4 text-blue-400" />
-                  <span>Farms & Sensors</span>
-                </span>
-                <span className="text-slate-500">&rarr;</span>
-              </Link>
-
-              <Link 
-                href="/farmer/insurance" 
-                onClick={() => setMobileMenuOpen(false)} 
-                className="flex items-center justify-between px-3 py-2 rounded-lg text-xs font-bold text-slate-200 hover:bg-slate-800"
-              >
-                <span className="flex items-center space-x-2">
-                  <ShieldCheck className="w-4 h-4 text-blue-400" />
-                  <span>Policies</span>
-                </span>
-                <span className="text-slate-500">&rarr;</span>
-              </Link>
-
-              <Link 
-                href="/technology/chf" 
-                onClick={() => setMobileMenuOpen(false)} 
-                className="flex items-center justify-between px-3 py-2 rounded-lg text-xs font-bold text-slate-200 hover:bg-slate-800"
-              >
-                <span className="flex items-center space-x-2">
-                  <Satellite className="w-4 h-4 text-blue-400" />
-                  <span>Ghatal CHF Engine</span>
-                </span>
-                <span className="text-slate-500">&rarr;</span>
-              </Link>
+              <div className="px-3 py-1 flex items-center justify-between text-[10px] uppercase font-mono font-bold text-slate-400">
+                <span>{role} Workspace Navigation</span>
+                <span className="text-blue-400">{activeNavLinks.length} Links</span>
+              </div>
+              {activeNavLinks.map((item) => {
+                const Icon = item.icon || Layers;
+                const isActive = pathname === item.href;
+                return (
+                  <Link
+                    key={item.href}
+                    href={item.href}
+                    onClick={() => setMobileMenuOpen(false)}
+                    className={`flex items-center justify-between px-3 py-2 rounded-lg text-xs font-bold transition-colors ${
+                      isActive 
+                        ? 'bg-blue-600/30 text-blue-300 border border-blue-500/30' 
+                        : 'text-slate-200 hover:bg-slate-800'
+                    }`}
+                  >
+                    <span className="flex items-center space-x-2">
+                      <Icon className="w-4 h-4 text-blue-400 shrink-0" />
+                      <span>{item.name}</span>
+                    </span>
+                    <span className="text-slate-500">&rarr;</span>
+                  </Link>
+                );
+              })}
             </div>
 
             {/* Mobile Dark / Light Mode Toggle */}

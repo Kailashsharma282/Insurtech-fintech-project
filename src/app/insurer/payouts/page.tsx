@@ -232,11 +232,11 @@ export default function PayoutsEnginePage() {
         )}
 
         {/* Payouts Register Table */}
-        <div className="bg-white rounded-3xl border border-[#E2E8F0] shadow-sm overflow-hidden">
+        <div className="bg-white dark:bg-slate-900 rounded-3xl border border-[#E2E8F0] dark:border-slate-800 shadow-sm overflow-hidden">
           <div className="sm:hidden px-4 py-2 bg-slate-50 border-b border-slate-200 text-[10px] text-slate-500 flex items-center justify-between"><span>&larr; Swipe to view all columns &rarr;</span><span className="font-mono text-emerald-700 font-bold">Payout Ledger</span></div>
           <div className="overflow-x-auto">
-            <table className="w-full min-w-[750px] text-left text-xs text-slate-700 font-mono">
-              <thead className="bg-slate-50 text-slate-500 font-bold border-b border-slate-200 uppercase tracking-wider text-[10px] font-sans">
+            <table className="w-full min-w-[1150px] text-left text-xs text-slate-700 dark:text-slate-300 font-mono">
+              <thead className="bg-slate-50 dark:bg-slate-800/80 text-slate-500 dark:text-slate-400 font-bold border-b border-slate-200 dark:border-slate-700 uppercase tracking-wider text-[10px] font-sans whitespace-nowrap">
                 <tr>
                   <th className="px-6 py-4">Payout Ref #</th>
                   <th className="px-6 py-4">Claim #</th>
@@ -249,7 +249,7 @@ export default function PayoutsEnginePage() {
                   <th className="px-6 py-4 font-sans text-right">Action</th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-slate-100">
+              <tbody className="divide-y divide-slate-100 dark:divide-slate-800 whitespace-nowrap">
                 {filtered.map((p) => (
                   <tr 
                     key={p.id} 

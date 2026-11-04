@@ -26,7 +26,20 @@ export async function GET(req: NextRequest) {
       });
     }
 
-    const telemetry = await getLiveVillageTelemetry(village);
+    const latParam = searchParams.get('lat');
+    const lonParam = searchParams.get('lon');
+    const districtParam = searchParams.get('district') || undefined;
+    const blockParam = searchParams.get('block') || undefined;
+    const customLat = latParam ? parseFloat(latParam) : undefined;
+    const customLon = lonParam ? parseFloat(lonParam) : undefined;
+
+    const telemetry = await getLiveVillageTelemetry(
+      village,
+      customLat,
+      customLon,
+      districtParam,
+      blockParam
+    );
 
     return NextResponse.json({
       success: true,
@@ -40,3 +53,4 @@ export async function GET(req: NextRequest) {
     );
   }
 }
+

@@ -123,65 +123,79 @@ export default function ClaimsDeskPage() {
         </div>
 
         {/* Claims Table with all 11 required columns (Section 19) */}
-        <div className="bg-white rounded-3xl border border-[#E2E8F0] shadow-sm overflow-hidden">
-          <div className="sm:hidden px-4 py-2 bg-slate-50 border-b border-slate-200 text-[10px] text-slate-500 flex items-center justify-between"><span>&larr; Swipe to view all columns &rarr;</span><span className="font-mono text-emerald-700 font-bold">11 Evidence Columns</span></div>
-          <div className="overflow-x-auto">
-            <table className="w-full min-w-[900px] text-left text-xs text-slate-700">
-              <thead className="bg-slate-50 text-slate-500 font-bold border-b border-slate-200 uppercase tracking-wider text-[10px]">
-                <tr>
-                  <th className="px-6 py-4">Claim #</th>
-                  <th className="px-6 py-4">Policy #</th>
-                  <th className="px-6 py-4">Farmer</th>
-                  <th className="px-6 py-4">Insurance Unit</th>
-                  <th className="px-6 py-4">Crop</th>
-                  <th className="px-6 py-4">Trigger Type</th>
-                  <th className="px-6 py-4">CHF Measured</th>
-                  <th className="px-6 py-4">Baseline</th>
-                  <th className="px-6 py-4">Loss Fraction</th>
-                  <th className="px-6 py-4">Claim Amount</th>
-                  <th className="px-6 py-4">Status</th>
-                  <th className="px-6 py-4 text-right">Evidence</th>
+        <div className="bg-white dark:bg-slate-900 rounded-3xl border border-[#E2E8F0] dark:border-slate-800 shadow-sm overflow-hidden">
+          <div className="sm:hidden px-4 py-2 bg-slate-50 dark:bg-slate-800 border-b border-slate-200 dark:border-slate-700 text-[10px] text-slate-500 dark:text-slate-400 flex items-center justify-between">
+            <span>&larr; Swipe to view all 11 columns &rarr;</span>
+            <span className="font-mono text-emerald-700 dark:text-emerald-400 font-bold">11 Evidence Columns</span>
+          </div>
+          <div className="overflow-x-auto w-full">
+            <table className="w-full min-w-[1280px] text-left text-xs text-slate-700 dark:text-slate-300">
+              <thead className="bg-slate-50 dark:bg-slate-800/80 text-slate-500 dark:text-slate-400 font-bold border-b border-slate-200 dark:border-slate-700 uppercase tracking-wider text-[10px]">
+                <tr className="whitespace-nowrap">
+                  <th className="px-5 py-4 whitespace-nowrap">Claim #</th>
+                  <th className="px-5 py-4 whitespace-nowrap">Policy #</th>
+                  <th className="px-5 py-4 whitespace-nowrap">Farmer</th>
+                  <th className="px-5 py-4 whitespace-nowrap">Insurance Unit</th>
+                  <th className="px-5 py-4 whitespace-nowrap">Crop</th>
+                  <th className="px-5 py-4 whitespace-nowrap">Trigger Type</th>
+                  <th className="px-5 py-4 whitespace-nowrap">CHF Measured</th>
+                  <th className="px-5 py-4 whitespace-nowrap">Baseline</th>
+                  <th className="px-5 py-4 whitespace-nowrap">Loss Fraction</th>
+                  <th className="px-5 py-4 whitespace-nowrap">Claim Amount</th>
+                  <th className="px-5 py-4 whitespace-nowrap">Status</th>
+                  <th className="px-5 py-4 text-right whitespace-nowrap">Evidence</th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-slate-100 font-mono">
+              <tbody className="divide-y divide-slate-100 dark:divide-slate-800">
                 {filteredClaims.map((claim) => (
-                  <tr key={claim.id} className="hover:bg-slate-50/80 transition-colors font-sans">
-                    <td className="px-6 py-4 font-bold text-slate-900 font-mono">
+                  <tr key={claim.id} className="hover:bg-slate-50/80 dark:hover:bg-slate-800/60 transition-colors whitespace-nowrap">
+                    <td className="px-5 py-4 font-bold text-slate-900 dark:text-slate-100 font-mono whitespace-nowrap">
                       {claim.claimNumber}
-                      
                     </td>
-                    <td className="px-6 py-4 text-slate-500 font-mono text-[11px]">{claim.policyNumber}</td>
-                    <td className="px-6 py-4 font-semibold text-slate-900">{claim.farmerName}</td>
-                    <td className="px-6 py-4 font-mono text-[11px]">{claim.insuranceUnitCode}</td>
-                    <td className="px-6 py-4">{claim.crop}</td>
-                    <td className="px-6 py-4 text-[11px]">{claim.triggerType.replace(/_/g, ' ')}</td>
-                    <td className="px-6 py-4 font-mono font-bold text-red-600">
+                    <td className="px-5 py-4 text-slate-500 dark:text-slate-400 font-mono text-[11px] whitespace-nowrap">
+                      {claim.policyNumber}
+                    </td>
+                    <td className="px-5 py-4 font-semibold text-slate-900 dark:text-slate-100 whitespace-nowrap">
+                      {claim.farmerName}
+                    </td>
+                    <td className="px-5 py-4 font-mono text-[11px] text-slate-600 dark:text-slate-300 whitespace-nowrap">
+                      {claim.insuranceUnitCode}
+                    </td>
+                    <td className="px-5 py-4 text-slate-800 dark:text-slate-200 whitespace-nowrap">
+                      {claim.crop}
+                    </td>
+                    <td className="px-5 py-4 text-[11px] text-slate-600 dark:text-slate-300 whitespace-nowrap">
+                      {claim.triggerType.replace(/_/g, ' ')}
+                    </td>
+                    <td className="px-5 py-4 font-mono font-bold text-red-600 dark:text-red-400 whitespace-nowrap">
                       {claim.chfMeasured.toFixed(2)}
                     </td>
-                    <td className="px-6 py-4 font-mono text-slate-500">{claim.chfBaseline.toFixed(2)}</td>
-                    <td className="px-6 py-4 font-mono font-bold text-slate-800">
+                    <td className="px-5 py-4 font-mono text-slate-500 dark:text-slate-400 whitespace-nowrap">
+                      {claim.chfBaseline.toFixed(2)}
+                    </td>
+                    <td className="px-5 py-4 font-mono font-bold text-slate-800 dark:text-slate-200 whitespace-nowrap">
                       {(claim.lossFraction * 100).toFixed(1)}%
                     </td>
-                    <td className="px-6 py-4 font-mono font-black text-slate-900">
+                    <td className="px-5 py-4 font-mono font-black text-slate-900 dark:text-slate-100 whitespace-nowrap">
                       ₹{claim.claimAmount.toLocaleString()}
                     </td>
-                    <td className="px-6 py-4">
-                      <span className={`text-[10px] font-bold px-2.5 py-0.5 rounded-full ${
-                        claim.status === 'DISBURSED' ? 'bg-emerald-100 text-emerald-800' :
-                        claim.status === 'APPROVED' ? 'bg-blue-100 text-blue-800' :
-                        claim.status === 'VERIFIED' ? 'bg-purple-100 text-purple-800' :
-                        'bg-amber-100 text-amber-800'
+                    <td className="px-5 py-4 whitespace-nowrap">
+                      <span className={`inline-block text-[10px] font-bold px-2.5 py-1 rounded-full whitespace-nowrap ${
+                        claim.status === 'DISBURSED' ? 'bg-emerald-100 text-emerald-800 dark:bg-emerald-950/70 dark:text-emerald-300' :
+                        claim.status === 'APPROVED' ? 'bg-blue-100 text-blue-800 dark:bg-blue-950/70 dark:text-blue-300' :
+                        claim.status === 'VERIFIED' ? 'bg-purple-100 text-purple-800 dark:bg-purple-950/70 dark:text-purple-300' :
+                        'bg-amber-100 text-amber-800 dark:bg-amber-950/70 dark:text-amber-300'
                       }`}>
                         {claim.status}
                       </span>
                     </td>
-                    <td className="px-6 py-4 text-right">
+                    <td className="px-5 py-4 text-right whitespace-nowrap">
                       <Link
                         href={`/insurer/claims/${claim.id}`}
-                        className="inline-flex items-center text-blue-600 font-bold hover:underline"
+                        className="inline-flex items-center text-blue-600 dark:text-blue-400 font-bold hover:underline whitespace-nowrap"
                       >
                         <span>Package</span>
-                        <ArrowRight className="w-3.5 h-3.5 ml-1" />
+                        <ArrowRight className="w-3.5 h-3.5 ml-1 inline-block shrink-0" />
                       </Link>
                     </td>
                   </tr>

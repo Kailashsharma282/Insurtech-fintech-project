@@ -338,42 +338,67 @@ export default function ChfEnginePage() {
           </div>
         </div>
 
-        {/* Exact Mathematical Formulas Reference */}
-        <div className="p-6 rounded-xl bg-white border border-slate-200 shadow-sm space-y-4">
-          <h3 className="font-bold text-base text-slate-900">
-            Mathematical Equations (As Specified for Ghatal Block 2025)
-          </h3>
+        {/* Operational Verification & Sensor Data Pipeline (Plain English, Zero Mathematical Noise) */}
+        <div className="p-6 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 shadow-sm space-y-6">
+          <div>
+            <div className="inline-flex items-center space-x-2 px-3 py-1 rounded-full bg-blue-50 dark:bg-blue-950/70 border border-blue-200 dark:border-blue-800 text-blue-700 dark:text-blue-300 text-xs font-semibold mb-2">
+              <span>Transparent Parametric Verification</span>
+            </div>
+            <h3 className="font-bold text-lg text-slate-900 dark:text-slate-100">
+              How Crop Health Factor (CHF) Works for Farmers & Insurers
+            </h3>
+            <p className="text-xs text-slate-500 dark:text-slate-400 mt-1">
+              Clear, transparent satellite and weather indicators evaluated in real-time — eliminating manual paperwork, delays, and disputes.
+            </p>
+          </div>
 
-          <div className="space-y-3 text-xs font-mono bg-slate-50 p-4 rounded-lg border border-slate-200">
-            <div>
-              <span className="text-slate-500 font-bold">1. Sentinel-2 Normalized Indices:</span>
-              <div className="text-slate-900 pl-4 mt-0.5">&bull; NDVI = (NIR - Red) / (NIR + Red)</div>
-              <div className="text-slate-900 pl-4">&bull; LSWI = (NIR - SWIR1) / (NIR + SWIR1)</div>
-              <div className="text-slate-900 pl-4">&bull; SAVI = 1.5 * (NIR - Red) / (NIR + Red + 0.5)  [L = 0.5]</div>
-              <div className="text-slate-900 pl-4">&bull; EVI = 2.5 * (NIR - Red) / (NIR + 6*Red - 7.5*Blue + 1)</div>
-              <div className="text-slate-900 pl-4">&bull; VIS = (SAVI_norm + EVI_norm) / 2, where X_norm = clamp((X + 1)/2, 0, 1)</div>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs">
+            <div className="p-4 rounded-xl bg-slate-50 dark:bg-slate-800/60 border border-slate-200 dark:border-slate-700 space-y-2">
+              <div className="flex items-center space-x-2 text-emerald-700 dark:text-emerald-400 font-bold text-sm">
+                <span>🌿 1. Multi-Spectral Canopy Health (Sentinel-2)</span>
+              </div>
+              <p className="text-slate-600 dark:text-slate-300 leading-relaxed">
+                Optical satellites scan farm fields every 5 days at 10-meter resolution, measuring plant chlorophyll density, leaf moisture, and photosynthetic vigor across the entire vegetative cycle.
+              </p>
+              <div className="flex items-center text-[11px] text-emerald-800 dark:text-emerald-400 font-semibold pt-1">
+                <span>✓ Detects leaf drying and drought stress days before visible to eye</span>
+              </div>
             </div>
 
-            <div className="pt-2 border-t border-slate-200">
-              <span className="text-slate-500 font-bold">2. Sentinel-1 Radar Backscatter:</span>
-              <div className="text-slate-900 pl-4 mt-0.5">&bull; VHmax = max(VH_dB), where VH &ge; -30 dB</div>
-              <div className="text-slate-900 pl-4">&bull; VH_integrated = sum(10^(VH_dB,t / 10), t=1..n)</div>
+            <div className="p-4 rounded-xl bg-slate-50 dark:bg-slate-800/60 border border-slate-200 dark:border-slate-700 space-y-2">
+              <div className="flex items-center space-x-2 text-blue-700 dark:text-blue-400 font-bold text-sm">
+                <span>📡 2. Cloud-Penetrating Radar (Sentinel-1 SAR)</span>
+              </div>
+              <p className="text-slate-600 dark:text-slate-300 leading-relaxed">
+                C-band radar microwaves pass directly through thick monsoon clouds and nighttime rain, measuring crop structure, stem density, and standing flood inundation across floodplains.
+              </p>
+              <div className="flex items-center text-[11px] text-blue-800 dark:text-blue-400 font-semibold pt-1">
+                <span>✓ 100% operational through cyclones, storms, and cloudbursts</span>
+              </div>
             </div>
 
-            <div className="pt-2 border-t border-slate-200">
-              <span className="text-slate-500 font-bold">3. Hydro-meteorological Aggregations:</span>
-              <div className="text-slate-900 pl-4 mt-0.5">&bull; Rainfall = sum(P_t, t=1..n) [CHIRPS 0.05&deg; resampled to 10m]</div>
-              <div className="text-slate-900 pl-4">&bull; RainyDays = sum(I(P_t &ge; 2.5 mm), t=1..n)</div>
-              <div className="text-slate-900 pl-4">&bull; GDD = sum(max((Tmax_t + Tmin_t)/2 - 10, 0)) [ERA5-Land Tbase=10&deg;C]</div>
+            <div className="p-4 rounded-xl bg-slate-50 dark:bg-slate-800/60 border border-slate-200 dark:border-slate-700 space-y-2">
+              <div className="flex items-center space-x-2 text-amber-700 dark:text-amber-400 font-bold text-sm">
+                <span>🌧️ 3. Weather & Thermal Baselines (ERA5 & CHIRPS)</span>
+              </div>
+              <p className="text-slate-600 dark:text-slate-300 leading-relaxed">
+                Daily precipitation accumulation, consecutive dry/wet spells, and growing heat units are tracked against localized historical thresholds for Aman Paddy, Potato, and Jute.
+              </p>
+              <div className="flex items-center text-[11px] text-amber-800 dark:text-amber-400 font-semibold pt-1">
+                <span>✓ Validates temperature spikes and catastrophic rainfall deficits</span>
+              </div>
             </div>
 
-            <div className="pt-2 border-t border-slate-200">
-              <span className="text-slate-500 font-bold">4. Spatial Variation & Shannon Entropy Weighting:</span>
-              <div className="text-slate-900 pl-4 mt-0.5">&bull; CV = stdDev / |mean|; CropConditionVariability = max(CV_NDVI, CV_LSWI, CV_VH)</div>
-              <div className="text-slate-900 pl-4">&bull; X_norm = clamp((X - X_min) / (X_max - X_min), 0, 1)</div>
-              <div className="text-slate-900 pl-4">&bull; p_i = x_i / sum(x_i); E_j = -sum(p_i * ln(p_i)) / ln(n)</div>
-              <div className="text-slate-900 pl-4">&bull; d_j = 1 - E_j; w_j = d_j / sum(d_k)</div>
-              <div className="text-slate-900 pl-4 font-bold text-emerald-800">&bull; Composite CHF = sum(w_j * X_norm_j)</div>
+            <div className="p-4 rounded-xl bg-slate-50 dark:bg-slate-800/60 border border-slate-200 dark:border-slate-700 space-y-2">
+              <div className="flex items-center space-x-2 text-purple-700 dark:text-purple-400 font-bold text-sm">
+                <span>⚡ 4. Automated Zero-Paperwork Payout (CHF Index)</span>
+              </div>
+              <p className="text-slate-600 dark:text-slate-300 leading-relaxed">
+                When verified satellite and weather readings reflect severe crop loss (CHF &le; 0.55), claims are automatically triggered and approved for direct bank account disbursement.
+              </p>
+              <div className="flex items-center text-[11px] text-purple-800 dark:text-purple-400 font-semibold pt-1">
+                <span>✓ Zero surveyor visits needed; instant actuarial transparency</span>
+              </div>
             </div>
           </div>
         </div>

@@ -248,11 +248,11 @@ export default function FarmsListPage() {
 
         {/* View Mode 2: Table View */}
         {viewMode === 'table' && (
-          <div className="bg-white rounded-3xl border border-[#E2E8F0] shadow-sm overflow-hidden">
+          <div className="bg-white dark:bg-slate-900 rounded-3xl border border-[#E2E8F0] dark:border-slate-800 shadow-sm overflow-hidden">
             <div className="sm:hidden px-4 py-2 bg-slate-50 border-b border-slate-200 text-[10px] text-slate-500 flex items-center justify-between"><span>&larr; Swipe to view all columns &rarr;</span><span className="font-mono text-emerald-700 font-bold">10 Data Fields</span></div>
             <div className="overflow-x-auto">
-              <table className="w-full min-w-[750px] text-left text-xs text-slate-700">
-                <thead className="bg-slate-50 text-slate-500 font-bold border-b border-slate-200 uppercase tracking-wider text-[10px]">
+              <table className="w-full min-w-[1100px] text-left text-xs text-slate-700 dark:text-slate-300 whitespace-nowrap">
+                <thead className="bg-slate-50 dark:bg-slate-800/80 text-slate-500 dark:text-slate-400 font-bold border-b border-slate-200 dark:border-slate-700 uppercase tracking-wider text-[10px] whitespace-nowrap">
                   <tr>
                     <th className="px-6 py-4">Plot Number</th>
                     <th className="px-6 py-4">Farmer</th>
@@ -266,7 +266,7 @@ export default function FarmsListPage() {
                     <th className="px-6 py-4 text-right">Action</th>
                   </tr>
                 </thead>
-                <tbody className="divide-y divide-slate-100">
+                <tbody className="divide-y divide-slate-100 dark:divide-slate-800 whitespace-nowrap">
                   {filteredFarms.map((farm) => (
                     <tr key={farm.id} className="hover:bg-slate-50/80 transition-colors">
                       <td className="px-6 py-4 font-bold text-slate-900">

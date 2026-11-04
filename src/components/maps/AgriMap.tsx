@@ -152,10 +152,14 @@ export const AgriMap: React.FC<AgriMapProps> = ({
   const [showPlots, setShowPlots] = useState<boolean>(true);
   const [overlayOpacity, setOverlayOpacity] = useState<number>(0.85);
 
-  // SEARCH BAR STATE
+  // SEARCH BAR & PAN-INDIA TELEMETRY STATE
   const [searchQuery, setSearchQuery] = useState<string>('');
   const [isSearchOpen, setIsSearchOpen] = useState<boolean>(false);
   const [activeSearchedArea, setActiveSearchedArea] = useState<SearchableArea | null>(null);
+  const [panIndiaMatches, setPanIndiaMatches] = useState<SearchableArea[]>([]);
+  const [isSearchingPanIndia, setIsSearchingPanIndia] = useState<boolean>(false);
+  const [liveVillageTelemetry, setLiveVillageTelemetry] = useState<any>(null);
+  const [isLoadingTelemetry, setIsLoadingTelemetry] = useState<boolean>(false);
 
   const [probedPixel, setProbedPixel] = useState<{
     lat: number;
@@ -177,7 +181,34 @@ export const AgriMap: React.FC<AgriMapProps> = ({
     }
   }, [activeLayer]);
 
-  // Search Results filtering
+  // Debounced Pan-India Nominatim & Local Search
+  useEffect(() => {
+    const q = searchQuery.trim();
+    if (q.length < 2) {
+      setPanIndiaMatches([]);
+      setIsSearchingPanIndia(false);
+      return;
+    }
+
+    const timer = setTimeout(async () => {
+      setIsSearchingPanIndia(true);
+      try {
+        const res = await fetch(`/api/villages/search?q=${encodeURIComponent(q)}`);
+        const data = await res.json();
+        if (data.success && Array.isArray(data.results)) {
+          setPanIndiaMatches(data.results);
+        }
+      } catch (err) {
+        console.warn('Pan-India search error:', err);
+      } finally {
+        setIsSearchingPanIndia(false);
+      }
+    }, 250);
+
+    return () => clearTimeout(timer);
+  }, [searchQuery]);
+
+  // Combined Search Results (Local Curated + Pan-India OSM Geocoded)
   const searchResults = useMemo<{
     areaMatches: SearchableArea[];
     farmMatches: Farm[];
@@ -185,11 +216,21 @@ export const AgriMap: React.FC<AgriMapProps> = ({
     const q = searchQuery.trim().toLowerCase();
     if (!q) return { areaMatches: [], farmMatches: [] };
 
-    const areaMatches = SEARCHABLE_AREAS.filter(area => 
-      area.name.toLowerCase().includes(q) ||
-      area.district.toLowerCase().includes(q) ||
-      area.aliases.some(a => a.includes(q))
-    );
+    // Combine local matches and pan-India API results
+    const combinedAreas: SearchableArea[] = [...panIndiaMatches];
+    const seen = new Set(panIndiaMatches.map(a => a.name.toLowerCase()));
+
+    SEARCHABLE_AREAS.forEach(area => {
+      if (
+        (area.name.toLowerCase().includes(q) ||
+        area.district.toLowerCase().includes(q) ||
+        area.aliases.some(a => a.includes(q))) &&
+        !seen.has(area.name.toLowerCase())
+      ) {
+        combinedAreas.unshift(area);
+        seen.add(area.name.toLowerCase());
+      }
+    });
 
     const farmMatches = farms.filter(f => 
       f.plotNumber.toLowerCase().includes(q) ||
@@ -197,8 +238,8 @@ export const AgriMap: React.FC<AgriMapProps> = ({
       f.name.toLowerCase().includes(q)
     ).slice(0, 4);
 
-    return { areaMatches, farmMatches };
-  }, [searchQuery, farms]);
+    return { areaMatches: combinedAreas.slice(0, 8), farmMatches };
+  }, [searchQuery, farms, panIndiaMatches]);
 
 
   // Initialize Map
@@ -560,10 +601,26 @@ export const AgriMap: React.FC<AgriMapProps> = ({
 
   const activeLayerConfig = GEE_LAYERS.find(l => l.id === currentLayer) || GEE_LAYERS[0];
 
-  const handleSelectArea = (area: SearchableArea) => {
+  const handleSelectArea = async (area: SearchableArea) => {
     setActiveSearchedArea(area);
     setIsSearchOpen(false);
     setSearchQuery(area.name);
+
+    // Fetch live Copernicus CDSE and OpenWeather telemetry for any Indian village
+    setIsLoadingTelemetry(true);
+    try {
+      const lat = area.centroid[0];
+      const lon = area.centroid[1];
+      const res = await fetch(`/api/villages/telemetry?village=${encodeURIComponent(area.name)}&lat=${lat}&lon=${lon}&district=${encodeURIComponent(area.district)}`);
+      const data = await res.json();
+      if (data.success && data.telemetry) {
+        setLiveVillageTelemetry(data.telemetry);
+      }
+    } catch (err) {
+      console.warn('Telemetry fetch error:', err);
+    } finally {
+      setIsLoadingTelemetry(false);
+    }
   };
 
   const handleSelectFarmPlot = (farm: Farm) => {
@@ -578,6 +635,7 @@ export const AgriMap: React.FC<AgriMapProps> = ({
   const handleResetToGhatal = () => {
     setActiveSearchedArea(null);
     setSearchQuery('');
+    setLiveVillageTelemetry(null);
     if (leafletMapRef.current) {
       leafletMapRef.current.flyToBounds(GEE_BOUNDS, { padding: [15, 15], duration: 1.2 });
     }
@@ -599,7 +657,7 @@ export const AgriMap: React.FC<AgriMapProps> = ({
                 setIsSearchOpen(true);
               }}
               onFocus={() => setIsSearchOpen(true)}
-              placeholder="🔍 Search Area, Village, or District for boundary (e.g. 'Ghatal', 'Purba Medinipur', 'Kharar', 'Plot #204')..."
+              placeholder="🔍 Search any village, tehsil or district across all India (e.g. 'Ghatal', 'Varanasi', 'Baramati', 'Kalyani', 'Guntur')..."
               className="w-full pl-9 pr-8 py-2 rounded-xl text-xs bg-slate-50 border border-slate-200 focus:bg-white focus:outline-none focus:ring-2 focus:ring-blue-500 font-medium text-slate-800 placeholder-slate-400"
             />
             {searchQuery && (
@@ -645,6 +703,58 @@ export const AgriMap: React.FC<AgriMapProps> = ({
             )}
           </div>
         </div>
+
+        {/* Live Pan-India Copernicus & Weather Telemetry Banner */}
+        {liveVillageTelemetry && (
+          <div className="bg-gradient-to-r from-slate-900 to-blue-950 text-white p-3 sm:p-4 rounded-2xl border border-blue-500/30 shadow-lg flex flex-col md:flex-row md:items-center justify-between gap-3 animate-fadeIn">
+            <div className="space-y-1">
+              <div className="flex items-center space-x-2">
+                <span className="p-1 rounded bg-blue-500/20 text-blue-300 text-xs">📍</span>
+                <span className="font-extrabold text-xs sm:text-sm text-white">
+                  {liveVillageTelemetry.village}
+                </span>
+                <span className="text-[10px] font-mono px-2 py-0.5 rounded bg-blue-500/30 text-blue-200 border border-blue-400/30">
+                  {liveVillageTelemetry.district}
+                </span>
+                <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-emerald-500/20 text-emerald-300 border border-emerald-500/30">
+                  ✓ CDSE Live
+                </span>
+              </div>
+              <div className="text-[11px] text-slate-300 flex items-center space-x-3">
+                <span>🌡️ {liveVillageTelemetry.liveWeather.tempC}°C ({liveVillageTelemetry.liveWeather.condition})</span>
+                <span>💧 Humidity {liveVillageTelemetry.liveWeather.humidityPct}%</span>
+                <span>💨 Wind {liveVillageTelemetry.liveWeather.windSpeedMps} m/s</span>
+              </div>
+            </div>
+
+            <div className="flex items-center gap-2 sm:gap-3 flex-wrap">
+              <div className="px-2.5 py-1 rounded-xl bg-slate-800/80 border border-slate-700 text-center">
+                <div className="text-[9px] uppercase tracking-wider text-slate-400 font-bold">CHF Index</div>
+                <div className="text-xs sm:text-sm font-black text-emerald-400 font-mono">
+                  {liveVillageTelemetry.satelliteTelemetry.chf}
+                </div>
+              </div>
+              <div className="px-2.5 py-1 rounded-xl bg-slate-800/80 border border-slate-700 text-center">
+                <div className="text-[9px] uppercase tracking-wider text-slate-400 font-bold">S2 NDVI</div>
+                <div className="text-xs sm:text-sm font-black text-blue-300 font-mono">
+                  {liveVillageTelemetry.satelliteTelemetry.ndvi}
+                </div>
+              </div>
+              <div className="px-2.5 py-1 rounded-xl bg-slate-800/80 border border-slate-700 text-center">
+                <div className="text-[9px] uppercase tracking-wider text-slate-400 font-bold">S1 VH Radar</div>
+                <div className="text-xs sm:text-sm font-black text-purple-300 font-mono">
+                  {liveVillageTelemetry.satelliteTelemetry.vhRadarBackscatterDb} dB
+                </div>
+              </div>
+              <div className="px-2.5 py-1 rounded-xl bg-slate-800/80 border border-slate-700 text-center">
+                <div className="text-[9px] uppercase tracking-wider text-slate-400 font-bold">Status</div>
+                <div className="text-xs font-bold text-emerald-300">
+                  {liveVillageTelemetry.satelliteTelemetry.vegetationStatus}
+                </div>
+              </div>
+            </div>
+          </div>
+        )}
 
         {/* Search Results Dropdown */}
         {isSearchOpen && (searchResults.areaMatches?.length > 0 || searchResults.farmMatches?.length > 0) && (

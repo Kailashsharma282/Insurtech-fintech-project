@@ -48,9 +48,28 @@ html, body {
   box-sizing: border-box;
 }
 
-h1, h2, h3, h4, h5, h6, p, span, a, label {
+h1, h2, h3, h4, h5, h6, p, label {
   overflow-wrap: break-word;
-  word-break: break-word;
+  word-break: normal;
+  hyphens: none;
+}
+
+/* Badges, table headers, table cells, buttons, IDs, tags, links must NEVER wrap or split letters mid-word */
+th, td, .badge, [class*="badge-"], button, a.btn, .whitespace-nowrap, .pill, [class*="rounded-full"], .font-mono {
+  white-space: nowrap !important;
+  word-break: keep-all !important;
+  overflow-wrap: normal !important;
+  hyphens: none !important;
+}
+
+table {
+  border-collapse: separate;
+  border-spacing: 0;
+  width: 100%;
+}
+
+table th, table td {
+  white-space: nowrap;
 }
 
 img, svg {

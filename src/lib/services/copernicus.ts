@@ -131,13 +131,21 @@ export const VILLAGE_COORDINATES: Record<string, { lat: number; lon: number; dis
 /**
  * Resolve village coordinates and generate live satellite and weather telemetry
  */
-export async function getLiveVillageTelemetry(query: string) {
+export async function getLiveVillageTelemetry(
+  query: string,
+  customLat?: number,
+  customLon?: number,
+  customDistrict?: string,
+  customBlock?: string
+) {
   const norm = query.toLowerCase().trim();
-  const entry = VILLAGE_COORDINATES[norm] || {
-    lat: 22.6672,
-    lon: 87.7174,
-    district: 'Purba Medinipur',
-    block: query || 'Ghatal',
+  const known = VILLAGE_COORDINATES[norm];
+
+  const entry = {
+    lat: customLat !== undefined ? customLat : (known?.lat ?? 22.6672),
+    lon: customLon !== undefined ? customLon : (known?.lon ?? 87.7174),
+    district: customDistrict || known?.district || 'Purba Medinipur',
+    block: customBlock || known?.block || query || 'Ghatal',
   };
 
   // 1. Fetch Copernicus Token
@@ -194,3 +202,4 @@ export async function getLiveVillageTelemetry(query: string) {
     timestamp: new Date().toISOString(),
   };
 }
+
