@@ -196,3 +196,4 @@ with open('src/app/insurer/claims/page.tsx', 'w', encoding='utf-8') as f:
     f.write(content)
 
 print("Updated insurer/claims/page.tsx successfully!")
+

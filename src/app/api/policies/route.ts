@@ -1,14 +1,22 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { store } from '@/lib/db/store';
+import { calculatePolicyPremium } from '@/lib/subsidy';
 
 export async function GET(request: NextRequest) {
   try {
     const { searchParams } = new URL(request.url);
-    const status = searchParams.get('status') || undefined;
-    const farmerId = searchParams.get('farmerId') || undefined;
-    const crop = searchParams.get('crop') || undefined;
+    const farmerId = searchParams.get('farmerId');
+    const status = searchParams.get('status');
 
-    const policies = store.getPolicies({ status, farmerId, crop });
+    let policies = store.getPolicies();
+
+    if (farmerId) {
+      policies = policies.filter(p => p.farmerId === farmerId);
+    }
+
+    if (status) {
+      policies = policies.filter(p => p.status === status);
+    }
 
     return NextResponse.json({
       success: true,
@@ -38,6 +46,9 @@ export async function POST(request: NextRequest) {
       underwriterNotes
     } = body;
 
+    const sInsured = Number(sumInsured) || 50000;
+    const calc = calculatePolicyPremium(sInsured);
+
     const newPolicy = store.createPolicy({
       farmerId: farmerId || 'farmer-1',
       farmerName: farmerName || 'Subhash Biswas',
@@ -45,10 +56,10 @@ export async function POST(request: NextRequest) {
       farmPlot: farmPlot || 'Plot #204',
       insuranceUnitCode: insuranceUnitCode || 'WB-GHT-001',
       crop: crop || 'Aman Paddy',
-      sumInsured: Number(sumInsured) || 50000,
-      premiumAmount: Number(premiumAmount) || 2500,
-      subsidyAmount: Number(subsidyAmount) || 2000,
-      farmerShare: Number(farmerShare) || 500,
+      sumInsured: sInsured,
+      premiumAmount: Number(premiumAmount) || calc.totalPremium,
+      subsidyAmount: Number(subsidyAmount) || calc.subsidyAmount,
+      farmerShare: Number(farmerShare) || calc.farmerShare,
       triggerChf: Number(triggerChf) || 0.55,
       underwriterNotes: underwriterNotes || 'Direct portal submission by farmer'
     });

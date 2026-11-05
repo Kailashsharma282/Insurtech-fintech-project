@@ -84,3 +84,4 @@ export function calculatePolicyPremium(sumInsured: number) {
   const subsidyAmount = Math.round(totalPremium * 0.80); // 80% of premium
   return { totalPremium, farmerShare, subsidyAmount };
 }
+

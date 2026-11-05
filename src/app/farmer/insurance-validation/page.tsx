@@ -17,6 +17,7 @@ import {
   InsuranceValidationResult
 } from '@/lib/db/ghatal-excel-store';
 import { CropPhotoAnalyzer } from '@/components/ui/CropPhotoAnalyzer';
+import { getChfSubsidyPerHectare, calculatePlotSubsidy } from '@/lib/subsidy';
 
 export default function InsuranceValidationPage() {
   const [selectedCandidateId, setSelectedCandidateId] = useState<string>('cand-001');
@@ -241,6 +242,23 @@ export default function InsuranceValidationPage() {
                       Direct DBT Bank Credit to Farmer
                     </span>
                   </div>
+                </div>
+
+                {/* Official Simplified CHF Subsidy Calculation Box */}
+                <div className="p-3.5 rounded-xl bg-slate-50 border border-slate-200 flex flex-col sm:flex-row sm:items-center justify-between gap-3 text-xs font-mono">
+                  <div>
+                    <span className="font-bold text-slate-900 block font-sans">
+                      Official Simplified Parametric Subsidy Rate: {chfValue < 0.2 ? '₹15,000 / ha (Severe Inundation)' : chfValue < 0.4 ? '₹12,000 / ha (High Deficit)' : chfValue < 0.6 ? '₹8,000 / ha (Moderate Watch)' : 'No Subsidy (Normal Crop Health)'}
+                    </span>
+                    <span className="text-slate-600 font-sans text-[11px]">
+                      Standard Hectare Rule: ₹{getChfSubsidyPerHectare(chfValue).toLocaleString()}/ha &times; {selectedCandidate.areaHa} ha = <strong className="text-emerald-700 font-mono">₹{calculatePlotSubsidy(chfValue, selectedCandidate.areaHa).toLocaleString()}</strong>
+                    </span>
+                  </div>
+                  <span className={`px-2.5 py-1 rounded-full text-[10px] font-bold font-mono self-start sm:self-center shrink-0 ${
+                    chfValue < 0.6 ? 'bg-emerald-100 text-emerald-800 border border-emerald-300' : 'bg-slate-200 text-slate-700'
+                  }`}>
+                    {chfValue < 0.6 ? 'CHF Payout Active' : 'Normal / No Loss'}
+                  </span>
                 </div>
 
                 {/* Metric Summary Grid */}

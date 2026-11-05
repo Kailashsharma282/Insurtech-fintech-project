@@ -28,3 +28,4 @@ for name, url, w, h in pages:
     print(f"Saved {out_file}")
 
 print("Done")
+

@@ -115,7 +115,7 @@ export const Navbar: React.FC = () => {
   return (
     <>
       <header className="sticky top-0 z-50 bg-[#0F172A] border-b border-slate-800 text-white shadow-md w-full">
-        <div className="max-w-7xl mx-auto px-2.5 sm:px-6 lg:px-8">
+        <div className="w-full px-2.5 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between h-14 sm:h-16 gap-1.5 sm:gap-4">
             
             {/* 1. Left: Brand Logo */}
@@ -144,14 +144,14 @@ export const Navbar: React.FC = () => {
             </div>
 
             {/* 2. Center: Dynamic Role-Specific Navigation Links */}
-            <nav className="hidden lg:flex items-center space-x-1 text-xs font-semibold overflow-x-hidden">
+            <nav className="hidden lg:flex items-center space-x-0.5 xl:space-x-1 text-xs font-semibold">
               {activeNavLinks.map((item) => {
                 const isActive = pathname === item.href || (item.href !== '/farmer/dashboard' && item.href !== '/insurer/dashboard' && item.href !== '/admin/overview' && pathname.startsWith(item.href));
                 return (
                   <Link
                     key={item.href}
                     href={item.href}
-                    className={`px-2.5 py-1.5 rounded-lg transition-all whitespace-nowrap shrink-0 ${
+                    className={`px-2 py-1.5 xl:px-2.5 xl:py-1.5 rounded-lg transition-all whitespace-nowrap shrink-0 ${
                       isActive
                         ? 'bg-blue-600/25 text-blue-300 border border-blue-500/40'
                         : item.highlight
@@ -176,7 +176,7 @@ export const Navbar: React.FC = () => {
                 title="Inject Satellite / Weather Event Simulation"
               >
                 <Zap className="w-3.5 h-3.5 text-amber-400 shrink-0" />
-                <span className="text-[11px]">Simulate Shock</span>
+                <span className="text-[11px] hidden xl:inline">Simulate Shock</span><span className="text-[11px] xl:hidden">Simulate</span>
               </button>
 
               {/* Instant Role Switcher (1-Click Demo) */}
@@ -230,7 +230,7 @@ export const Navbar: React.FC = () => {
                 title="Log Out of Session"
               >
                 <LogOut className="w-3.5 h-3.5 text-red-400 shrink-0" />
-                <span className="hidden sm:inline">Logout</span>
+                <span className="hidden xl:inline">Logout</span>
               </button>
 
               {/* Mobile Drawer Trigger */}

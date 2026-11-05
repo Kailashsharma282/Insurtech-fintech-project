@@ -29,3 +29,4 @@ for name, url, w, h in pages:
     print(f"Saved {out_file} ({os.path.getsize(out_file)} bytes)")
 
 print("All screenshots captured successfully!")
+

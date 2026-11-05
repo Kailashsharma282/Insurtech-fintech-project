@@ -27,3 +27,4 @@ with open('src/app/insurer/claims/page.tsx', 'w', encoding='utf-8') as f:
     f.write(c_text)
 
 print("Updated farmer insurance and insurer claims width successfully!")
+

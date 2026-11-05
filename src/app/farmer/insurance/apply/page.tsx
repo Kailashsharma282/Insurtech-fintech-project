@@ -359,6 +359,9 @@ export default function FarmerInsuranceApplyPage() {
                   <strong className="text-slate-900 font-black">{t('ins.farmer_pays')}:</strong>
                   <strong className="text-emerald-700 font-black text-lg">₹{farmerPayable.toLocaleString()}</strong>
                 </div>
+                <div className="text-[11px] text-slate-500 font-sans pt-1 border-t border-slate-200">
+                  Central & State PMFBY subsidizes 80% of total premium. Farmer pays remaining 20% net.
+                </div>
               </div>
             </Card3D>
 

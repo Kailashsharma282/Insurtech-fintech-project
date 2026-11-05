@@ -342,8 +342,12 @@ export default function InsurerPoliciesPage() {
                           <strong className="text-slate-900">₹{policy.sumInsured.toLocaleString()}</strong>
                         </div>
                         <div className="px-3 py-1.5 rounded-xl bg-slate-50 border border-slate-200">
-                          <span className="text-slate-400 block text-[9px] uppercase font-bold">Farmer Share</span>
+                          <span className="text-slate-400 block text-[9px] uppercase font-bold">Farmer Share (20%)</span>
                           <strong className="text-emerald-700">₹{policy.farmerShare.toLocaleString()}</strong>
+                        </div>
+                        <div className="px-3 py-1.5 rounded-xl bg-slate-50 border border-slate-200">
+                          <span className="text-slate-400 block text-[9px] uppercase font-bold">Govt Subsidy (80%)</span>
+                          <strong className="text-blue-700">₹{policy.subsidyAmount.toLocaleString()}</strong>
                         </div>
                         <div className="px-3 py-1.5 rounded-xl bg-slate-50 border border-slate-200 col-span-2 sm:col-span-1">
                           <span className="text-slate-400 block text-[9px] uppercase font-bold">Trigger CHF</span>

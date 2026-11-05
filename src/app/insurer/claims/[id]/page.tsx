@@ -323,7 +323,7 @@ export default function ClaimDetailsPage() {
               <span>Section 6: Shannon Entropy Weighted CHF Output</span>
             </h3>
             <div className="space-y-2 text-xs font-mono">
-              <div className="bg-slate-900 text-emerald-400 p-2 rounded-lg text-[11px]">{ev.chfCalculation.formula}</div>
+              <div className="bg-slate-900 text-emerald-400 p-2.5 rounded-xl text-xs font-bold">Parametric CHF Subsidy Rate: ₹8,000 / ha (0.4 – 0.6 Deficit Tier)</div>
               <div className="flex justify-between"><span className="text-slate-500">Calculated Composite CHF:</span><strong className="text-red-600 text-sm font-black">{ev.chfCalculation.calculatedChf}</strong></div>
               <div className="flex justify-between"><span className="text-slate-500">Entropy Weights:</span><span className="text-slate-700 text-[11px]">NDVI: 22%, LSWI: 18%, VH: 24%, Rain: 20%</span></div>
             </div>

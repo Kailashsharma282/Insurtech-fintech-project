@@ -83,3 +83,4 @@ with open(seed_path, 'w', encoding='utf-8') as f:
     f.write(content)
 
 print("Successfully updated seed-data.ts with simplified CHF rates and 20% farmer share!")
+

@@ -27,3 +27,4 @@ for name, url, w, h in shots:
     print(f"Captured {out_file}")
 
 print("All final screenshots ready!")
+
