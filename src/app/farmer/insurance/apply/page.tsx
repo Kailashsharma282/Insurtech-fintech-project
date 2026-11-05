@@ -300,7 +300,7 @@ export default function FarmerInsuranceApplyPage() {
                     Triggered if satellite Crop Health Factor drops below <strong>0.550</strong> due to extreme rain deficit or sudden unseasonal inundation.
                   </p>
                   <div className="text-xs text-slate-500 pt-1 font-mono">
-                    Statutory Kharif Rate: <strong>2.0% Farmer Premium</strong>
+                    Statutory Kharif Rate: <strong>20% Farmer Share (80% Govt Subsidized)</strong>
                   </div>
                 </div>
 

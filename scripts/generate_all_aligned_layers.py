@@ -111,3 +111,4 @@ for layer_id, src_path, (y1, y2, x1, x2) in layer_sources:
     print(f"Saved {layer_id}_overlay.png: size {os.path.getsize(out_path)} bytes")
 
 print("All layers generated with 100% boundary alignment!")
+

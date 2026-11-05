@@ -94,7 +94,7 @@ const TRANSLATIONS: Record<LanguageCode, Record<string, string>> = {
     'ins.sum_insured': 'Sum Insured',
     'ins.gross_premium': 'Gross Premium',
     'ins.govt_subsidy': 'Govt PMFBY Subsidy (80%)',
-    'ins.farmer_pays': 'Farmer Net Payable (2%)',
+    'ins.farmer_pays': 'Farmer Net Payable (20%)',
     'ins.view_policies': 'View All Policies',
     'ins.apply_new': 'Apply for New Insurance Policy ➡️',
 

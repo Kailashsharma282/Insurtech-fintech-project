@@ -1,4 +1,5 @@
 import { Farm, Farmer, InsuranceUnit, Policy, Claim, Payout, IoTDevice, Alert, Intervention, SatelliteMetric, AuditLogItem } from '../types';
+import { calculatePolicyPremium, calculatePlotSubsidy } from '../subsidy';
 
 // Districts in West Bengal
 export const DISTRICTS = ['Paschim Medinipur', 'Nadia', 'Burdwan', 'Hooghly', 'Murshidabad'] as const;
@@ -929,28 +930,31 @@ export const SEED_IOT_DEVICES: IoTDevice[] = Array.from({ length: 20 }).map((_, 
 
 // 5. Policies
 export const SEED_POLICIES: Policy[] = [
-  ...SEED_FARMS.map((farm, idx) => ({
-    id: farm.activePolicyId,
-    policyNumber: `POL-WB-2026-${3000 + idx}`,
-    farmerId: farm.farmerId,
-    farmerName: farm.farmerName,
-    farmId: farm.id,
-    farmPlot: farm.plotNumber,
-    insuranceUnitCode: farm.insuranceUnitCode,
-    crop: farm.currentCrop,
-    sumInsured: farm.sumInsured,
-    premiumAmount: Math.round(farm.sumInsured * 0.05),
-    subsidyAmount: Math.round(farm.sumInsured * 0.035),
-    farmerShare: Math.round(farm.sumInsured * 0.015),
-    triggerChf: 0.55,
-    startDate: '2026-06-01',
-    endDate: '2026-11-30',
-    status: (idx === 3 ? 'PENDING_APPROVAL' : (idx === 7 ? 'REJECTED' : 'ACTIVE')) as Policy['status'],
-    submittedAt: '2026-09-14T09:00:00Z',
-    reviewedAt: idx === 7 ? '2026-09-15T14:30:00Z' : undefined,
-    rejectionReason: idx === 7 ? 'EXCEEDS_SPATIAL_IU_RISK_CAP' : undefined,
-    underwriterNotes: idx === 7 ? 'Insurance Unit portfolio risk exceeds maximum 85% exposure threshold' : undefined
-  })),
+  ...SEED_FARMS.map((farm, idx) => {
+    const { totalPremium, farmerShare, subsidyAmount } = calculatePolicyPremium(farm.sumInsured);
+    return {
+      id: farm.activePolicyId,
+      policyNumber: `POL-WB-2026-${3000 + idx}`,
+      farmerId: farm.farmerId,
+      farmerName: farm.farmerName,
+      farmId: farm.id,
+      farmPlot: farm.plotNumber,
+      insuranceUnitCode: farm.insuranceUnitCode,
+      crop: farm.currentCrop,
+      sumInsured: farm.sumInsured,
+      premiumAmount: totalPremium,
+      subsidyAmount: subsidyAmount,
+      farmerShare: farmerShare,
+      triggerChf: 0.55,
+      startDate: '2026-06-01',
+      endDate: '2026-11-30',
+      status: (idx === 3 ? 'PENDING_APPROVAL' : (idx === 7 ? 'REJECTED' : 'ACTIVE')) as Policy['status'],
+      submittedAt: '2026-09-14T09:00:00Z',
+      reviewedAt: idx === 7 ? '2026-09-15T14:30:00Z' : undefined,
+      rejectionReason: idx === 7 ? 'EXCEEDS_SPATIAL_IU_RISK_CAP' : undefined,
+      underwriterNotes: idx === 7 ? 'Insurance Unit portfolio risk exceeds maximum 85% exposure threshold' : undefined
+    };
+  }),
   {
     id: 'pol-app-subhash-2026',
     policyNumber: 'POL-WB-2026-APP-4012',
@@ -1010,7 +1014,7 @@ export const PRIMARY_DEMO_CLAIM: Claim = {
   chfMeasured: 0.49,
   chfBaseline: 0.74,
   lossFraction: 0.338,
-  claimAmount: 42800,
+  claimAmount: 22400,
   status: 'VERIFIED',
   payoutRef: 'PAY-WB-2026-9084',
   createdAt: '2026-09-12T14:30:00Z',
@@ -1091,7 +1095,7 @@ export const PRIMARY_DEMO_CLAIM: Claim = {
       { step: 'Underwriting Verification Signoff', timestamp: '2026-09-14 16:45 UTC', operatorOrSystem: 'Underwriter:Dr. S. Sen (Chief Actuary)', hashSha256: 'f211...77d3' }
     ],
     payout: {
-      amountInr: 42800,
+      amountInr: 22400,
       beneficiaryAccount: '•••• •••• 8428',
       ifsc: 'PUNB0120888',
       bankReferenceId: 'NEFT-WB-202609-883492',
@@ -1111,8 +1115,8 @@ export const SEED_CLAIMS: Claim[] = [
     const isApproved = idx % 3 === 0;
     const isDisbursed = idx % 4 === 0;
     const status: Claim['status'] = isDisbursed ? 'DISBURSED' : (isApproved ? 'APPROVED' : (idx % 2 === 0 ? 'VERIFIED' : 'PENDING'));
-    const lossFraction = parseFloat((0.25 + (idx % 5) * 0.05).toFixed(3));
-    const claimAmount = Math.round(farm.sumInsured * lossFraction);
+    const claimAmount = calculatePlotSubsidy(chf, farm.acreage);
+    const lossFraction = farm.sumInsured > 0 ? parseFloat((claimAmount / farm.sumInsured).toFixed(3)) : 0.25;
 
     return {
       id: `claim-clm-${claimNum}`,

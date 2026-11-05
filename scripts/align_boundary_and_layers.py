@@ -95,3 +95,4 @@ with open('scripts/aligned_ghatal_boundary.json', 'w', encoding='utf-8') as f:
     json.dump(exact_latlng_boundary, f, indent=2)
 
 print("Saved scripts/aligned_ghatal_boundary.json successfully.")
+
