@@ -150,3 +150,4 @@ if __name__ == '__main__':
         zpath = r'C:/Users/kaila/.gemini/antigravity/brain/07d793e0-0829-4131-bcbb-2c0dd501c682/.user_uploaded/media_1793828828536_eab95c81.zip'
     res = parse_shapefile_zip(zpath)
     print(json.dumps(res, indent=2))
+

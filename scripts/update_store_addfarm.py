@@ -33,3 +33,4 @@ with open(path, 'w', encoding='utf-8', newline='') as f:
     f.write(new_text)
 
 print("Updated store.ts with addFarm successfully!")
+

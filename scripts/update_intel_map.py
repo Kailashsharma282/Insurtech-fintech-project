@@ -42,3 +42,4 @@ with open('src/app/intelligence/map/page.tsx', 'w', encoding='utf-8') as f:
     f.write(text)
 
 print("SUCCESS: Updated intelligence map page with dynamic farm fetch!")
+

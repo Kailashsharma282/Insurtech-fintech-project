@@ -50,3 +50,4 @@ with open('src/app/farmer/farms/page.tsx', 'w', encoding='utf-8') as f:
     f.write(text)
 
 print("SUCCESS: Updated farms list page with Register CTA and dynamic API synchronization!")
+

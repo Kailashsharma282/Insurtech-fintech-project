@@ -36,3 +36,4 @@ for filename, url, width, height, is_dark in pages:
         print(f"Error capturing {filename}: {e}")
 
 print("Done taking screenshots!")
+

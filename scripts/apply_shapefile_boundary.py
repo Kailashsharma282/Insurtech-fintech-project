@@ -51,3 +51,4 @@ new_seed_text = (
 with open(seed_path, 'w', encoding='utf-8', newline='') as f:
     f.write(new_seed_text)
 print("Updated src/lib/db/seed-data.ts with 252 shapefile vertices!")
+

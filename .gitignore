@@ -47,3 +47,7 @@ live_screenshots/
 ui_screenshots_verification/
 tmp_uploads/
 tmp/
+
+# scripts preview crops
+scripts/*.png
+scripts/*.json

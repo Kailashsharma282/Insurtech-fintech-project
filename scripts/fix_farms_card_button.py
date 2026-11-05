@@ -15,3 +15,4 @@ if first_idx != -1:
         print('Second occurrence not found.')
 else:
     print('First occurrence not found.')
+

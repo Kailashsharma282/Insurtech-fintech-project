@@ -34,6 +34,11 @@ export default function SatelliteMapPage() {
   const [selectedFarm, setSelectedFarm] = useState<Farm>(SEED_FARMS[0]);
 
   useEffect(() => {
+    if (typeof window !== 'undefined') {
+      const params = new URLSearchParams(window.location.search);
+      const l = params.get('layer');
+      if (l) setSelectedLayer(l);
+    }
     fetch('/api/farms')
       .then(res => res.json())
       .then(data => {

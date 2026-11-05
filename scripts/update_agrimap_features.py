@@ -404,3 +404,4 @@ with open(path, 'w', encoding='utf-8', newline='') as f:
     f.write(norm_text)
 
 print("SUCCESS: Updated AgriMap.tsx with Shapefile Upload, Device Location, and Pan-India layer synthesis!")
+
