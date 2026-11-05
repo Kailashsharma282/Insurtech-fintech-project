@@ -150,6 +150,21 @@ export async function GET(req: NextRequest) {
               ? (shortName.toLowerCase().includes('district') ? 'DISTRICT' : 'BLOCK')
               : 'VILLAGE';
 
+          // Compute exact bounding box of the boundary polygon for 100% precision
+          let bMinLat = Infinity, bMaxLat = -Infinity, bMinLng = Infinity, bMaxLng = -Infinity;
+          if (boundary.length >= 3) {
+            boundary.forEach(pt => {
+              if (pt[0] < bMinLat) bMinLat = pt[0];
+              if (pt[0] > bMaxLat) bMaxLat = pt[0];
+              if (pt[1] < bMinLng) bMinLng = pt[1];
+              if (pt[1] > bMaxLng) bMaxLng = pt[1];
+            });
+          }
+
+          const calculatedBounds: [[number, number], [number, number]] = boundary.length >= 3
+            ? [[bMinLat, bMinLng], [bMaxLat, bMaxLng]]
+            : [[south, west], [north, east]];
+
           return {
             id: `pan-in-${item.place_id}`,
             name: `${shortName} (${district})`,
@@ -158,7 +173,7 @@ export async function GET(req: NextRequest) {
             state: `${state}`,
             description: `${shortName} located in ${district}, ${state}`,
             centroid: [lat, lon] as [number, number],
-            bounds: [[south, west], [north, east]] as [[number, number], [number, number]],
+            bounds: calculatedBounds,
             boundary,
             aliases: [shortName.toLowerCase(), district.toLowerCase(), state.toLowerCase()],
           };

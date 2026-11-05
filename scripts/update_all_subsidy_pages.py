@@ -80,3 +80,4 @@ claims_detail = claims_detail.replace(
 with open('src/app/insurer/claims/[id]/page.tsx', 'w', encoding='utf-8') as f:
     f.write(claims_detail)
 print("Updated insurer/claims/[id]/page.tsx")
+

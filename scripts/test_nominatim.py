@@ -17,3 +17,4 @@ for q in queries:
                 print(f"{q}: no result")
     except Exception as e:
         print(f"{q}: error {e}")
+

@@ -40,3 +40,4 @@ for p in test_poly[:5]:
 print("...")
 for p in test_poly[-3:]:
     print(f"  {p}")
+

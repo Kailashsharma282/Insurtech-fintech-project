@@ -95,6 +95,7 @@ export const GEE_LAYERS: GeeLayerInfo[] = [
     label: 'Parametric Insurance Risk Tiers',
     shortName: 'Risk Tiers',
     icon: '🛡️',
+    overlayPath: '/images/earth-engine/layers/risk_overlay.png',
     source: 'CropSure Automated Actuarial Engine',
     unit: 'Trigger Status',
     scaleDescription: 'Silabati River Floodplain vs Elevated Upland'
@@ -121,16 +122,42 @@ interface AgriMapProps {
 }
 
 
-// Dynamic multi-spectral raster synthesizer for non-Ghatal or uploaded shapefile areas
-function generateAreaLayerDataUrl(layerId: GeeLayerType, width = 256, height = 256): string {
-  if (typeof document === 'undefined') return '';
-  const canvas = document.createElement('canvas');
-  canvas.width = width;
-  canvas.height = height;
-  const ctx = canvas.getContext('2d');
-  if (!ctx) return '';
+function getPolygonExactBounds(boundary: [number, number][]): [[number, number], [number, number]] {
+  let minLat = Infinity, maxLat = -Infinity, minLng = Infinity, maxLng = -Infinity;
+  boundary.forEach(pt => {
+    if (pt[0] < minLat) minLat = pt[0];
+    if (pt[0] > maxLat) maxLat = pt[0];
+    if (pt[1] < minLng) minLng = pt[1];
+    if (pt[1] > maxLng) maxLng = pt[1];
+  });
+  return [[minLat, minLng], [maxLat, maxLng]];
+}
 
-  const imgData = ctx.createImageData(width, height);
+// Dynamic multi-spectral raster synthesizer with 100% boundary clipping for non-Ghatal or uploaded shapefile areas
+function generateAreaLayerDataUrl(
+  layerId: GeeLayerType,
+  boundary?: [number, number][],
+  boundsOverride?: [[number, number], [number, number]],
+  width = 512,
+  height = 512
+): { dataUrl: string; exactBounds: [[number, number], [number, number]] } | null {
+  if (typeof document === 'undefined') return null;
+
+  let bounds = boundsOverride;
+  if (boundary && boundary.length >= 3) {
+    bounds = getPolygonExactBounds(boundary);
+  }
+  if (!bounds) return null;
+  if (typeof document === 'undefined') return null;
+  
+  // 1. Offscreen canvas to synthesize the layer texture
+  const offscreen = document.createElement('canvas');
+  offscreen.width = width;
+  offscreen.height = height;
+  const offCtx = offscreen.getContext('2d');
+  if (!offCtx) return null;
+
+  const imgData = offCtx.createImageData(width, height);
   const data = imgData.data;
 
   for (let y = 0; y < height; y++) {
@@ -138,11 +165,22 @@ function generateAreaLayerDataUrl(layerId: GeeLayerType, width = 256, height = 2
       const idx = (y * width + x) * 4;
       const nx = x / width;
       const ny = y / height;
-      const val = (Math.sin(nx * 4.2 + ny * 2.1) + Math.cos(nx * 1.8 - ny * 3.7) + 2) / 4;
+      
+      // Multi-frequency harmonic variation for realistic geospatial satellite textures
+      const v1 = Math.sin(nx * 3.8 + ny * 2.3);
+      const v2 = Math.cos(nx * 2.1 - ny * 3.4);
+      const v3 = Math.sin((nx + ny) * 4.6) * 0.4;
+      const val = Math.max(0, Math.min(1, (v1 + v2 + v3 + 2.4) / 4.8));
 
-      let r = 0, g = 0, b = 0, a = 210;
+      let r = 0, g = 0, b = 0, a = 230;
 
-      if (layerId === 'ndvi') {
+      if (layerId === 'risk') {
+        // Parametric Insurance Risk Tiers
+        // Red = Claim Triggered (High Risk), Amber = Inundation Alert, Green = Normal Vigilance
+        if (val < 0.35) { r = 220; g = 38; b = 38; }       // Red: Claim Triggered (High Flood Risk)
+        else if (val < 0.65) { r = 245; g = 158; b = 11; }  // Amber: Elevated Inundation Alert
+        else { r = 16; g = 185; b = 129; }                 // Green: Normal Parametric Vigilance
+      } else if (layerId === 'ndvi') {
         if (val < 0.25) { r = 217; g = 119; b = 6; }
         else if (val < 0.5) { r = 234; g = 179; b = 8; }
         else if (val < 0.75) { r = 132; g = 204; b = 22; }
@@ -169,6 +207,7 @@ function generateAreaLayerDataUrl(layerId: GeeLayerType, width = 256, height = 2
         else if (val < 0.75) { r = 249; g = 115; b = 22; }
         else { r = 220; g = 38; b = 38; }
       } else {
+        // CHF (Crop Health Factor)
         if (val < 0.2) { r = 220; g = 38; b = 38; }
         else if (val < 0.4) { r = 234; g = 88; b = 12; }
         else if (val < 0.6) { r = 250; g = 204; b = 21; }
@@ -183,8 +222,43 @@ function generateAreaLayerDataUrl(layerId: GeeLayerType, width = 256, height = 2
     }
   }
 
-  ctx.putImageData(imgData, 0, 0);
-  return canvas.toDataURL();
+  offCtx.putImageData(imgData, 0, 0);
+
+  // 2. Final canvas with boundary clipping path
+  const finalCanvas = document.createElement('canvas');
+  finalCanvas.width = width;
+  finalCanvas.height = height;
+  const ctx = finalCanvas.getContext('2d');
+  if (!ctx) return { dataUrl: offscreen.toDataURL(), exactBounds: bounds };
+
+  if (boundary && boundary.length >= 3 && bounds) {
+    const minLat = bounds[0][0];
+    const minLng = bounds[0][1];
+    const maxLat = bounds[1][0];
+    const maxLng = bounds[1][1];
+    const spanLat = maxLat - minLat || 0.0001;
+    const spanLng = maxLng - minLng || 0.0001;
+
+    ctx.save();
+    ctx.beginPath();
+    boundary.forEach((pt, idx) => {
+      const lat = pt[0];
+      const lng = pt[1];
+      const x = ((lng - minLng) / spanLng) * width;
+      const y = ((maxLat - lat) / spanLat) * height;
+      if (idx === 0) ctx.moveTo(x, y);
+      else ctx.lineTo(x, y);
+    });
+    ctx.closePath();
+    ctx.clip(); // Restrict drawing strictly inside the irregular village boundary!
+
+    // Draw the synthesized satellite texture into the clipped polygon
+    ctx.drawImage(offscreen, 0, 0);
+    ctx.restore();
+    return { dataUrl: finalCanvas.toDataURL(), exactBounds: bounds };
+  }
+
+  return { dataUrl: offscreen.toDataURL(), exactBounds: bounds };
 }
 
 export const AgriMap: React.FC<AgriMapProps> = ({
@@ -532,11 +606,15 @@ export const AgriMap: React.FC<AgriMapProps> = ({
     if (showGeeOverlay) {
       const activeInfo = GEE_LAYERS.find(l => l.id === currentLayer);
       
-      // Case 1: Uploaded Shapefile active
+      // Case 1: Uploaded Shapefile active (clipped 100% to uploaded polygon)
       if (uploadedShapefile) {
-        const dataUrl = generateAreaLayerDataUrl(currentLayer);
-        if (dataUrl) {
-          const overlay = L.imageOverlay(dataUrl, uploadedShapefile.bounds, {
+        const res = generateAreaLayerDataUrl(
+          currentLayer,
+          uploadedShapefile.primaryRing,
+          uploadedShapefile.bounds
+        );
+        if (res) {
+          const overlay = L.imageOverlay(res.dataUrl, res.exactBounds, {
             opacity: overlayOpacity,
             interactive: false,
             zIndex: 5
@@ -544,11 +622,15 @@ export const AgriMap: React.FC<AgriMapProps> = ({
           overlay.addTo(rasterGroup);
         }
       }
-      // Case 2: Searched Area active (and not Ghatal Block)
+      // Case 2: Searched Area active (and not Ghatal Block) (clipped 100% to village boundary)
       else if (activeSearchedArea && activeSearchedArea.id !== 'area-ghatal-block') {
-        const dataUrl = generateAreaLayerDataUrl(currentLayer);
-        if (dataUrl) {
-          const overlay = L.imageOverlay(dataUrl, activeSearchedArea.bounds, {
+        const res = generateAreaLayerDataUrl(
+          currentLayer,
+          activeSearchedArea.boundary,
+          activeSearchedArea.bounds
+        );
+        if (res) {
+          const overlay = L.imageOverlay(res.dataUrl, res.exactBounds, {
             opacity: overlayOpacity,
             interactive: false,
             zIndex: 5
@@ -565,6 +647,22 @@ export const AgriMap: React.FC<AgriMapProps> = ({
         });
         overlay.addTo(rasterGroup);
       }
+      // Fallback: If overlayPath missing for Ghatal, synthesize clipped to Ghatal boundary
+      else if (activeInfo) {
+        const res = generateAreaLayerDataUrl(
+          currentLayer,
+          GHATAL_VILLAGE_BOUNDARY,
+          GEE_BOUNDS
+        );
+        if (res) {
+          const overlay = L.imageOverlay(res.dataUrl, res.exactBounds, {
+            opacity: overlayOpacity,
+            interactive: false,
+            zIndex: 5
+          });
+          overlay.addTo(rasterGroup);
+        }
+      }
     }
   }, [mapReady, currentLayer, showGeeOverlay, overlayOpacity, uploadedShapefile, activeSearchedArea]);
 
@@ -575,7 +673,9 @@ export const AgriMap: React.FC<AgriMapProps> = ({
     const boundaryGroup = boundaryLayerRef.current;
     boundaryGroup.clearLayers();
 
-    if (showVillageBoundary) {
+    // Only render Ghatal Block outline when viewing Ghatal Block
+    const isViewingGhatal = !activeSearchedArea || activeSearchedArea.id === 'area-ghatal-block';
+    if (showVillageBoundary && isViewingGhatal && !uploadedShapefile) {
       const boundaryPoly = L.polygon(GHATAL_VILLAGE_BOUNDARY, {
         color: '#DC2626',      // Crimson Red border matching GEE FAPAR map
         weight: 3,
@@ -608,7 +708,7 @@ export const AgriMap: React.FC<AgriMapProps> = ({
         </div>
       `);
     }
-  }, [mapReady, showVillageBoundary]);
+  }, [mapReady, showVillageBoundary, activeSearchedArea, uploadedShapefile]);
 
   // Render Uploaded Shapefile Polygon
   useEffect(() => {
@@ -653,6 +753,10 @@ export const AgriMap: React.FC<AgriMapProps> = ({
     searchedGroup.clearLayers();
 
     if (activeSearchedArea) {
+      if (activeSearchedArea.id === 'area-ghatal-block') {
+        leafletMapRef.current.fitBounds(GEE_BOUNDS, { padding: [15, 15] });
+        return;
+      }
       const isDistrict = activeSearchedArea.type === 'DISTRICT';
       const color = isDistrict ? '#7C3AED' : '#2563EB'; // Purple for District, Blue for Village/Block
 
@@ -707,7 +811,7 @@ export const AgriMap: React.FC<AgriMapProps> = ({
       sticky: true,
       className: 'font-semibold text-xs text-blue-900 bg-white/95 px-2 py-1 rounded shadow-md border border-blue-200'
     });
-  }, [mapReady]);
+  }, [mapReady, activeSearchedArea]);
 
   // Update Cadastral Farm Plots (20 Plots)
   useEffect(() => {
@@ -716,7 +820,8 @@ export const AgriMap: React.FC<AgriMapProps> = ({
     const plotsGroup = plotsLayerRef.current;
     plotsGroup.clearLayers();
 
-    if (!showPlots) return;
+    const isViewingGhatal = !activeSearchedArea || activeSearchedArea.id === 'area-ghatal-block';
+    if (!showPlots || !isViewingGhatal) return;
 
     const getPlotColor = (f: Farm) => {
       if (currentLayer === 'risk') {
@@ -825,11 +930,12 @@ export const AgriMap: React.FC<AgriMapProps> = ({
       polygon.addTo(plotsGroup);
     });
 
+    const isGhatal = !activeSearchedArea || activeSearchedArea.id === 'area-ghatal-block';
     const selected = farms.find(f => f.id === selectedFarmId);
-    if (selected && leafletMapRef.current) {
+    if (selected && leafletMapRef.current && isGhatal) {
       leafletMapRef.current.panTo([selected.centroid.lat, selected.centroid.lng]);
     }
-  }, [mapReady, farms, selectedFarmId, currentLayer, showPlots, onSelectFarm]);
+  }, [mapReady, farms, selectedFarmId, currentLayer, showPlots, onSelectFarm, activeSearchedArea]);
 
   const activeLayerConfig = GEE_LAYERS.find(l => l.id === currentLayer) || GEE_LAYERS[0];
 
@@ -837,6 +943,9 @@ export const AgriMap: React.FC<AgriMapProps> = ({
     setActiveSearchedArea(area);
     setIsSearchOpen(false);
     setSearchQuery(area.name);
+    if (leafletMapRef.current) {
+      leafletMapRef.current.fitBounds(area.bounds, { padding: [35, 35], maxZoom: 14 });
+    }
 
     // Fetch live Copernicus CDSE and OpenWeather telemetry for any Indian village
     setIsLoadingTelemetry(true);

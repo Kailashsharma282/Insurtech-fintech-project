@@ -36,3 +36,4 @@ if target in text:
     print("Updated insurance-validation/page.tsx with simplified CHF subsidy rule!")
 else:
     print("Target not found in insurance-validation")
+

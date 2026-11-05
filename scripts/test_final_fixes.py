@@ -51,3 +51,4 @@ for name, url, w, h in shots:
     print(f"Saved {out_file}")
 
 print("\nVerification complete!")
+

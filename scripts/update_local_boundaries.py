@@ -104,3 +104,4 @@ with open('src/lib/db/boundaries.ts', 'w', encoding='utf-8') as f:
     f.write(code)
 
 print("Updated boundaries.ts successfully!")
+
