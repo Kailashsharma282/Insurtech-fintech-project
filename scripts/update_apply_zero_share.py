@@ -41,3 +41,4 @@ with open(file_path, "w", encoding="utf-8") as f:
     f.write(c)
 
 print("SUCCESS: Updated apply/page.tsx for 0 farmer share")
+

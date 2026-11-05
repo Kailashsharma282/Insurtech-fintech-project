@@ -220,7 +220,9 @@ export default function FarmerInsurancePage() {
                   No Subsidy
                 </div>
               </div>
-              <p className="text-[11px] text-emerald-800 dark:text-emerald-300 mt-2 font-sans font-medium">Normal crop health</p>
+              <p className="text-[11px] text-emerald-800 dark:text-emerald-300 mt-2 font-sans font-medium">
+                Normal crop health — <strong className="font-semibold text-emerald-900 dark:text-emerald-200">CHF is normal (&gt; 0.6)</strong>
+              </p>
             </div>
 
             <div className="p-3.5 rounded-2xl bg-emerald-50 dark:bg-emerald-950/40 border border-emerald-200 dark:border-emerald-900/60 flex flex-col justify-between">
@@ -233,7 +235,9 @@ export default function FarmerInsurancePage() {
                   No Subsidy
                 </div>
               </div>
-              <p className="text-[11px] text-emerald-800 dark:text-emerald-300 mt-2 font-sans font-medium">Optimal canopy vigor</p>
+              <p className="text-[11px] text-emerald-800 dark:text-emerald-300 mt-2 font-sans font-medium">
+                Optimal canopy vigor — <strong className="font-semibold text-emerald-900 dark:text-emerald-200">CHF is normal (&gt; 0.6)</strong>
+              </p>
             </div>
           </div>
         </div>

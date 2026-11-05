@@ -86,3 +86,4 @@ if idx_start != -1 and idx_end != -1:
     print("SUCCESS: Removed farmer share and removed repeated matrix from farmer card!")
 else:
     print(f"ERROR: idx_start={idx_start}, idx_end={idx_end}")
+
