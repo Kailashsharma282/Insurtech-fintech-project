@@ -75,11 +75,11 @@ export default function FarmerInsuranceApplyPage() {
 
   const selectedPlot = AVAILABLE_PLOTS.find(p => p.id === selectedPlotId) || AVAILABLE_PLOTS[0];
 
-  // Financial calculations with 80% PMFBY subsidy
+  // Financial calculations: 100% Govt Subsidized (Farmer pays ₹0)
   const sumInsured = coverageTier === 'COMPREHENSIVE' ? selectedPlot.defaultSumInsured : Math.round(selectedPlot.defaultSumInsured * 0.85);
   const grossPremium = Math.round(sumInsured * (coverageTier === 'COMPREHENSIVE' ? 0.05 : 0.04));
-  const govtSubsidy = Math.round(grossPremium * 0.80);
-  const farmerPayable = grossPremium - govtSubsidy; // 20% farmer share (~2% of sum insured)
+  const govtSubsidy = grossPremium; // 100% covered by Govt
+  const farmerPayable = 0; // Farmer pays nothing
   const triggerChf = coverageTier === 'COMPREHENSIVE' ? 0.58 : 0.55;
 
   const handleSubmitApplication = async (e: React.FormEvent) => {
@@ -356,11 +356,11 @@ export default function FarmerInsuranceApplyPage() {
                   <span className="font-bold">- ₹{govtSubsidy.toLocaleString()}</span>
                 </div>
                 <div className="flex justify-between items-center pt-1 text-sm sm:text-base">
-                  <strong className="text-slate-900 font-black">{t('ins.farmer_pays')}:</strong>
-                  <strong className="text-emerald-700 font-black text-lg">₹{farmerPayable.toLocaleString()}</strong>
+                  <strong className="text-slate-900 font-black">Farmer Share (Net Payable):</strong>
+                  <strong className="text-emerald-700 font-black text-lg">₹0 (100% Free)</strong>
                 </div>
-                <div className="text-[11px] text-slate-500 font-sans pt-1 border-t border-slate-200">
-                  Central & State PMFBY subsidizes 80% of total premium. Farmer pays remaining 20% net.
+                <div className="text-[11px] text-emerald-700 font-sans pt-1 border-t border-slate-200 font-bold">
+                  100% Central & State Government subsidized. Zero cost to registered farmers.
                 </div>
               </div>
 

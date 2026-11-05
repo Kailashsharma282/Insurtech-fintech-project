@@ -160,9 +160,14 @@ export default function FarmerInsurancePage() {
                 Direct statutory bank transfer (DBT) indemnity determined by measured Crop Health Factor (CHF) from Sentinel-2 & SAR imagery.
               </p>
             </div>
-            <span className="px-3 py-1 rounded-full bg-blue-50 dark:bg-blue-950/60 border border-blue-200 dark:border-blue-800 text-blue-800 dark:text-blue-300 font-mono text-[11px] font-bold self-start sm:self-center shrink-0">
-              100% Guaranteed Payout
-            </span>
+            <div className="flex items-center gap-2 self-start sm:self-center shrink-0">
+              <span className="px-3 py-1 rounded-full bg-emerald-100 dark:bg-emerald-950/70 text-emerald-900 dark:text-emerald-300 border border-emerald-300 dark:border-emerald-700 font-mono text-[11px] font-black">
+                100% Free (Farmer Pays ₹0)
+              </span>
+              <span className="px-3 py-1 rounded-full bg-blue-50 dark:bg-blue-950/60 border border-blue-200 dark:border-blue-800 text-blue-800 dark:text-blue-300 font-mono text-[11px] font-bold">
+                100% Guaranteed Payout
+              </span>
+            </div>
           </div>
 
           <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-3 font-mono">
@@ -353,8 +358,8 @@ export default function FarmerInsurancePage() {
                     </div>
                   </div>
 
-                  {/* Financial & Statutory CHF Subsidy Metrics Grid */}
-                  <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 sm:gap-4 text-xs font-mono">
+                  {/* Clean Statutory CHF Subsidy Metrics (Farmer pays ₹0 - 100% Subsidized) */}
+                  <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 sm:gap-4 text-xs font-mono">
                     <div className="p-4 rounded-2xl bg-white dark:bg-slate-800 border-2 border-slate-200 dark:border-slate-700 shadow-xs">
                       <div className="flex items-center justify-between">
                         <span className="text-slate-700 dark:text-slate-300 block text-[10px] uppercase font-black tracking-wider">
@@ -388,21 +393,6 @@ export default function FarmerInsurancePage() {
                     <div className="p-4 rounded-2xl bg-white dark:bg-slate-800 border-2 border-slate-200 dark:border-slate-700 shadow-xs">
                       <div className="flex items-center justify-between">
                         <span className="text-slate-700 dark:text-slate-300 block text-[10px] uppercase font-black tracking-wider">
-                          FARMER SHARE
-                        </span>
-                        <span className="text-[9px] font-bold text-emerald-800 dark:text-emerald-300 bg-emerald-50 dark:bg-emerald-950/70 px-1.5 py-0.5 rounded">20% Share</span>
-                      </div>
-                      <strong className="text-lg sm:text-xl text-slate-900 dark:text-white font-black mt-1.5 block">
-                        ₹{policy.farmerShare.toLocaleString()}
-                      </strong>
-                      <span className="text-[10px] text-slate-500 dark:text-slate-400 block mt-1 font-sans font-medium">
-                        Govt Subsidy: ₹{policy.subsidyAmount.toLocaleString()} (80%)
-                      </span>
-                    </div>
-
-                    <div className="p-4 rounded-2xl bg-white dark:bg-slate-800 border-2 border-slate-200 dark:border-slate-700 shadow-xs">
-                      <div className="flex items-center justify-between">
-                        <span className="text-slate-700 dark:text-slate-300 block text-[10px] uppercase font-black tracking-wider">
                           TRIGGER CONDITION
                         </span>
                         <span className="text-[9px] font-bold text-amber-800 dark:text-amber-300 bg-amber-50 dark:bg-amber-950/70 px-1.5 py-0.5 rounded">CHF Trigger</span>
@@ -413,87 +403,6 @@ export default function FarmerInsurancePage() {
                       <span className="text-[10px] text-slate-500 dark:text-slate-400 block mt-1 font-sans font-medium">
                         Direct bank credit upon drop
                       </span>
-                    </div>
-                  </div>
-
-                  {/* Statutory CHF Subsidy & Plot Payout Breakdown Table */}
-                  <div className="p-4 sm:p-5 rounded-2xl bg-slate-50 dark:bg-slate-800/60 border border-slate-200 dark:border-slate-700/80 space-y-3">
-                    <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-1">
-                      <div className="flex items-center gap-2">
-                        <span className="w-2.5 h-2.5 rounded-full bg-blue-600 animate-pulse"></span>
-                        <h4 className="font-black text-xs text-slate-900 dark:text-white uppercase tracking-wider">
-                          Statutory CHF Subsidy Matrix — {policy.farmPlot} ({farmAcreage} ha)
-                        </h4>
-                      </div>
-                      <span className="text-[11px] font-mono text-slate-600 dark:text-slate-400 font-semibold">
-                        Direct RBI NEFT DBT Credit to Farmer Bank Account
-                      </span>
-                    </div>
-
-                    <div className="grid grid-cols-2 sm:grid-cols-4 gap-2.5 font-mono text-xs">
-                      <div className="p-3 rounded-xl bg-red-50 dark:bg-red-950/50 border border-red-200 dark:border-red-900/60 flex flex-col justify-between">
-                        <div>
-                          <div className="flex items-center justify-between">
-                            <span className="font-black text-[11px] text-red-900 dark:text-red-200">0.0 – 0.2 CHF</span>
-                            <span className="px-1.5 py-0.5 rounded text-[9px] font-black bg-red-600 text-white">Severe</span>
-                          </div>
-                          <div className="text-base sm:text-lg font-black text-red-700 dark:text-red-400 mt-1">
-                            ₹15,000 <span className="text-[10px] font-normal text-slate-500">/ ha</span>
-                          </div>
-                        </div>
-                        <div className="mt-2 pt-1.5 border-t border-red-200/60 dark:border-red-900/40 flex justify-between items-center text-[11px]">
-                          <span className="text-slate-600 dark:text-slate-400 font-sans">Plot Payout:</span>
-                          <strong className="text-red-900 dark:text-red-200 font-black">₹{(farmAcreage * 15000).toLocaleString()}</strong>
-                        </div>
-                      </div>
-
-                      <div className="p-3 rounded-xl bg-orange-50 dark:bg-orange-950/50 border border-orange-200 dark:border-orange-900/60 flex flex-col justify-between">
-                        <div>
-                          <div className="flex items-center justify-between">
-                            <span className="font-black text-[11px] text-orange-900 dark:text-orange-200">0.2 – 0.4 CHF</span>
-                            <span className="px-1.5 py-0.5 rounded text-[9px] font-black bg-orange-600 text-white">High</span>
-                          </div>
-                          <div className="text-base sm:text-lg font-black text-orange-700 dark:text-orange-400 mt-1">
-                            ₹12,000 <span className="text-[10px] font-normal text-slate-500">/ ha</span>
-                          </div>
-                        </div>
-                        <div className="mt-2 pt-1.5 border-t border-orange-200/60 dark:border-orange-900/40 flex justify-between items-center text-[11px]">
-                          <span className="text-slate-600 dark:text-slate-400 font-sans">Plot Payout:</span>
-                          <strong className="text-orange-900 dark:text-orange-200 font-black">₹{(farmAcreage * 12000).toLocaleString()}</strong>
-                        </div>
-                      </div>
-
-                      <div className="p-3 rounded-xl bg-amber-50 dark:bg-amber-950/50 border border-amber-200 dark:border-amber-900/60 flex flex-col justify-between">
-                        <div>
-                          <div className="flex items-center justify-between">
-                            <span className="font-black text-[11px] text-amber-900 dark:text-amber-200">0.4 – 0.6 CHF</span>
-                            <span className="px-1.5 py-0.5 rounded text-[9px] font-black bg-amber-600 text-white">Moderate</span>
-                          </div>
-                          <div className="text-base sm:text-lg font-black text-amber-700 dark:text-amber-400 mt-1">
-                            ₹8,000 <span className="text-[10px] font-normal text-slate-500">/ ha</span>
-                          </div>
-                        </div>
-                        <div className="mt-2 pt-1.5 border-t border-amber-200/60 dark:border-amber-900/40 flex justify-between items-center text-[11px]">
-                          <span className="text-slate-600 dark:text-slate-400 font-sans">Plot Payout:</span>
-                          <strong className="text-amber-900 dark:text-amber-200 font-black">₹{(farmAcreage * 8000).toLocaleString()}</strong>
-                        </div>
-                      </div>
-
-                      <div className="p-3 rounded-xl bg-emerald-50 dark:bg-emerald-950/50 border border-emerald-200 dark:border-emerald-900/60 flex flex-col justify-between">
-                        <div>
-                          <div className="flex items-center justify-between">
-                            <span className="font-black text-[11px] text-emerald-900 dark:text-emerald-200">&gt; 0.6 CHF</span>
-                            <span className="px-1.5 py-0.5 rounded text-[9px] font-black bg-emerald-600 text-white">Normal</span>
-                          </div>
-                          <div className="text-base sm:text-lg font-black text-emerald-700 dark:text-emerald-400 mt-1">
-                            No Subsidy
-                          </div>
-                        </div>
-                        <div className="mt-2 pt-1.5 border-t border-emerald-200/60 dark:border-emerald-900/40 flex justify-between items-center text-[11px]">
-                          <span className="text-slate-600 dark:text-slate-400 font-sans">Plot Payout:</span>
-                          <strong className="text-emerald-900 dark:text-emerald-200 font-black">₹0 (Healthy)</strong>
-                        </div>
-                      </div>
                     </div>
                   </div>
 

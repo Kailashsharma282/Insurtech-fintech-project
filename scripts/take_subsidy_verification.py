@@ -20,3 +20,4 @@ async def main():
         print("Screenshots taken successfully!")
 
 asyncio.run(main())
+
