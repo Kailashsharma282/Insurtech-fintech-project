@@ -338,8 +338,8 @@ export default function InsurerPoliciesPage() {
                     <div className="flex flex-col sm:flex-row sm:items-center gap-3 lg:gap-5 shrink-0">
                       <div className="grid grid-cols-2 sm:grid-cols-3 gap-2 text-xs font-mono text-right sm:text-left">
                         <div className="px-3 py-1.5 rounded-xl bg-slate-50 border border-slate-200">
-                          <span className="text-slate-400 block text-[9px] uppercase font-bold">Sum Insured</span>
-                          <strong className="text-slate-900">₹{policy.sumInsured.toLocaleString()}</strong>
+                          <span className="text-slate-400 block text-[9px] uppercase font-bold">Subsidy Rate</span>
+                          <strong className="text-red-700">Max ₹15k/ha</strong>
                         </div>
                         <div className="px-3 py-1.5 rounded-xl bg-slate-50 border border-slate-200">
                           <span className="text-slate-400 block text-[9px] uppercase font-bold">Farmer Share (20%)</span>

@@ -97,3 +97,4 @@ for py in range(NEAT_H):
 out_path = 'public/images/earth-engine/layers/risk_overlay.png'
 cv2.imwrite(out_path, risk_bgra)
 print(f"Successfully generated {out_path} ({os.path.getsize(out_path)} bytes)")
+

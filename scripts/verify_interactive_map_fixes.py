@@ -62,3 +62,4 @@ with sync_playwright() as p:
     browser.close()
 
 print("All interactive Playwright verification tests passed!")
+
